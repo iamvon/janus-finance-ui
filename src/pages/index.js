@@ -1,11 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, {useEffect} from "react"
 import PageHeader from "/src/components/common/PageHeader"
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faArrowAltCircleRight, faClock, faLongArrowAltRight} from '@fortawesome/free-solid-svg-icons'
 import {useRouter} from 'next/router'
-import Paths from "../lib/routes/Paths";
-import controlPanelSvg from '../../public/control_panel.svg'
 
 const Dashboard = (props) => {
     const {someVars} = props
@@ -13,7 +9,10 @@ const Dashboard = (props) => {
     const router = useRouter()
 
     useEffect(() => {
-
+        // new TokenListProvider().resolve().then((tokens) => {
+        //     const tokenList = tokens.filterByClusterSlug('mainnet-beta').getList();
+        //     console.log(tokenList);
+        // });
     }, [])
 
     return (
@@ -22,7 +21,7 @@ const Dashboard = (props) => {
             <div className="pt-24">
                 <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
                     <div className="flex flex-col w-full md:w-1/2 justify-center items-start text-center md:text-left">
-                        <p className="uppercase tracking-loose w-full">Welcome to Janus !</p>
+                        <p className="uppercase tracking-loose w-full">Welcome to Janus Finance!</p>
                         <h1 className="my-4 text-5xl font-bold leading-tight">Token Shopping Gateway</h1>
                         <p className="leading-normal text-2xl mb-8">Find the best defi opportunities and optimizing your
                             digital assets on Solana ecosystem</p>
@@ -39,6 +38,11 @@ const Dashboard = (props) => {
             {/*<div className="relative -mt-12 lg:-mt-24 text-right">*/}
             {/*    <img src={controlPanelSvg} alt=""/>*/}
             {/*</div>*/}
+            <div>
+                <div className={'flex '}>
+
+                </div>
+            </div>
         </div>
     )
 }
