@@ -1,12 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import React, {useEffect} from "react"
 import PageHeader from "/src/components/common/PageHeader"
-import {useRouter} from 'next/router'
+import SolanaTokenItem from "../components/SolanaTokenItem"
+import CN from "classnames"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faChartLine} from "@fortawesome/free-solid-svg-icons"
+import Paths from "../lib/routes/Paths"
+import {DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE} from "../lib/constants/pagination"
+import {listTokenController} from "../lib/controllers/token/listToken"
 
 const Dashboard = (props) => {
-    const {someVars} = props
+    const {trendingTokens} = props
 
-    const router = useRouter()
+    // const router = useRouter()
 
     useEffect(() => {
         // new TokenListProvider().resolve().then((tokens) => {
@@ -16,7 +22,7 @@ const Dashboard = (props) => {
     }, [])
 
     return (
-        <div className="wrapper flex flex-col items-stretch justify-start space-y-12 pb-12">
+        <div className="wrapper flex flex-col items-stretch justify-start space-y-36 pb-12">
             <PageHeader title={"Dashboard"}/>
             <div className="pt-24">
                 <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
@@ -38,9 +44,24 @@ const Dashboard = (props) => {
             {/*<div className="relative -mt-12 lg:-mt-24 text-right">*/}
             {/*    <img src={controlPanelSvg} alt=""/>*/}
             {/*</div>*/}
-            <div>
-                <div className={'flex '}>
-
+            <div className={''}>
+                <div className={'flex justify-between'}>
+                    <div className={CN("flex place-items-center mb-6")}>
+                        <FontAwesomeIcon icon={faChartLine} className={"text-xl mr-4"}/>
+                        <span className={CN("font-bold text-lg")}>Trending tokens</span>
+                    </div>
+                    <div className={'flex'}>
+                        <a href={Paths.NFT} className={'text-base text-blue-800'}>See more</a>
+                    </div>
+                </div>
+                <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
+                    {
+                        trendingTokens.map((token) => {
+                            return (
+                                <SolanaTokenItem key={token.id} token={token}/>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </div>
@@ -49,8 +70,27 @@ const Dashboard = (props) => {
 
 
 export const getServerSideProps = async (context) => {
+    const reqInit = {
+        query: {
+            page: DEFAULT_PAGE_NUMBER,
+            size: DEFAULT_PAGE_SIZE.GRID
+        }
+    }
+    const _solanaTokens = listTokenController(reqInit)
+
+    const [solanaTokens] = await Promise.all([
+        _solanaTokens,
+    ])
+
+    if (!solanaTokens) {
+        return {
+            notFound: true,
+        }
+    }
     return {
-        props: {}
+        props: {
+            trendingTokens: JSON.parse(JSON.stringify(solanaTokens.items))
+        }
     }
 }
 
