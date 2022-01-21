@@ -5,7 +5,7 @@ import {useRouter} from 'next/router'
 import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
 import {listTokenController} from "../../lib/controllers/token/listToken"
 import SolanaTokenItem from "../../components/SolanaTokenItem"
-import {AutoComplete, Checkbox, Pagination, Radio} from "antd"
+import {AutoComplete, Checkbox, Empty, Pagination, Radio} from "antd"
 import CN from "classnames"
 import {faChartLine} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -19,7 +19,6 @@ import {SORT_BY_OPTIONS} from "../../lib/constants/sortBy/token"
 import AppContext from "../../contexts/AppContext"
 import {getTokenListApi} from "../../lib/services/api/token"
 import _, {isArray} from "lodash"
-import Link from "next/link"
 import SkeletonAssetItem from "../../components/SkeletonTokenItem"
 
 const initialFilterValue = {}
@@ -150,14 +149,26 @@ const Token = (props) => {
         await fetchData(query)
     }
 
-    const itemPaginationRender = (page, type, originalElement) => {
-        const selectTags = [...checkedTagList, selectedCustomTag]
-        const query = parseParamsToQuery({...params, page: page}, sortBy, selectTags, searchQuery)
-        const url = parseQueryToUrl(query)
-        return (
-            <Link href={url} shallow={true}>
-                {originalElement}
-            </Link>
+    // const itemPaginationRender = (page, type, originalElement) => {
+    //     const selectTags = [...checkedTagList, selectedCustomTag]
+    //     const query = parseParamsToQuery({...params, page: page}, sortBy, selectTags, searchQuery)
+    //     const url = parseQueryToUrl(query)
+    //     return (
+    //         <Link href={url} shallow={true}>
+    //             {originalElement}
+    //         </Link>
+    //     )
+    // }
+
+    const itemRender = () => {
+        return itemData.length > 0 ? itemData.map((token) => {
+            return (
+                <SolanaTokenItem key={token._id} token={token}/>
+            )
+        }) : (
+            <div className="col-span-3 flex items-center justify-center w-full mt-5">
+                <Empty description="No asset found with this filter"/>
+            </div>
         )
     }
 
@@ -254,24 +265,23 @@ const Token = (props) => {
                         </div>
                     </div>
                     <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
-                        {loading ?
-                            [...Array(params.size).keys()].map((it, index) => <SkeletonAssetItem
-                                key={index}/>) : itemData.map((token) => {
-                                return (
-                                    <SolanaTokenItem key={token._id} token={token}/>
-                                )
-                            })
+                        {
+                            loading ?
+                                [...Array(params.size).keys()].map((it, index) => <SkeletonAssetItem
+                                    key={index}/>) : itemRender()
                         }
                     </div>
                     <div className="flex items-center justify-center w-full mt-5">
-                        <Pagination
-                            onChange={onChangePage}
-                            pageSize={params.size}
-                            total={total}
-                            current={params.page}
-                            showSizeChanger={false}
-                            // itemRender={itemPaginationRender}
-                        />
+                        {
+                            itemData.length > 0 && <Pagination
+                                onChange={onChangePage}
+                                pageSize={params.size}
+                                total={total}
+                                current={params.page}
+                                showSizeChanger={false}
+                                // itemRender={itemPaginationRender}
+                            />
+                        }
                     </div>
                 </div>
                 {/*<div className={'col-span-1'}>*/}
@@ -336,7 +346,8 @@ const parseParamsToQuery = (params, sortBy, selectedTags, searchQuery) => {
     // }
 
     if (selectedTags.length > 0) {
-        _params.tags = selectedTags
+        // console.log("selectedTags", selectedTags)
+        _params.tags = _.uniq(selectedTags)
     }
 
     if (_params.size === DEFAULT_PAGE_SIZE.GRID) {
