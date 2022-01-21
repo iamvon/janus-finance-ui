@@ -243,6 +243,9 @@ const Token = (props) => {
                             <FontAwesomeIcon icon={faChartLine} className={"text-2xl mr-4"}/>
                             <span className={CN("font-bold text-2xl")}>Assets</span>
                         </div>
+                        <div className={'flex text-base'}>
+                            Displaying {itemData.length} of {total} assets
+                        </div>
                     </div>
                     <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
                         {
