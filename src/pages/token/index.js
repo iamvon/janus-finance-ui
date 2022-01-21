@@ -5,7 +5,7 @@ import {useRouter} from 'next/router'
 import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
 import {listTokenController} from "../../lib/controllers/token/listToken"
 import SolanaTokenItem from "../../components/SolanaTokenItem"
-import {AutoComplete, Checkbox, Empty, Pagination, Radio} from "antd"
+import {AutoComplete, Empty, Pagination, Radio} from "antd"
 import CN from "classnames"
 import {faChartLine} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
@@ -20,6 +20,7 @@ import AppContext from "../../contexts/AppContext"
 import {getTokenListApi} from "../../lib/services/api/token"
 import _, {isArray} from "lodash"
 import SkeletonAssetItem from "../../components/SkeletonTokenItem"
+import TokenTag from "../../components/TokenTag"
 
 const initialFilterValue = {}
 
@@ -41,18 +42,12 @@ const Token = (props) => {
         defaultTags,
         defaultSort,
     } = props
-    const first5Tags = tokenTags.slice(0, 5)
-    let restTags = [...tokenTags]
-    restTags.splice(0, 5)
-    const initTagOptions = restTags.map(i => {
+    const initTagOptions = [...tokenTags].map(i => {
         return {value: i.name}
     })
-    const first5TagName = first5Tags.map(i => i.name)
-    const defaultCustomTag = isArray(defaultTags) ? defaultTags.find(i => !first5TagName.includes(i)) : [defaultTags].find(i => !first5TagName.includes(i))
 
-    const [checkedTagList, setCheckedTagList] = useState(defaultTags);
+    const [selectedTagList, setSelectedTagList] = useState(defaultTags);
     const [tagOptions, setTagOptions] = useState(initTagOptions);
-    const [selectedCustomTag, setSelectedCustomTag] = useState(defaultCustomTag ? defaultCustomTag : '');
 
     const {searchQuery} = useContext(AppContext)
     const [itemData, setItemData] = useState(solanaTokens)
@@ -100,24 +95,19 @@ const Token = (props) => {
         setLoading(false)
     }
 
-    const onChangeTagList = (checkedValues) => {
-        // console.log('checked = ', checkedValues);
-        setCheckedTagList(checkedValues);
-    }
-
     const onSearchTag = (searchText) => {
         const filteredTags = initTagOptions.filter(op => op.value.toUpperCase().indexOf(searchText.toUpperCase()) !== -1)
         setTagOptions(filteredTags);
     };
 
     const onSelectCustomTag = (data) => {
-        console.log('onSelect', data);
-        setSelectedCustomTag(data);
+        setSelectedTagList(_.uniq([...selectedTagList, data]));
     };
 
-    const onChangeTagString = (data) => {
-        setSelectedCustomTag(data);
-    };
+    const onRemoveTag = (tag) => {
+        const newSelectedTagList = selectedTagList.filter(i => i !== tag)
+        setSelectedTagList(newSelectedTagList)
+    }
 
     // const onChangeStartFilterPrice = (value) => {
     //     console.log('changed', value);
@@ -131,9 +121,7 @@ const Token = (props) => {
     };
 
     const onApplyClick = async () => {
-        const selectTags = [...checkedTagList, selectedCustomTag]
-        // console.log("onApplyClick", selectTags)
-        const query = parseParamsToQuery(params, sortBy, selectTags, searchQuery)
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
@@ -142,8 +130,7 @@ const Token = (props) => {
     const onChangePage = async (page, pageSize) => {
         const tmpParams = {...params, page, size: pageSize}
         setParams(tmpParams)
-        const selectTags = [...checkedTagList, selectedCustomTag]
-        const query = parseParamsToQuery(tmpParams, sortBy, selectTags, searchQuery)
+        const query = parseParamsToQuery(tmpParams, sortBy, selectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
@@ -180,30 +167,23 @@ const Token = (props) => {
                     <div>
                         <div className={'text-base font-bold mb-2'}>Tags</div>
                         <div>
-                            <Checkbox.Group value={checkedTagList} onChange={onChangeTagList}>
+                            <div>
                                 {
-                                    first5Tags.map((tag, index) => {
-                                        return (
-                                            <div key={index} className={'my-1'}>
-                                                <Checkbox value={tag.name}>{tag.name}</Checkbox>
-                                            </div>
-                                        )
+                                    selectedTagList.map((tag, index) => {
+                                        return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
                                     })
                                 }
-                            </Checkbox.Group>
+                            </div>
                             <div className={'my-1'}>
-                                <Checkbox checked={!!selectedCustomTag}
-                                          disabled>
-                                    <AutoComplete
-                                        value={selectedCustomTag}
-                                        options={tagOptions}
-                                        style={{width: 150}}
-                                        onSelect={onSelectCustomTag}
-                                        onSearch={onSearchTag}
-                                        onChange={onChangeTagString}
-                                        placeholder="Find tag here"
-                                    />
-                                </Checkbox>
+                                <AutoComplete
+                                    // value={selectedCustomTag}
+                                    options={tagOptions}
+                                    style={{width: "100%"}}
+                                    onSelect={onSelectCustomTag}
+                                    onSearch={onSearchTag}
+                                    // onChange={onChangeTagString}
+                                    placeholder="Find tag here"
+                                />
                             </div>
                         </div>
                     </div>
@@ -317,7 +297,7 @@ export const getServerSideProps = async (context) => {
             defaultSize: solanaTokens.size,
             defaultFilter: (JSON.parse(JSON.stringify(params.filter))),
             defaultSort: params.sortBy,
-            defaultTags: params.tags ? params.tags : [],
+            defaultTags: params.tags ? isArray(params.tags) ? params.tags : [params.tags] : [],
             solanaTokens: JSON.parse(JSON.stringify(solanaTokens.items)),
             tokenTags: JSON.parse(JSON.stringify(solanaTokenTags.items))
         }
