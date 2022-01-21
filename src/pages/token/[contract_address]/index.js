@@ -3,7 +3,7 @@ import React, {useEffect} from "react"
 import PageHeader from "/src/components/common/PageHeader"
 import {useRouter} from 'next/router'
 
-const NFTDetail = (props) => {
+const TokenDetail = (props) => {
     const {someVars} = props
 
     const router = useRouter()
@@ -14,7 +14,7 @@ const NFTDetail = (props) => {
 
     return (
         <div className="wrapper flex flex-col items-stretch justify-start bg-gray-50 space-y-12 pb-12">
-            <PageHeader title={"NFTDetail"}/>
+            <PageHeader title={"TokenDetail"}/>
 
         </div>
     )
@@ -28,4 +28,4 @@ export const getServerSideProps = async (context) => {
 }
 
 
-export default NFTDetail
+export default TokenDetail

@@ -38,6 +38,14 @@ const _getQuery = async (query) => {
             vQuery[vKey].$lte = value
         }
     }
+    const tags = query.tags ? query.tags : null
+    if (tags) {
+        vQuery.$or = tags.map(tag => {
+            return {
+                tag: tag
+            }
+        })
+    }
     // console.log(vQuery)
     return vQuery
 

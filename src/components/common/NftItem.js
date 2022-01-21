@@ -123,7 +123,7 @@ const NftItem = (props) => {
                                 }
                             </div>
                         </div>
-                        <Link href={Paths.NFTDetail(data.smart_contract, data.token_id)}>
+                        <Link href={Paths.TokenDetail(data.smart_contract)}>
                             <a>
                                 <div
                                     className={`flex text-blue-500 p-2 border border-blue-500 cursor-pointer border-2 font-semibold rounded-lg justify-center`}>
@@ -165,7 +165,7 @@ const NftItem = (props) => {
         if (mode !== null && mode === RANKING_MODE)
             setShowRarity(true)
         else
-            router.push(Paths.NFTDetail(data.smart_contract, data.token_id))
+            router.push(Paths.TokenDetail(data.smart_contract, data.token_id))
     }
 
     const itemMeta = data?.metadata ? data?.metadata : data?.nft_item?.metadata

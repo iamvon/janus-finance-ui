@@ -47,6 +47,4 @@ const TokenSchema = new Schema(
     { timestamps: true }
 )
 
-// const SolanaToken = Mongoose.model("SolanaToken", TokenSchema, "Solana");
-
 module.exports = Mongoose.models.SolanaToken || Mongoose.model("SolanaToken", TokenSchema, "Solana");

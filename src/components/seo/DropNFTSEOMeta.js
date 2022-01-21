@@ -16,7 +16,7 @@ const DropNFTSEOMeta = ({pageTitle, description, items}) => {
                      additionalMetaTags={[{
                          property: 'keywords',
                          name: 'keywords',
-                         content: 'nonfungible, NFTDetail, blockchain, collectibles, data, smart_contract, token, ETH'
+                         content: 'nonfungible, TokenDetail, blockchain, collectibles, data, smart_contract, token, ETH'
                      }]}
             />
             <CarouselJsonLd

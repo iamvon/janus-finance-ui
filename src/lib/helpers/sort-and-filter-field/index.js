@@ -31,12 +31,12 @@ export const renderFilterTitle = (key, value, prefix, suffix) => {
     return result.join(" ")
 }
 
-// export const parseDataFromString = (key, value) => {
-//     if (PARSE_FLOAT_FIELDS.includes(key)) {
-//         return parseFloat(value)
-//     }
-//     if (PARSE_DATE_FIELDS.includes(key)) {
-//         return new Date(value)
-//     }
-//     return value
-// }
+export const parseDataFromString = (key, value) => {
+    if (PARSE_FLOAT_FIELDS.includes(key)) {
+        return parseFloat(value)
+    }
+    if (PARSE_DATE_FIELDS.includes(key)) {
+        return new Date(value)
+    }
+    return value
+}

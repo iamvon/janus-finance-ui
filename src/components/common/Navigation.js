@@ -48,8 +48,8 @@ const Navigation = () => {
                         </Link>
                     </div>
                     <div className={CN("col-span-1 flex justify-center cursor-pointer", {'text-blue-500': isActive('/collections')})}>
-                        <Link href={Paths.NFT}>
-                            NFT
+                        <Link href={Paths.Token}>
+                            Assets
                         </Link>
                     </div>
                     <div className="col-span-1 flex justify-center cursor-pointer" >
@@ -57,7 +57,7 @@ const Navigation = () => {
                             Opportunity
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer",{'text-blue-500' : isActive('/NFTDetail-drops')})} >
+                    <div className={CN("col-span-1 flex justify-center cursor-pointer",{'text-blue-500' : isActive('/TokenDetail-drops')})} >
                         <Link href={Paths.Wishlist}>
                             Wishlist
                         </Link>

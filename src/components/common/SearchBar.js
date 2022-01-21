@@ -87,7 +87,7 @@ const SearchBar = () => {
 
     const handleClickNft = (item) => {
         // router.push({
-        //     pathname: Paths.NFTDetail(item.smart_contract, item.token_id)
+        //     pathname: Paths.TokenDetail(item.smart_contract, item.token_id)
         // })
         setFocusInput(false)
     }

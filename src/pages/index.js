@@ -51,14 +51,14 @@ const Dashboard = (props) => {
                         <span className={CN("font-bold text-lg")}>Trending tokens</span>
                     </div>
                     <div className={'flex'}>
-                        <a href={Paths.NFT} className={'text-base text-blue-800'}>See more</a>
+                        <a href={Paths.Token} className={'text-base text-blue-800'}>See more</a>
                     </div>
                 </div>
                 <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
                     {
                         trendingTokens.map((token) => {
                             return (
-                                <SolanaTokenItem key={token.id} token={token}/>
+                                <SolanaTokenItem key={token._id} token={token}/>
                             )
                         })
                     }

@@ -12,13 +12,14 @@ import {
     faTwitter
 } from "@fortawesome/free-brands-svg-icons"
 import {formatFloatNumber} from "../lib/helpers/number"
+import Paths from "../lib/routes/Paths"
 
 const SolanaTokenItem = ({token}) => {
     const extensions = token.extensions
     const tagsString = '#' + token.tag.join(", #")
     return (
         <div className="solana-token-item">
-            <a className="solana-token-item-header" href="https://awesomenear.com/trisolaris/"
+            <a className="solana-token-item-header" href={Paths.TokenDetail(token.address)}
                target="_blank" rel="noreferrer">
                 <div className="card-element">
                     <div className="token-logo">
