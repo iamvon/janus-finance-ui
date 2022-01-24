@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, {useEffect} from "react"
+import React, {useEffect, useState} from "react"
 import PageHeader from "/src/components/common/PageHeader"
 import SolanaTokenItem from "../components/SolanaTokenItem"
 import CN from "classnames"
@@ -8,10 +8,31 @@ import {faChartLine} from "@fortawesome/free-solid-svg-icons"
 import Paths from "../lib/routes/Paths"
 import {DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE} from "../lib/constants/pagination"
 import {listTokenController} from "../lib/controllers/token/listToken"
+import {useWallet} from "@solana/wallet-adapter-react"
+import {getWishlistListApi, updateWishlistListApi} from "../lib/services/api/wallet"
+import _ from "lodash"
+import {WISHLIST_ACTION} from "../lib/constants/wallet"
+import {notification} from "antd"
 
 const Dashboard = (props) => {
     const {trendingTokens} = props
+    const [wishlist, setWishList] = useState([])
 
+    const {publicKey} = useWallet()
+
+    useEffect(() => {
+        const fetchWishlist = async (_params) => {
+            // setLoading(true)
+            const {data: responseData} = await getWishlistListApi({wallet_key: publicKey.toString()})
+            const {wishlist} = {...responseData}
+            // console.log('wishlist', wishlist)
+            setWishList(wishlist)
+            // setLoading(false)
+        }
+
+        if (publicKey) fetchWishlist().then()
+        else setWishList([])
+    }, [publicKey])
     // const router = useRouter()
 
     useEffect(() => {
@@ -20,6 +41,32 @@ const Dashboard = (props) => {
         //     console.log(tokenList);
         // });
     }, [])
+
+    const updateWishlist = async (token, isStared) => {
+        if (isStared) {
+            const newWishlist = wishlist.filter(address => address !== token.address)
+            setWishList(newWishlist)
+        } else {
+            const newWishlist = _.uniq([...wishlist, token.address])
+            setWishList(newWishlist)
+        }
+        const reqData = {
+            walletKey: publicKey.toString(),
+            action: isStared ? WISHLIST_ACTION.REMOVE : WISHLIST_ACTION.ADD,
+            tokenAddress: token.address
+        }
+        await updateWishlistListApi(reqData)
+    }
+
+    const onStarClick = (token, isStared) => {
+        if (!publicKey) {
+            return notification.warn({
+                message: 'Warning',
+                description: "You have to connect your wallet to save this item in your wishlist",
+            });
+        }
+        return updateWishlist(token, isStared)
+    }
 
     return (
         <div className="wrapper flex flex-col items-stretch justify-start space-y-36 pb-12">
@@ -57,8 +104,10 @@ const Dashboard = (props) => {
                 <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
                     {
                         trendingTokens.map((token) => {
+                            const isInWishlist = !!wishlist.includes(token.address)
                             return (
-                                <SolanaTokenItem key={token._id} token={token}/>
+                                <SolanaTokenItem key={token._id} token={token} isStared={isInWishlist}
+                                                 onStarClick={onStarClick}/>
                             )
                         })
                     }

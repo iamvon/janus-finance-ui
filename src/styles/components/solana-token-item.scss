@@ -107,9 +107,29 @@
       margin-left: .5rem;
     }
   }
+
   .solana-token-item-footer {
     position: absolute;
     bottom: 0.75rem;
     padding-right: 2rem;
+  }
+
+  .wishlist-button {
+    background-color: #f3f7ff;
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 8px 18px;
+    border-radius: 0 .8rem 0 4px;
+    color: #e91e63;
+    display: none;
+    cursor: pointer;
+    transition: all .5s ease-in-out;
+  }
+
+  &:hover {
+    .wishlist-button {
+      display: block;
+    }
   }
 }

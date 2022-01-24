@@ -1,6 +1,6 @@
 import React from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faGlobe} from "@fortawesome/free-solid-svg-icons"
+import {faGlobe, faHeart as fullHeart} from "@fortawesome/free-solid-svg-icons"
 import CN from "classnames"
 import {
     faDiscord,
@@ -13,8 +13,9 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 import {formatFloatNumber} from "../lib/helpers/number"
 import Paths from "../lib/routes/Paths"
+import {faHeart as outlineHeart} from "@fortawesome/free-regular-svg-icons"
 
-const SolanaTokenItem = ({token}) => {
+const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
     const extensions = token.extensions
     const tagsString = '#' + token.tag.join(", #")
     return (
@@ -104,6 +105,9 @@ const SolanaTokenItem = ({token}) => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className={'wishlist-button'} onClick={() => onStarClick(token, isStared)}>
+                <FontAwesomeIcon icon={isStared ? fullHeart : outlineHeart} className={CN("text-base")}/>
             </div>
         </div>
     )
