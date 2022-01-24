@@ -30,12 +30,12 @@ const Portfolio = (props) => {
     return (
         <div className="wrapper flex flex-col items-stretch justify-start bg-gray-50 space-y-12 pb-12">
             <PageHeader title={"Portfolio"}/>
-            <div>
+            {/* <div>
                 <ReactUIWalletDisconnectButton />
-            </div>
-            <div>
+            </div> */}
+            {/* <div>
                 <ReactUIWalletMultiButton />
-            </div>
+            </div> */}
         </div>
     )
 }

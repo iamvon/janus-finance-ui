@@ -1,17 +1,20 @@
-import React, {useEffect, useRef, useState} from "react"
-import {Dropdown} from 'antd'
+import React, { useEffect, useRef, useState } from "react"
+import { Dropdown } from 'antd'
 import Link from "next/link"
 import Paths from "/src/lib/routes/Paths"
 import CN from "classnames"
 import SearchBar from "./SearchBar"
-import {useRouter} from "next/router"
+import { useRouter } from "next/router"
+import {
+    WalletMultiButton as ReactUIWalletMultiButton,
+} from '@solana/wallet-adapter-react-ui';
 
 const appMode = process.env.NEXT_PUBLIC_APP_MODE
 
 const iconMenu = <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 7H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M3 12H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M3 17H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M3 7H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M3 12H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M3 17H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round" />
 </svg>
 
 
@@ -42,12 +45,12 @@ const Navigation = () => {
         return appMode !== 'production' ? (
             <div className={CN("flex items-center justify-between flex-row")}>
                 <div className={`grid grid-cols-5 gap-2 text-sm font-semibold`}>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", {'text-blue-500': isActive('/explore')})}>
+                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/explore') })}>
                         <Link href={Paths.Portfolio}>
                             Portfolio
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", {'text-blue-500': isActive('/collections')})}>
+                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/collections') })}>
                         <Link href={Paths.Token}>
                             Assets
                         </Link>
@@ -57,14 +60,17 @@ const Navigation = () => {
                             Opportunity
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer",{'text-blue-500' : isActive('/TokenDetail-drops')})} >
+                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/TokenDetail-drops') })} >
                         <Link href={Paths.Wishlist}>
                             Wishlist
                         </Link>
                     </div>
                 </div>
                 <div className={`w-3/5`}>
-                    <SearchBar/>
+                    <SearchBar />
+                </div>
+                <div className={`w-1/5`}>
+                    <ReactUIWalletMultiButton />
                 </div>
             </div>
         ) : (

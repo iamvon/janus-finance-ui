@@ -1,33 +1,37 @@
 
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
-export const CLUSTER = process.env.NEXT_PUBLIC_APP_CLUSTER === "mainnet"
-    ? "mainnet"
+export const CLUSTER = process.env.NEXT_PUBLIC_APP_CLUSTER == "mainnet-beta"
+    ? "mainnet-beta"
     : process.env.NEXT_PUBLIC_APP_CLUSTER === "testnet"
-    ? "testnet"
-    : "devnet";
+        ? "testnet"
+        : "devnet";
 
-export const WALLET_ADAPTER_NETWORK = CLUSTER === "mainnet"
+export const WALLET_ADAPTER_NETWORK = CLUSTER === "mainnet-beta"
     ? WalletAdapterNetwork.Mainnet
     : CLUSTER === "testnet"
-    ? WalletAdapterNetwork.Testnet
-    : WalletAdapterNetwork.Devnet;
+        ? WalletAdapterNetwork.Testnet
+        : WalletAdapterNetwork.Devnet;
+
+export const SOLANA_RPC_ENDPOINT = CLUSTER === "devnet"
+    ? 'https://api.devnet.solana.com'
+    : "https://solana-api.projectserum.com";
 
 export const SolScan =
-CLUSTER === "mainnet"
-    ? {
-        network: "mainnet-beta",
-        url: 'https://api.solscan.io'
-    }
-    : CLUSTER === "testnet"
-    ? {
-        network: "testnet",
-        url: 'https://api-testnet.solscan.io'
-    }
-    : {
-        network: "devnet",
-        url: 'https://api-devnet.solscan.io'
-    };
+    CLUSTER === "mainnet-beta"
+        ? {
+            network: "mainnet-beta",
+            url: 'https://api.solscan.io'
+        }
+        : CLUSTER === "testnet"
+            ? {
+                network: "testnet",
+                url: 'https://api-testnet.solscan.io'
+            }
+            : {
+                network: "devnet",
+                url: 'https://api-devnet.solscan.io'
+            };
 
 export const ENV = {
     MainnetBeta: 101,
@@ -35,10 +39,10 @@ export const ENV = {
     Devnet: 103,
 }
 
-export const SOLANA_CHAIN_ID = CLUSTER === "mainnet"
+export const SOLANA_CHAIN_ID = CLUSTER === "mainnet-beta"
     ? ENV.MainnetBeta
     : CLUSTER === "testnet"
-    ? ENV.Testnet
-    : ENV.Devnet;
+        ? ENV.Testnet
+        : ENV.Devnet;
 
 export const SonarWatchEnpoint = "https://api.sonar.watch"
