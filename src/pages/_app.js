@@ -40,7 +40,7 @@ const App = ({ Component, pageProps }) => {
     const [searchQuery, setSearchQuery] = useState("")
     return (
         <SolanaContextProvider>
-            <JupiterWrapper>
+            {/* <JupiterWrapper> */}
                 <AppContext.Provider value={{
                     searchQuery,
                     setSearchQuery
@@ -53,7 +53,7 @@ const App = ({ Component, pageProps }) => {
                         <Footer />
                     </SkeletonTheme>
                 </AppContext.Provider>
-            </JupiterWrapper>
+            {/* </JupiterWrapper> */}
         </SolanaContextProvider>
     )
 }
@@ -65,7 +65,7 @@ const JupiterWrapper = ({ children }) => {
         <JupiterProvider
             cluster="mainnet-beta"
             connection={connection}
-            userPublicKey={wallet.publicKey || undefined}
+            // userPublicKey={wallet.publicKey || undefined}
         >
             {children}
         </JupiterProvider>
