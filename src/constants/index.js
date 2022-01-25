@@ -17,7 +17,7 @@ export const SOLANA_RPC_ENDPOINT = ENV === "devnet"
     ? 'https://api.devnet.solana.com'
     : "https://solana-api.projectserum.com";
 
-// Token Mints
+// Wishlist Mints
 export const INPUT_MINT_ADDRESS =
     ENV === "devnet"
         ? "So11111111111111111111111111111111111111112" // SOL

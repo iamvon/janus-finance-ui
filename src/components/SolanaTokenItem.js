@@ -11,7 +11,7 @@ import {
     faTelegram,
     faTwitter
 } from "@fortawesome/free-brands-svg-icons"
-import {formatFloatNumber} from "../lib/helpers/number"
+import {formatPriceNumber} from "../lib/helpers/number"
 import Paths from "../lib/routes/Paths"
 import {faHeart as outlineHeart} from "@fortawesome/free-regular-svg-icons"
 
@@ -40,7 +40,7 @@ const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
                 </div>
             </a>
             <div className="solana-token-item-footer title w-full">
-                <div className="flex justify-between token-content mt-2">
+                <div className="flex justify-between items-center token-content mt-2">
                     <div className="flex token-social">
                         {
                             extensions.discord && (
@@ -100,8 +100,8 @@ const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
                         }
                     </div>
                     <div className={'flex'}>
-                        <div className={'text-base font-bold'}>
-                            ${formatFloatNumber(token.price)}
+                        <div className={'text-base font-bold mt-1'}>
+                            ${formatPriceNumber(token.price)}
                         </div>
                     </div>
                 </div>

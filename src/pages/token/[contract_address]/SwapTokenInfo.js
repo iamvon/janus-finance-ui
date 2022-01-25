@@ -152,6 +152,7 @@ const SwapTokenInfo = ({
         }
     }, [baseTokenId, quoteTokenId])
 
+    console.log("chartData", chartData)
     const chartChange = chartData.length
         ? ((chartData[chartData.length - 1]['price'] - chartData[0]['price']) /
             chartData[0]['price']) *

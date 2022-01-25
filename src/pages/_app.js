@@ -38,6 +38,7 @@ router.events.on("routeChangeError", (url, { shallow }) => {
 
 const App = ({ Component, pageProps }) => {
     const [searchQuery, setSearchQuery] = useState("")
+
     return (
         <SolanaContextProvider>
             {/* <JupiterWrapper> */}

@@ -5,6 +5,13 @@ export const formatFloatNumber = (number) => {
     }) : 0;
 };
 
+export const formatPriceNumber = (number) => {
+    return number ? number.toLocaleString(undefined, {
+        minimumFractionDigits: 8,
+        maximumFractionDigits: 8
+    }) : 0;
+};
+
 export const formatPercentIncrease = (percent) => {
     if (percent === 0) {
         return 0;

@@ -8,6 +8,14 @@ export const getWishlistListApi = (params) => {
     })
 }
 
+export const getExtendWishlistListApi = (params) => {
+    return createApiRequest({
+        url: `/wallet/wishlist/extend`,
+        method: 'GET',
+        params: params
+    })
+}
+
 export const updateWishlistListApi = (data) => {
     return createApiRequest({
         url: `/wallet/wishlist`,

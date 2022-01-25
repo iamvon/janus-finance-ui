@@ -1,0 +1,17 @@
+.wishlist-page {
+  .token-logo {
+    border-radius: 50%;
+    //box-shadow: 0 0.5rem 1.2rem rgb(51 51 51 10%);
+    height: 3rem;
+    overflow: hidden;
+    width: 3rem;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+
+    img {
+      border-radius: 50%;
+      height: 3rem;
+      width: 3rem;
+    }
+  }
+}
