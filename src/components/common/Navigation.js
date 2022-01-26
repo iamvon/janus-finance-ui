@@ -44,32 +44,32 @@ const Navigation = () => {
     const leftItems = () => {
         return appMode !== 'production' ? (
             <div className={CN("flex items-center justify-between flex-row")}>
-                <div className={`grid grid-cols-5 gap-2 text-sm font-semibold`}>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/explore') })}>
+                <div className={`header-nav flex`}>
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/explore') })}>
                         <Link href={Paths.Portfolio}>
                             Portfolio
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/collections') })}>
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/collections') })}>
                         <Link href={Paths.Token}>
                             Assets
                         </Link>
                     </div>
-                    <div className="col-span-1 flex justify-center cursor-pointer" >
+                    <div className="nav-item col-span-1 cursor-pointer" >
                         <Link href={Paths.Opportunity}>
                             Opportunity
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/TokenDetail-drops') })} >
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/TokenDetail-drops') })} >
                         <Link href={Paths.Wishlist}>
                             Wishlist
                         </Link>
                     </div>
                 </div>
-                <div className={`w-3/5`}>
+                <div className={`header-search`}>
                     <SearchBar />
                 </div>
-                <div className={`w-1/5`}>
+                <div className={`header-button`}>
                     <ReactUIWalletMultiButton />
                 </div>
             </div>
@@ -106,11 +106,11 @@ const Navigation = () => {
 
     return (
         <div
-            className={`wrapper py-2 justify-between items-center sticky bg-white flex z-20 fade-transition ${!visibleNavbar ? '-top-16 opacity-0' : "top-0 opacity-100"}`}>
-            <div className={`flex-shrink w-24 h-12 flex flex-row items-center md:mr-8 lg:mr-20`}>
+            className={`janus-header wrapper justify-between items-center sticky flex z-20 fade-transition ${!visibleNavbar ? '-top-16 opacity-0' : "top-0 opacity-100"}`}>
+            <div className={`header-logo flex-shrink w-24 h-12 flex flex-row items-center`}>
                 <div className="text-blue-500 font-bold text-3xl hover:text-blue-500">
                     <Link href={Paths.Home}>
-                        Janus
+                        <img src={'/image/logo.png'} alt='Home'/>
                     </Link>
                 </div>
             </div>

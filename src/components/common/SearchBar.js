@@ -236,7 +236,7 @@ const SearchBar = () => {
                 value={query}
                 onFocus={() => setFocusInput(true)}
                 onChange={(e) => handleChangeInput(e)}
-                placeholder="Search NFTs / Collections / Addresses"
+                placeholder="Search..."
                 prefix={<SearchOutlined/>}
                 onPressEnter={() => handleSubmit()}
             />

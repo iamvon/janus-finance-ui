@@ -1,0 +1,180 @@
+.tokens-page{
+  .tokens-sidebar{
+    .ant-select{
+      .ant-select-selector{
+        background: #333639;
+        border-radius: 20px;
+        border: none;
+        padding: 0px 20px;
+        height: 35px;
+        line-height: 35px;
+
+        .ant-select-selection-search{
+          input.ant-select-selection-search-input{
+            font-family: "SF Pro Display";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 35px;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+  .tokens-content{
+    .page-title{
+      font-family: "SF Pro Display";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 32px;
+      color: #ffffff;
+    }
+
+    .token-count{
+      font-family: "SF Pro Display";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: #ffffff;
+      padding-top: 5px;
+    }
+
+    .token-pagination{
+      margin-top: 40px;
+    }
+
+    .ant-pagination{
+      .ant-pagination-jump-next,
+      .ant-pagination-prev,
+      .ant-pagination-next{
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: 1px solid #D8DBDE;
+
+        font-family: SF Pro Display;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 38px;
+        text-align: center;
+        color: #D8DBDE;
+        border-radius: 4px;
+
+        .ant-pagination-item-link{
+          background: none;
+          border: none;
+          color: #D8DBDE;
+          line-height: 38px;
+          font-size: 16px;
+
+          .ant-pagination-item-link-icon{
+            height: 38px;
+            line-height: 38px;
+            font-size: 16px;
+            opacity: 1;
+            color: #D8DBDE;
+          }
+        }
+
+        &:Hover{
+          border: 1px solid #00FFA3;
+          background: #00FFA3;
+          color: #000000;
+
+          .ant-pagination-item-link{
+            color: #000000;
+
+            .ant-pagination-item-link-icon{
+              color: #000000;
+            }
+          }
+        }
+      }
+      .ant-pagination-item{
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: 1px solid #D8DBDE;
+
+        font-family: "SF Pro Display";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 38px;
+        text-align: center;
+        color: #D8DBDE;
+        border-radius: 4px;
+        transition: all 0.3s ease 0s;
+
+        a{
+          color: #D8DBDE;
+        }
+
+        &.ant-pagination-item-active{
+          border: 1px solid #00FFA3;
+          background: #00FFA3;
+          a{
+            color: #000000;
+          }
+        }
+
+        &:hover{
+          border: 1px solid #00FFA3;
+          background: #00FFA3;
+          a{
+            color: #000000;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sort-by{
+  .sort-by-title{
+    font-family: "SF Pro Display";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #D8DBDE;
+  }
+
+  .sort-by-radio{
+    .ant-radio-group{
+      display: flex;
+
+      .option-item{
+        margin-right: 10px;
+
+        .ant-radio-button-wrapper{
+          height: 36px;
+          background: #2C2C2C;
+          border: none;
+          line-height: 36px;
+          border-radius: 20px;
+          padding: 0 25px;
+
+          span{
+            color: #D8DBDE;
+          }
+
+          &.ant-radio-button-wrapper-checked{
+            background: #00FFA3;
+            color: #000000;
+            box-shadow: none;
+
+            span{
+              color: #000000;
+            }
+          }
+        }
+      }
+    }
+  }
+}

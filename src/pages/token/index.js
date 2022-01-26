@@ -202,12 +202,12 @@ const Token = (props) => {
     }
 
     return (
-        <div className="wrapper flex flex-col justify-start pb-12">
+        <div className="tokens-page wrapper flex flex-col justify-start pb-12">
             <PageHeader title={"Assets"}/>
             <div className={'pt-12 grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-6 xl:gap-6'}>
-                <div className={'col-span-1 sticky'}>
+                <div className={'col-span-1 sticky tokens-sidebar'}>
                     <div>
-                        <div className={'text-base font-bold mb-2'}>Tags</div>
+                        {/*<div className={'text-base font-bold mb-2'}>Tags</div>*/}
                         <div>
                             <div>
                                 {
@@ -254,15 +254,50 @@ const Token = (props) => {
                     {/*        </div>*/}
                     {/*    </div>*/}
                     {/*</div>*/}
-                    <div className={'mt-5 text-base'}>
-                        <div className={'text-base font-bold mb-2'}>Sort by</div>
-                        <div>
+                    {/*<div className={'mt-5 text-base'}>*/}
+                    {/*    <div className={'text-base font-bold mb-2'}>Sort by</div>*/}
+                    {/*    <div>*/}
+                    {/*        <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>*/}
+                    {/*            {*/}
+                    {/*                SORT_BY_OPTIONS.map((option, index) => {*/}
+                    {/*                    return (*/}
+                    {/*                        <div key={index} className={'my-2'}>*/}
+                    {/*                            <Radio value={option.value}>{option.label}</Radio>*/}
+                    {/*                        </div>*/}
+                    {/*                    )*/}
+                    {/*                })*/}
+                    {/*            }*/}
+                    {/*        </Radio.Group>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<hr className={'border-t-2 my-5'}/>*/}
+                    {/*<div className={'flex justify-end'}>*/}
+                    {/*    <button type="button"*/}
+                    {/*            onClick={onApplyClick}*/}
+                    {/*            className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-3 py-1 text-center">*/}
+                    {/*        Apply*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
+                </div>
+                <div className={'col-span-5 tokens-content'}>
+                    <div className={'flex justify-between mb-6'}>
+                        <div className={CN("flex place-items-center page-title")}>
+                            {/*<FontAwesomeIcon icon={faChartLine} className={"text-2xl mr-4"}/>*/}
+                            <span className={CN("font-bold text-2xl")}>Assets</span>
+                        </div>
+                        <div className={'flex text-base token-count'}>
+                            Displaying {itemData.length} of {total} assets
+                        </div>
+                    </div>
+                    <div className='mb-8 sort-by flex justify-start'>
+                        {/*<div className={'sort-by-title'}>Sort by</div>*/}
+                        <div className={'sort-by-radio'}>
                             <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
                                 {
                                     SORT_BY_OPTIONS.map((option, index) => {
                                         return (
-                                            <div key={index} className={'my-2'}>
-                                                <Radio value={option.value}>{option.label}</Radio>
+                                            <div key={index} className={'option-item'}>
+                                                <Radio.Button value={option.value}>{option.label}</Radio.Button>
                                             </div>
                                         )
                                     })
@@ -270,33 +305,14 @@ const Token = (props) => {
                             </Radio.Group>
                         </div>
                     </div>
-                    <hr className={'border-t-2 my-5'}/>
-                    <div className={'flex justify-end'}>
-                        <button type="button"
-                                onClick={onApplyClick}
-                                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-3 py-1 text-center">
-                            Apply
-                        </button>
-                    </div>
-                </div>
-                <div className={'col-span-5'}>
-                    <div className={'flex justify-between'}>
-                        <div className={CN("flex place-items-center mb-6")}>
-                            <FontAwesomeIcon icon={faChartLine} className={"text-2xl mr-4"}/>
-                            <span className={CN("font-bold text-2xl")}>Assets</span>
-                        </div>
-                        <div className={'flex text-base'}>
-                            Displaying {itemData.length} of {total} assets
-                        </div>
-                    </div>
-                    <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
+                    <div className={'grid grid-cols-2 gap-6 md:grid-cols-3'}>
                         {
                             loading ?
                                 [...Array(params.size).keys()].map((it, index) => <SkeletonAssetItem
                                     key={index}/>) : itemRender()
                         }
                     </div>
-                    <div className="flex items-center justify-center w-full mt-5">
+                    <div className="flex items-center justify-center w-full token-pagination">
                         {
                             itemData.length > 0 && <Pagination
                                 onChange={onChangePage}
