@@ -252,7 +252,7 @@ const SearchBar = () => {
 
             {
                 focusInput && query !== '' &&
-                <div className={`h-auto w-full bg-white shadow-xl rounded-lg mt-2 z-50 absolute p-6 overflow-y-auto`}>
+                <div style={{maxHeight: '400px'}} className={` w-full bg-white shadow-xl rounded-lg mt-2 z-50 absolute p-6 overflow-y-auto`}>
                     {suggestionContainer()}
                 </div>
             }
