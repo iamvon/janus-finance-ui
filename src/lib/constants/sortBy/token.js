@@ -8,13 +8,17 @@ export const SORT_BY_OPTIONS = [
         label: "Price high to low",
         query: {
             [SORT_AND_FILTER_FIELD.PRICE]: -1
-        }
+        },
+        direction: 'descend',
+        field: SORT_AND_FILTER_FIELD.PRICE
     },
     {
         value: 2,
         label: "Price low to high",
         query: {
             [SORT_AND_FILTER_FIELD.PRICE]: 1
-        }
+        },
+        direction: 'ascend',
+        field: SORT_AND_FILTER_FIELD.PRICE
     }
 ]

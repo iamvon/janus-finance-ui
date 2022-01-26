@@ -145,6 +145,14 @@ const Wishlist = (props) => {
         })
     }
 
+    const onTableChange = (newPagination, filters, sorter) => {
+        // console.log(newPagination, filters, sorter)
+        const sortByField = SORT_BY_OPTIONS.find(i => i.field === sorter.field && i.direction === sorter.order)
+        // console.log('sortByField', sortByField)
+        !!sortByField && setSortBy(sortByField)
+    }
+
+
     const renderChangePercent = (change) => {
         const absChange = Math.abs(change).toFixed(2)
         if (change > 0) {
@@ -258,6 +266,7 @@ const Wishlist = (props) => {
                            dataSource={itemData}
                            loading={loading}
                            rowKey={record => record._id}
+                           onChange={onTableChange}
                            pagination={{
                                onChange: onChangePage,
                                total: total,
