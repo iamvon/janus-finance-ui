@@ -3,12 +3,12 @@ import Image from "next/image"
 
 const FooterIcon = ({src, alt}) => {
     return (
-        <div className={`cursor-pointer mr-2`}>
+        <div className={`cursor-pointer ml-5`}>
             <Image
                 src={src}
                 alt={alt}
-                width={16}
-                height={16}
+                width={30}
+                height={30}
             />
         </div>
     )
