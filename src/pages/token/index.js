@@ -230,7 +230,7 @@ const Token = (props) => {
                         </div>
                     </div>
                     {/*<div className={'mt-5 text-base'}>*/}
-                    {/*    <div className={'text-base font-bold'}>Wishlist price</div>*/}
+                    {/*    <div className={'text-base font-bold'}>WishlistTable price</div>*/}
                     {/*    <div className={'flex justify-between items-center mt-2'}>*/}
                     {/*        <div className={'flex'}>From</div>*/}
                     {/*        <div className={'flex'}>*/}

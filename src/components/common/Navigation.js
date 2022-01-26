@@ -65,9 +65,9 @@ const Navigation = () => {
                         </Link>
                     </div>
                     {/*<div*/}
-                    {/*    className={CN("col-span-1 flex justify-center cursor-pointer", {'text-blue-500': isActive(Paths.Wishlist)})}>*/}
-                    {/*    <Link href={Paths.Wishlist}>*/}
-                    {/*        Wishlist*/}
+                    {/*    className={CN("col-span-1 flex justify-center cursor-pointer", {'text-blue-500': isActive(Paths.WishlistTable)})}>*/}
+                    {/*    <Link href={Paths.WishlistTable}>*/}
+                    {/*        WishlistTable*/}
                     {/*    </Link>*/}
                     {/*</div>*/}
                 </div>
