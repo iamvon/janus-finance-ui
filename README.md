@@ -5,11 +5,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
-NEXT_PUBLIC_APP_CLUSTER=mainnet npm run dev #for mainnet
+NEXT_PUBLIC_APP_CLUSTER=mainnet-beta npm run dev #for mainnet
 NEXT_PUBLIC_APP_CLUSTER=testnet npm run dev #for testnet
 NEXT_PUBLIC_APP_CLUSTER=devnet npm run dev #for devnet
 # or
-NEXT_PUBLIC_APP_CLUSTER=mainnet yarn dev
+NEXT_PUBLIC_APP_CLUSTER=mainnet-beta yarn dev
 NEXT_PUBLIC_APP_CLUSTER=testnet yarn dev
 NEXT_PUBLIC_APP_CLUSTER=devnet yarn dev
 ```

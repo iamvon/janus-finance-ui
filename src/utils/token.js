@@ -1,6 +1,7 @@
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token"
 import { TokenListProvider, TokenInfo } from '@solana/spl-token-registry';
 import {SOLANA_CHAIN_ID} from './const'
+import axios from "axios"
 
 export const getTokenMap = async () => {
     return new TokenListProvider().resolve().then(tokens => {
@@ -11,6 +12,21 @@ export const getTokenMap = async () => {
         },new Map());
         return tokenMaps
     });
+}
+
+export const getAccountStake = async (address) => {
+    try {
+        const response = await axios.get(`https://api.solscan.io/account/stake?address=${address}`)
+        const {data} = response
+        const {success} = data
+        if (success) {
+            return data.data
+        } else {
+            return {}
+        }
+    } catch (err) {
+        return {}
+    }
 }
 
 
@@ -48,8 +64,9 @@ export const scanTokenByPK = async (connection, walletAddress) => {
             decimals, 
             uiAmount, 
             uiAmountString,
-            token
+            ...token
         }
     })
     return tokens
 }
+
