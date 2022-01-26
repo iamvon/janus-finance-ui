@@ -2,7 +2,7 @@
 import React, {useEffect} from "react"
 import PageHeader from "/src/components/common/PageHeader"
 import {useRouter} from 'next/router'
-import SwapTokenInfo from "./SwapTokenInfo"
+import SwapTokenInfo from "../../../components/token/SwapTokenInfo"
 // import JupiterForm from "./JupiterForm"
 
 const TokenDetail = (props) => {
