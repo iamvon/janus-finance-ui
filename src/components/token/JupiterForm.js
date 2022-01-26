@@ -4,7 +4,7 @@ import { TokenListProvider, TokenInfo } from "@solana/spl-token-registry";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { useJupiter } from "@jup-ag/react-hook";
-import { CHAIN_ID, INPUT_MINT_ADDRESS, OUTPUT_MINT_ADDRESS } from "../../../constants";
+import { CHAIN_ID, INPUT_MINT_ADDRESS, OUTPUT_MINT_ADDRESS } from "../../constants";
 
 import styles from "./JupiterForm.module.css";
 import FeeInfo from "./FeeInfo";
