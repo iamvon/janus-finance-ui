@@ -16,7 +16,6 @@ import Paths from "../lib/routes/Paths"
 import {faHeart as outlineHeart} from "@fortawesome/free-regular-svg-icons"
 
 const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
-    console.log('tokennnn: ', token)
     const extensions = token.extensions
     const tags = token.tag
     const tags3first = tags.slice(0, 3);

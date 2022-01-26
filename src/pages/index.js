@@ -86,7 +86,7 @@ const Dashboard = (props) => {
                     <div className={'banner-feature grid grid-cols-2 gap-6 md:grid-cols-3'}>
                         <div className="banner-feature-item lend">
                             <div className="feature-item-box flex flex-col content-center items-center">
-                                <img className="feature-image" src={'/image/banner2.png'}/>
+                                <img className="feature-image" src={'/image/banner2.svg'}/>
                                 <h3 className="feature-title text-center">Token Shopping</h3>
                                 <h5 className="feature-subtitle text-center">Lending & borrowing</h5>
                                 <p className="feature-description text-center">Discovery for the tokens in your favorite categories</p>
@@ -95,7 +95,7 @@ const Dashboard = (props) => {
                         </div>
                         <div className="banner-feature-item x-farm">
                             <div className="feature-item-box flex flex-col content-center items-center">
-                                <img className="feature-image" src={'/image/banner3.png'}/>
+                                <img className="feature-image" src={'/image/banner3.svg'}/>
                                 <h3 className="feature-title text-center">Swap</h3>
                                 <h5 className="feature-subtitle text-center">First-in-market cross-margin leveraged yield farming</h5>
                                 <p className="feature-description text-center">Buy your favorite tokens by swapping at the best price</p>
@@ -103,7 +103,7 @@ const Dashboard = (props) => {
                         </div>
                         <div className="banner-feature-item assist">
                             <div className="feature-item-box flex flex-col content-center items-center">
-                                <img className="feature-image" src={'/image/banner4.png'}/>
+                                <img className="feature-image" src={'/image/banner4.svg'}/>
                                 <h3 className="feature-title text-center">DeFi Opportunities</h3>
                                 <h5 className="feature-subtitle text-center">Auto-deleveraging to reduce liquidation risks</h5>
                                 <p className="feature-description text-center">Find the best DeFi opportunities based on the token you own</p>

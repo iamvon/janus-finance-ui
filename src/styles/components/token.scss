@@ -1,3 +1,30 @@
+.ant-select-dropdown{
+  background: none;
+  color: #ffffff;
+  padding: 10px 0;
+
+  .rc-virtual-list{
+    .rc-virtual-list-holder{
+      //max-height: 400px !important;
+      .rc-virtual-list-holder-inner{
+        .ant-select-item{
+          color: #ffffff;
+
+          &.ant-select-item-option-active{
+            color: #00FFA3;
+            background: none;
+          }
+
+          &.ant-select-item-option-selected{
+            color: #00FFA3;
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}
+
 .tokens-page{
   .tokens-sidebar{
     .ant-select{
@@ -10,13 +37,40 @@
         line-height: 35px;
 
         .ant-select-selection-search{
-          input.ant-select-selection-search-input{
+          input{
             font-family: "SF Pro Display";
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
             line-height: 35px;
             color: #ffffff;
+
+            &::-webkit-input-placeholder { /* Edge */
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 35px;
+              color: #ffffff;
+            }
+
+            &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 35px;
+              color: #ffffff;
+            }
+
+            &::placeholder {
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 35px;
+              color: #ffffff;
+            }
           }
         }
       }

@@ -110,29 +110,47 @@ const Token = (props) => {
         setLoading(false)
     }
 
-    const onSearchTag = (searchText) => {
+    const onSearchTag = async (searchText) => {
         const filteredTags = initTagOptions.filter(op => op.value.toUpperCase().indexOf(searchText.toUpperCase()) !== -1)
         setTagOptions(filteredTags);
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     };
 
-    const onSelectCustomTag = (data) => {
+    const onSelectCustomTag = async (data) => {
         setSelectedTagList(_.uniq([...selectedTagList, data]));
+
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     };
 
-    const onRemoveTag = (tag) => {
+    const onRemoveTag = async (tag) => {
         const newSelectedTagList = selectedTagList.filter(i => i !== tag)
         setSelectedTagList(newSelectedTagList)
+
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     }
 
     // const onChangeStartFilterPrice = (value) => {
     //     console.log('changed', value);
     // }
 
-    const onChangeSortBy = e => {
+    const onChangeSortBy = async (e) => {
         // console.log('radio checked', e.target.value);
         const value = e.target.value
         const selectedSortBy = SORT_BY_OPTIONS.find(i => i.value === value)
-        setSortBy(selectedSortBy);
+        setSortBy(selectedSortBy)
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     };
 
     const onApplyClick = async () => {
@@ -218,6 +236,8 @@ const Token = (props) => {
                                     onSearch={onSearchTag}
                                     // onChange={onChangeTagString}
                                     placeholder="Find tag here"
+                                    defaultOpen={true}
+                                    open={true}
                                 />
                             </div>
                         </div>
