@@ -7,6 +7,7 @@ import {getImageUrl} from "../../lib/services/util/getImageUrl";
 import Paths from "../../lib/routes/Paths";
 import {debounce, throttle} from "throttle-debounce";
 import {SearchOutlined} from "@ant-design/icons";
+import { getTokenListApi } from "../../lib/services/api/token";
 
 const {Option} = AutoComplete;
 
@@ -55,16 +56,23 @@ const SearchBar = () => {
     }
 
     const handleAutocomplete = async (val) => {
-        const [
-            _nftSuggestion,
-            _collectionSuggestion
-        ] = await Promise.all([])
-        if (_nftSuggestion.data.length > 0 && _collectionSuggestion.data.length > 0) {
-            setNftSuggestion(_nftSuggestion.data)
-            setCollectionSuggestion(_collectionSuggestion.data)
-            console.log(_nftSuggestion.data)
+        const _collectionSuggestion = await getTokenListApi({
+            q: val
+        })
+        if (_collectionSuggestion.data.items.length > 0) {
+            setCollectionSuggestion(_collectionSuggestion.data.items)
             setIsLoading(false)
         }
+        // const [
+        //     _nftSuggestion,
+        //     _collectionSuggestion
+        // ] = await Promise.all([])
+        // if (_nftSuggestion.data.length > 0 && _collectionSuggestion.data.length > 0) {
+        //     setNftSuggestion(_nftSuggestion.data)
+        //     setCollectionSuggestion(_collectionSuggestion.data)
+        //     console.log(_nftSuggestion.data)
+        //     setIsLoading(false)
+        // }
     }
 
     const handleChangeInput = async (e) => {
@@ -79,9 +87,10 @@ const SearchBar = () => {
     }
 
     const handleClickCollection = (item) => {
-        // router.push({
-        //     pathname: Paths.CollectionDetail(item && item.smart_contract)
-        // })
+        router.push({
+            pathname: Paths.TokenDetail(item && item.address)
+        })
+        // console.log(item)
         setFocusInput(false)
     }
 
@@ -107,7 +116,7 @@ const SearchBar = () => {
                 <div className={`text-gray-500 font-semibold text-sm uppercase mb-4`}>{title}</div>
                 {
                     items.map((item, index) => {
-                        const logoUrl = item.logo ? item.logo : 'https://bscscan.com/images/main/empty-token.png'
+                        const logoUrl = item.logoURI ? item.logoURI : 'https://bscscan.com/images/main/empty-token.png'
                         return (
                             <div
                                 key={index}
@@ -203,8 +212,8 @@ const SearchBar = () => {
                 {
                     query !== "" && !isLoading &&
                     <div className={`flex flex-col space-y-8`}>
-                        {nftSuggestionContainer(nftSuggestion)}
-                        {defaultSuggestionContainer("collection", collectionSuggestion, handleClickCollection)}
+                        {/* {nftSuggestionContainer(nftSuggestion)} */}
+                        {defaultSuggestionContainer("token", collectionSuggestion, handleClickCollection)}
                     </div>
                 }
 
@@ -243,7 +252,7 @@ const SearchBar = () => {
 
             {
                 focusInput && query !== '' &&
-                <div className={`h-auto w-full bg-white shadow-xl rounded-lg mt-2 z-50 absolute p-6 overflow-y-auto`}>
+                <div style={{maxHeight: '400px'}} className={` w-full bg-white shadow-xl rounded-lg mt-2 z-50 absolute p-6 overflow-y-auto`}>
                     {suggestionContainer()}
                 </div>
             }
