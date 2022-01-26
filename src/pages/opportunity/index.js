@@ -119,10 +119,10 @@ const Opportunity = ({totalPool}) => {
             dataIndex: 'asset',
             key: 'asset',
             width: '13%',
-            render: (text) => {
+            render: (text, record) => {
                 return (
                     <div className="text-[#00FFA3] uppercase">
-
+                        {text}
                     </div>
                 )
             }
