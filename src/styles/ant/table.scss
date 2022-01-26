@@ -1,0 +1,42 @@
+.opportunity-table {
+  .ant-table-thead{
+
+    .ant-table-column-title{
+      color: #FFFFFFA3;
+      font-weight: 600;
+    }
+    .ant-table-cell{
+      font-weight: 600;
+      color: #FFFFFFA3;
+      background: #232D36 !important;
+      border-bottom-color: #34434F;
+    }
+    .ant-table-cell:before{
+        display: none;
+    }
+  }
+
+  .ant-table-row{
+    .ant-table-cell{
+      border-bottom-color: #34434F;
+    }
+  }
+
+  .ant-table-cell-row-hover:hover {
+    background: #232D36 !important;
+  }
+
+  .ant-table-column-sort {
+    background: #232D36;
+  }
+
+  .ant-table-row:hover {
+    .ant-table-cell {
+      background: #232D36 !important;
+    }
+  }
+
+  .ant-pagination{
+    place-content: center;
+  }
+}
