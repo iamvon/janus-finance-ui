@@ -76,7 +76,9 @@ const Dashboard = (props) => {
                     <div className="flex flex-col w-full justify-center items-center text-center">
                         <div className="powered flex justify-center content-center items-center">
                             <span>Powered by</span>
-                            <img className="banner-logo" src={'/image/banner1.png'}/>
+                            <img className="banner-logo" src={'/icons/serum.svg'}/>
+                            <span>&</span>
+                            <img className="banner-logo" src={'/icons/solana.svg'}/>
                         </div>
                         <h1 className="banner-title">Token Shopping Gateway</h1>
                         <p className="banner-description">Find the best DeFi opportunities and optimizing your digital assets on Solana ecosystem.</p>

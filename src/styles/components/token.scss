@@ -178,3 +178,32 @@
     }
   }
 }
+
+.selected-filter{
+  .select-item{
+    height: 32px;
+    background: #392E3C;
+    border: none;
+    line-height: 36px;
+    border-radius: 20px;
+    padding: 0 25px;
+    margin-right: 10px;
+
+    .selected-text{
+      font-family: "SF Pro Display";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 32px;
+      text-align: center;
+      color: #ffffff;
+      margin-right: 10px;
+    }
+
+    .selected-remove{
+      font-size: 20px;
+      color: #DC1FFF;
+      font-weight: 400;
+    }
+  }
+}

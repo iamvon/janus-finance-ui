@@ -209,13 +209,6 @@ const Token = (props) => {
                     <div>
                         {/*<div className={'text-base font-bold mb-2'}>Tags</div>*/}
                         <div>
-                            <div>
-                                {
-                                    selectedTagList.map((tag, index) => {
-                                        return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
-                                    })
-                                }
-                            </div>
                             <div className={'my-1'}>
                                 <AutoComplete
                                     // value={selectedCustomTag}
@@ -289,7 +282,7 @@ const Token = (props) => {
                             Displaying {itemData.length} of {total} assets
                         </div>
                     </div>
-                    <div className='mb-8 sort-by flex justify-start'>
+                    <div className='mb-5 sort-by flex justify-start'>
                         {/*<div className={'sort-by-title'}>Sort by</div>*/}
                         <div className={'sort-by-radio'}>
                             <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
@@ -304,6 +297,13 @@ const Token = (props) => {
                                 }
                             </Radio.Group>
                         </div>
+                    </div>
+                    <div className='mb-8 selected-filter flex justify-start'>
+                        {
+                            selectedTagList.map((tag, index) => {
+                                return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
+                            })
+                        }
                     </div>
                     <div className={'grid grid-cols-2 gap-6 md:grid-cols-3'}>
                         {
