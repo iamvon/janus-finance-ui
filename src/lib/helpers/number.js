@@ -7,7 +7,7 @@ export const formatFloatNumber = (number) => {
 
 export const formatPriceNumber = (number) => {
     return number ? number.toLocaleString(undefined, {
-        minimumFractionDigits: 8,
+        minimumFractionDigits: 0,
         maximumFractionDigits: 8
     }) : 0;
 };
