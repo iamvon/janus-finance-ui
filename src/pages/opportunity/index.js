@@ -1,27 +1,133 @@
 /* eslint-disable @next/next/no-img-element */
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, useRef} from "react"
 import PageHeader from "/src/components/common/PageHeader"
 import {useRouter} from 'next/router'
 import {connectToDatabase} from "../../lib/connections/mongodb"
 import Pool from '../../lib/models/pool.model'
 import {getPoolListApi} from "../../lib/services/api/pool"
-import {Table, Tag, Input, Select} from 'antd'
+import {Table, Tag, Input, Select, Button, Space} from 'antd'
 import axios from 'axios'
 import CN from "classnames"
 import {brief_address} from "../../lib/helpers/address"
 import CopyIcon from "../../components/common/CopyIcon"
 import {faCopy, faInfo, faInfoCircle, faSearch} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import { SearchOutlined } from '@ant-design/icons';
 
 const rowClassName = 'hover:bg-[#232D36]'
 
 const Opportunity = ({totalPool}) => {
+    
+    const searchInput = useRef()
+    const [tableData, setTableData] = useState([])
+    const [inputValue, setInputValue] = useState('')
+    const [field, setField] = useState('')
+    const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
+
+    const handleFetchPool = async (newPagination, filters, sorter) => {
+        const size = newPagination.pageSize
+        const page = newPagination.current
+        let orderBy = ''
+        let orderDirection = 1
+
+        if (sorter.order) {
+            orderBy = sorter.field
+            orderDirection = sorter.order === 'descend' ? -1 : 1
+        }
+
+        const {data: res} = await axios.post('/api/pool', {
+            page,
+            size,
+            order_by: orderBy,
+            order_direction: orderDirection,
+            query: filters
+        })
+        const newData = res.data.items.map((t, index) => {
+            return {
+                key: (page - 1) * size + index,
+                ...t
+            }
+        })
+        setPagination({current: res.data.page, pageSize: res.data.size, total: res.data.total})
+        setTableData(newData)
+    }
+
+    useEffect(() => {
+        handleFetchPool(pagination, {}, {})
+    }, [])
+
+    const handleTableChange = (newPagination, filters, sorter) => {
+        console.log(newPagination, filters, sorter)
+        setPagination({...pagination, current: newPagination.current, pageSize: newPagination.pageSize})
+        handleFetchPool(newPagination, filters, sorter) // {} {} {}
+    }
+
+
+    const getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+          <div style={{ padding: 8 }}>
+            <Input
+              ref={searchInput}
+              placeholder={`Search ${dataIndex}`}
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+              style={{ marginBottom: 8, display: 'block' }}
+            />
+            <Space>
+              <Button
+                type="primary"
+                onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                icon={<SearchOutlined />}
+                size="small"
+                style={{ width: 90 }}
+              >
+                Search
+              </Button>
+              <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                Reset
+              </Button>
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  confirm({ closeDropdown: false });
+                //   setInputValue(selectedKeys[0])
+                //   setField(dataIndex.toLowerCase())1
+                }}
+              >
+                Filter
+              </Button>
+            </Space>
+          </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilterDropdownVisibleChange: visible => {
+          if (visible) {
+            setTimeout(() => searchInput.current.focus(), 100);
+          }
+        }
+      });
+    
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        // setInputValue(selectedKeys[0])
+        // setField(dataIndex.toLowerCase())
+    }
+
+    const handleReset = clearFilters => {
+        clearFilters();
+        setInputValue('')
+    }
+
     const columnPool = [
         {
             title: 'Platform',
             dataIndex: 'platform',
             key: 'platform',
             width: '13%',
+            search: true,
+            ...getColumnSearchProps('Platform'),
             sorter: (a, b) => a.platform - b.platform
         },
         {
@@ -113,12 +219,13 @@ const Opportunity = ({totalPool}) => {
                     <div className="mr-2">
                         Asset/s
                     </div>
-                    <FontAwesomeIcon icon={faSearch} size={"sm"}/>
+                    {/* <FontAwesomeIcon icon={faSearch} size={"sm"}/> */}
                 </div>
             ),
             dataIndex: 'asset',
             key: 'asset',
             width: '13%',
+            ...getColumnSearchProps('Asset'),
             render: (text, record) => {
                 return (
                     <div className="text-[#00FFA3] uppercase">
@@ -144,54 +251,6 @@ const Opportunity = ({totalPool}) => {
             sorter: (a, b) => a.apy - b.apy
         }
     ]
-
-    const [tableData, setTableData] = useState([])
-    const [inputValue, setInputValue] = useState('')
-    const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
-    const [logInfo, setLogInfo] = useState("")
-
-    const handleFetchPool = async (newPagination, sorter, curText) => {
-        const size = newPagination.pageSize
-        const page = newPagination.current
-        let orderBy = ''
-        let orderDirection = 1
-
-        if (sorter.order) {
-            orderBy = sorter.field
-            orderDirection = sorter.order === 'descend' ? -1 : 1
-        }
-
-        const {data: res} = await axios.post('/api/pool', {
-            page,
-            size,
-            order_by: orderBy,
-            order_direction: orderDirection,
-            q: curText
-        })
-        const newData = res.data.items.map((t, index) => {
-            return {
-                key: (page - 1) * size + index,
-                ...t
-            }
-        })
-        setPagination({current: res.data.page, pageSize: res.data.size, total: res.data.total})
-        setTableData(newData)
-    }
-
-    useEffect(() => {
-        handleFetchPool(pagination, {}, "")
-    }, [])
-
-    const handleTableChange = (newPagination, filters, sorter) => {
-        // console.log(newPagination, filters, sorter)
-        setPagination({...pagination, current: newPagination.current, pageSize: newPagination.pageSize})
-        handleFetchPool(newPagination, sorter, inputValue)
-    }
-
-    const handleSearchPool = () => {
-        handleFetchPool({...pagination, current: 1, pageSize: 10}, {}, inputValue)
-    }
-
     return (
         <div className="justify-between items-start w-full h-full wrapper ">
             <div className="px-2">

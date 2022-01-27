@@ -9,9 +9,9 @@ export const listPoolController = async (req) => {
         size,
         order_by: orderBy,
         order_direction: orderDirection,
+        query
     } = {...req.body}
 
-    const query = req.body
     const vPage = !isNaN(page) && isFinite(page) ? parseInt(page) : DEFAULT_PAGE_NUMBER
     const vSize = !isNaN(size) && isFinite(size) ? parseInt(size) : DEFAULT_PAGE_SIZE.GRID
 
@@ -21,21 +21,10 @@ export const listPoolController = async (req) => {
         _orderBy[orderBy] = parseInt(orderDirection)
     }
 
-    const vQuery = {
-        q: query.q ? query.q : null,
-    }
-
-    // for (const key of Object.values(SORT_AND_FILTER_FIELD)) {
-    //     vQuery[key] = {
-    //         min: query[`${key}_min`],
-    //         max: query[`${key}_max`],
-    //     }
-    // }
-
     return await listPool({
         page: vPage,
         size: vSize,
-        query: vQuery,
+        query: query,
         orderBy: _orderBy
     })
 }
