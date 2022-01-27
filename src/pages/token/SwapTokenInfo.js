@@ -12,6 +12,7 @@ import { useTranslation } from 'next-i18next'
 
 dayjs.extend(relativeTime)
 
+
 export const numberFormatter = Intl.NumberFormat('en', {
     minimumFractionDigits: 1,
     maximumFractionDigits: 5,
@@ -23,13 +24,14 @@ const SwapTokenInfo = ({
 }) => {
     const [chartData, setChartData] = useState([])
     const [hideChart, setHideChart] = useState(false)
-    const [baseTokenId, setBaseTokenId] = useState('')
-    const [quoteTokenId, setQuoteTokenId] = useState(outputTokenId)
+    const [baseTokenId, setBaseTokenId] = useState('mango-markets')
+    const [quoteTokenId, setQuoteTokenId] = useState('usd-coin')
     const [inputTokenInfo, setInputTokenInfo] = useState(null)
     const [outputTokenInfo, setOutputTokenInfo] = useState(null)
     const [mouseData, setMouseData] = useState(null)
     const [daysToShow, setDaysToShow] = useState(1)
     const { observe, width, height } = useDimensions()
+    const { t } = useTranslation(['common', 'swap'])
 
     const handleMouseMove = (coords) => {
         if (coords.activePayload) {
@@ -42,13 +44,13 @@ const SwapTokenInfo = ({
     }
 
     useEffect(() => {
-        // if (['usd-coin', 'tether'].includes(inputTokenId)) {
-        //     setBaseTokenId(outputTokenId)
-        //     setQuoteTokenId(inputTokenId)
-        // } else {
-        setBaseTokenId(inputTokenId)
-        setQuoteTokenId(outputTokenId)
-        // }
+        if (['usd-coin', 'tether'].includes(inputTokenId)) {
+            setBaseTokenId(outputTokenId)
+            setQuoteTokenId(inputTokenId)
+        } else {
+            setBaseTokenId(inputTokenId)
+            setQuoteTokenId(outputTokenId)
+        }
     }, [inputTokenId, outputTokenId])
 
     // Use ohlc data
@@ -145,7 +147,6 @@ const SwapTokenInfo = ({
         }
     }, [baseTokenId, quoteTokenId])
 
-    // console.log("chartData", chartData)
     const chartChange = chartData.length
         ? ((chartData[chartData.length - 1]['price'] - chartData[0]['price']) /
             chartData[0]['price']) *
@@ -222,15 +223,15 @@ const SwapTokenInfo = ({
                                 />
                                 <defs>
                                     <linearGradient id="gradientArea" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#1dde98" stopOpacity={0.9} />
-                                        <stop offset="90%" stopColor="#1dde98" stopOpacity={0} />
+                                        <stop offset="0%" stopColor="#384D48" stopOpacity={0.9} />
+                                        <stop offset="90%" stopColor="#232D36" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <Area
                                     isAnimationActive={true}
                                     type="monotone"
                                     dataKey="price"
-                                    stroke="#1dde98"
+                                    stroke="#384D48"
                                     fill="url(#gradientArea)"
                                 />
                                 <XAxis dataKey="time" hide />
@@ -363,7 +364,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_data.total_volume?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    24-hour Volume
+                                                    24-hour Volume 
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     $
@@ -572,7 +573,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_data.total_volume?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    24-hour Volume
+                                                    24-hour Volume 
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     $
