@@ -6,6 +6,9 @@ module.exports = {
     ],
     theme: {
         extend: {
+            opacity: {
+                '64': '.64'
+            },
             maxWidth: {
                 '1/4': '25%',
                 '2/5': '40%',
@@ -111,7 +114,8 @@ module.exports = {
             cursor: ['hover'],
             borderWidth: ['hover', 'focus'],
             borderColor: ['active', 'hover'],
-            margin: ['first']
+            margin: ['first'],
+            bgColor: ['hover']
         }
     },
     plugins: [require("@tailwindcss/line-clamp")]

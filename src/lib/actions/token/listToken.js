@@ -12,6 +12,7 @@ const SEARCH_SORT_KEY = 'score'
 
 const _getQuery = async (query) => {
     let vQuery = query.q ? {$text: {$search: query.q}} : {}
+    vQuery = {...vQuery, "extensions.coingeckoId": {$exists: true}}
 
     for (const key of Object.values(SORT_AND_FILTER_FIELD)) {
         if (query[key].min === undefined && query[key].max === undefined) {

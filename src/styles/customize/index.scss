@@ -48,3 +48,8 @@ a.link-highlight {
   mask: linear-gradient(to bottom, rgb(255, 255, 255) calc(100% - 35px), rgba(255, 255, 255, 0));
   -webkit-mask: -webkit-linear-gradient(top, rgb(255, 255, 255) calc(100% - 35px), rgba(255, 255, 255, 0));
 }
+
+.wallet-adapter-button {
+  height: 40px !important;
+  padding: 0 20px !important;
+}

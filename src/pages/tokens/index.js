@@ -5,10 +5,8 @@ import {useRouter} from 'next/router'
 import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
 import {listTokenController} from "../../lib/controllers/token/listToken"
 import SolanaTokenItem from "../../components/SolanaTokenItem"
-import {AutoComplete, Empty, Pagination, Radio} from "antd"
+import {AutoComplete, Empty, notification, Pagination, Radio} from "antd"
 import CN from "classnames"
-import {faChartLine} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {listTokenTagController} from "../../lib/controllers/token/listTokenTag"
 import querystring from 'query-string'
 import Paths from "../../lib/routes/Paths"
@@ -21,6 +19,9 @@ import {getTokenListApi} from "../../lib/services/api/token"
 import _, {isArray} from "lodash"
 import SkeletonAssetItem from "../../components/SkeletonTokenItem"
 import TokenTag from "../../components/TokenTag"
+import {useWallet} from "@solana/wallet-adapter-react"
+import {getWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
+import {WISHLIST_ACTION} from "../../lib/constants/wallet"
 
 const initialFilterValue = {}
 
@@ -34,7 +35,7 @@ Object.values(SORT_AND_FILTER_FIELD).forEach((key) => {
 const Token = (props) => {
     const {
         solanaTokens, tokenTags,
-        // defaultQuery,
+        defaultQuery,
         defaultTotal,
         defaultPage,
         defaultSize,
@@ -49,7 +50,7 @@ const Token = (props) => {
     const [selectedTagList, setSelectedTagList] = useState(defaultTags);
     const [tagOptions, setTagOptions] = useState(initTagOptions);
 
-    const {searchQuery} = useContext(AppContext)
+    const {searchQuery, setSearchQuery} = useContext(AppContext)
     const [itemData, setItemData] = useState(solanaTokens)
     const [params, setParams] = useState({
         page: defaultPage,
@@ -58,12 +59,30 @@ const Token = (props) => {
     const [loading, setLoading] = useState(false)
     const [sortBy, _setSortBy] = useState(defaultSort)
     const [total, setTotal] = useState(defaultTotal)
+    const [wishlist, setWishList] = useState([])
 
     const router = useRouter()
+    const {publicKey} = useWallet()
 
     useEffect(() => {
-
+        // console.log('defaultQuery', defaultQuery)
+        defaultQuery && setSearchQuery(defaultQuery)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        const fetchWishlist = async (_params) => {
+            setLoading(true)
+            const {data: responseData} = await getWishlistListApi({wallet_key: publicKey.toString()})
+            const {wishlist} = {...responseData}
+            // console.log('wishlist', wishlist)
+            setWishList(wishlist)
+            setLoading(false)
+        }
+
+        if (publicKey) fetchWishlist().then()
+        else setWishList([])
+    }, [publicKey])
 
     const setSortBy = (value) => {
         _setSortBy(value)
@@ -73,17 +92,12 @@ const Token = (props) => {
         })
     }
 
-    // useEffect(() => {
-    //     const query = parseParamsToQuery(params, filter, sortBy, selectedCollections, searchQuery)
-    //     const url = parseQueryToUrl(query)
-    //     router.replace(url, undefined, {shallow: true}).then()
-    //     // if (firstRender) {
-    //     //     setFirstRender(false)
-    //     // } else {
-    //         fetchData().then()
-    //     // }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [params, sortBy, filter, selectedCollections, searchQuery])
+    useEffect(() => {
+        // console.log('searchQuery1', searchQuery)
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        fetchData(query).then()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [params, sortBy, searchQuery])
 
     const fetchData = async (_params) => {
         setLoading(true)
@@ -95,29 +109,47 @@ const Token = (props) => {
         setLoading(false)
     }
 
-    const onSearchTag = (searchText) => {
+    const onSearchTag = async (searchText) => {
         const filteredTags = initTagOptions.filter(op => op.value.toUpperCase().indexOf(searchText.toUpperCase()) !== -1)
         setTagOptions(filteredTags);
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     };
 
-    const onSelectCustomTag = (data) => {
+    const onSelectCustomTag = async (data) => {
         setSelectedTagList(_.uniq([...selectedTagList, data]));
+
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     };
 
-    const onRemoveTag = (tag) => {
+    const onRemoveTag = async (tag) => {
         const newSelectedTagList = selectedTagList.filter(i => i !== tag)
         setSelectedTagList(newSelectedTagList)
+
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     }
 
     // const onChangeStartFilterPrice = (value) => {
     //     console.log('changed', value);
     // }
 
-    const onChangeSortBy = e => {
+    const onChangeSortBy = async (e) => {
         // console.log('radio checked', e.target.value);
         const value = e.target.value
         const selectedSortBy = SORT_BY_OPTIONS.find(i => i.value === value)
-        setSortBy(selectedSortBy);
+        setSortBy(selectedSortBy)
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
     };
 
     const onApplyClick = async () => {
@@ -147,33 +179,53 @@ const Token = (props) => {
     //     )
     // }
 
+    const updateWishlist = async (token, isStared) => {
+        if (isStared) {
+            const newWishlist = wishlist.filter(address => address !== token.address)
+            setWishList(newWishlist)
+        } else {
+            const newWishlist = _.uniq([...wishlist, token.address])
+            setWishList(newWishlist)
+        }
+        const reqData = {
+            walletKey: publicKey.toString(),
+            action: isStared ? WISHLIST_ACTION.REMOVE : WISHLIST_ACTION.ADD,
+            tokenAddress: token.address
+        }
+        await updateWishlistListApi(reqData)
+    }
+
+    const onStarClick = (token, isStared) => {
+        if (!publicKey) {
+            return notification.warn({
+                message: 'Warning',
+                description: "You have to connect your wallet to save this item in your wishlist",
+            });
+        }
+        return updateWishlist(token, isStared)
+    }
+
     const itemRender = () => {
         return itemData.length > 0 ? itemData.map((token) => {
+            const isInWishlist = !!wishlist.includes(token.address)
             return (
-                <SolanaTokenItem key={token._id} token={token}/>
+                <SolanaTokenItem key={token._id} token={token} isStared={isInWishlist} onStarClick={onStarClick}/>
             )
         }) : (
             <div className="col-span-3 flex items-center justify-center w-full mt-5">
-                <Empty description="No asset found with this filter"/>
+                <Empty className={'text-white'} description="No asset found with this filter"/>
             </div>
         )
     }
 
     return (
-        <div className="wrapper flex flex-col justify-start pb-12">
+        <div className="tokens-page wrapper flex flex-col justify-start pb-12">
             <PageHeader title={"Assets"}/>
             <div className={'pt-12 grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-6 xl:gap-6'}>
-                <div className={'col-span-1 sticky'}>
+                <div className={'col-span-1 sticky tokens-sidebar'}>
                     <div>
-                        <div className={'text-base font-bold mb-2'}>Tags</div>
+                        {/*<div className={'text-base font-bold mb-2'}>Tags</div>*/}
                         <div>
-                            <div>
-                                {
-                                    selectedTagList.map((tag, index) => {
-                                        return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
-                                    })
-                                }
-                            </div>
                             <div className={'my-1'}>
                                 <AutoComplete
                                     // value={selectedCustomTag}
@@ -183,12 +235,14 @@ const Token = (props) => {
                                     onSearch={onSearchTag}
                                     // onChange={onChangeTagString}
                                     placeholder="Find tag here"
+                                    defaultOpen={true}
+                                    open={true}
                                 />
                             </div>
                         </div>
                     </div>
                     {/*<div className={'mt-5 text-base'}>*/}
-                    {/*    <div className={'text-base font-bold'}>Token price</div>*/}
+                    {/*    <div className={'text-base font-bold'}>WishlistTable price</div>*/}
                     {/*    <div className={'flex justify-between items-center mt-2'}>*/}
                     {/*        <div className={'flex'}>From</div>*/}
                     {/*        <div className={'flex'}>*/}
@@ -212,15 +266,50 @@ const Token = (props) => {
                     {/*        </div>*/}
                     {/*    </div>*/}
                     {/*</div>*/}
-                    <div className={'mt-5 text-base'}>
-                        <div className={'text-base font-bold mb-2'}>Sort by</div>
-                        <div>
+                    {/*<div className={'mt-5 text-base'}>*/}
+                    {/*    <div className={'text-base font-bold mb-2'}>Sort by</div>*/}
+                    {/*    <div>*/}
+                    {/*        <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>*/}
+                    {/*            {*/}
+                    {/*                SORT_BY_OPTIONS.map((option, index) => {*/}
+                    {/*                    return (*/}
+                    {/*                        <div key={index} className={'my-2'}>*/}
+                    {/*                            <Radio value={option.value}>{option.label}</Radio>*/}
+                    {/*                        </div>*/}
+                    {/*                    )*/}
+                    {/*                })*/}
+                    {/*            }*/}
+                    {/*        </Radio.Group>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<hr className={'border-t-2 my-5'}/>*/}
+                    {/*<div className={'flex justify-end'}>*/}
+                    {/*    <button type="button"*/}
+                    {/*            onClick={onApplyClick}*/}
+                    {/*            className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-3 py-1 text-center">*/}
+                    {/*        Apply*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
+                </div>
+                <div className={'col-span-5 tokens-content'}>
+                    <div className={'flex justify-between mb-6'}>
+                        <div className={CN("flex place-items-center page-title")}>
+                            {/*<FontAwesomeIcon icon={faChartLine} className={"text-2xl mr-4"}/>*/}
+                            <span className={CN("font-bold text-2xl")}>Assets</span>
+                        </div>
+                        <div className={'flex text-base token-count'}>
+                            Displaying {itemData.length} of {total} assets
+                        </div>
+                    </div>
+                    <div className='mb-5 sort-by flex justify-start'>
+                        {/*<div className={'sort-by-title'}>Sort by</div>*/}
+                        <div className={'sort-by-radio'}>
                             <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
                                 {
                                     SORT_BY_OPTIONS.map((option, index) => {
                                         return (
-                                            <div key={index} className={'my-2'}>
-                                                <Radio value={option.value}>{option.label}</Radio>
+                                            <div key={index} className={'option-item'}>
+                                                <Radio.Button value={option.value}>{option.label}</Radio.Button>
                                             </div>
                                         )
                                     })
@@ -228,33 +317,21 @@ const Token = (props) => {
                             </Radio.Group>
                         </div>
                     </div>
-                    <hr className={'border-t-2 my-5'}/>
-                    <div className={'flex justify-end'}>
-                        <button type="button"
-                                onClick={onApplyClick}
-                                className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-3 py-1 text-center">
-                            Apply
-                        </button>
+                    <div className='mb-8 selected-filter flex justify-start'>
+                        {
+                            selectedTagList.map((tag, index) => {
+                                return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
+                            })
+                        }
                     </div>
-                </div>
-                <div className={'col-span-5'}>
-                    <div className={'flex justify-between'}>
-                        <div className={CN("flex place-items-center mb-6")}>
-                            <FontAwesomeIcon icon={faChartLine} className={"text-2xl mr-4"}/>
-                            <span className={CN("font-bold text-2xl")}>Assets</span>
-                        </div>
-                        <div className={'flex text-base'}>
-                            Displaying {itemData.length} of {total} assets
-                        </div>
-                    </div>
-                    <div className={'grid grid-cols-2 gap-4 md:grid-cols-3'}>
+                    <div className={'grid grid-cols-2 gap-6 md:grid-cols-3'}>
                         {
                             loading ?
                                 [...Array(params.size).keys()].map((it, index) => <SkeletonAssetItem
                                     key={index}/>) : itemRender()
                         }
                     </div>
-                    <div className="flex items-center justify-center w-full mt-5">
+                    <div className="flex items-center justify-center w-full token-pagination">
                         {
                             itemData.length > 0 && <Pagination
                                 onChange={onChangePage}
@@ -382,31 +459,31 @@ const parseQueryToParams = (query) => {
     return result
 }
 
-const initFilter = (defaultFilter) => {
-    const result = {...initialFilterValue}
-    for (const [key, value] of Object.entries(defaultFilter)) {
-        const min = value.min
-        const max = value.max
-        if (!isNonValue(min)) {
-            try {
-                result[key].min = parseDataFromString(key, min)
-            } catch (e) {
-            }
-        }
-        if (!isNonValue(max)) {
-            try {
-                result[key].max = parseDataFromString(key, max)
-            } catch (e) {
-            }
-        }
-    }
-    return result
-}
+// const initFilter = (defaultFilter) => {
+//     const result = {...initialFilterValue}
+//     for (const [key, value] of Object.entries(defaultFilter)) {
+//         const min = value.min
+//         const max = value.max
+//         if (!isNonValue(min)) {
+//             try {
+//                 result[key].min = parseDataFromString(key, min)
+//             } catch (e) {
+//             }
+//         }
+//         if (!isNonValue(max)) {
+//             try {
+//                 result[key].max = parseDataFromString(key, max)
+//             } catch (e) {
+//             }
+//         }
+//     }
+//     return result
+// }
 
 const parseQueryToUrl = (query) => {
     const _query = JSON.parse(JSON.stringify(query))
     const queryString = querystring.stringify(_query, {skipNull: true, skipEmptyString: true})
-    return Paths.Token + "?" + queryString
+    return Paths.Tokens + "?" + queryString
 }
 
 
