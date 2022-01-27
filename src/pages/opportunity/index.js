@@ -60,8 +60,8 @@ const Opportunity = ({totalPool}) => {
                             <div className={CN("text-[12px] font-normal")}>
                                 Liquidity
                             </div>
-                            <FontAwesomeIcon icon={faInfoCircle} color={"#FFFFFF"}
-                                             className={CN("ml-2 text-gray-400")}/>
+                            {/*<FontAwesomeIcon icon={faInfoCircle} color={"#FFFFFF"}*/}
+                            {/*                 className={CN("ml-2 text-gray-400")}/>*/}
                         </div>
                     </div>
                 )
@@ -193,7 +193,7 @@ const Opportunity = ({totalPool}) => {
     }
 
     return (
-        <div className="justify-between items-start w-full h-full px-44 ">
+        <div className="justify-between items-start w-full h-full wrapper ">
             <div className="px-2">
                 <PageHeader title={"Opportunity"}/>
                 <div className="font-bold text-2xl text-white py-16">

@@ -1,28 +1,28 @@
-#__next{
+#__next {
   background: #080C10;
 }
 
-.janus-header{
+.janus-header {
   background: #080C10;
   border-bottom: 1px solid #34434F;
   padding-top: 20px !important;
   padding-bottom: 20px !important;
 
-  .header-logo{
-    img{
-      &:hover{
+  .header-logo {
+    img {
+      &:hover {
         cursor: pointer;
       }
     }
   }
 
-  .header-nav{
+  .header-nav {
     flex-grow: 1;
     padding-left: 40px;
 
-    .nav-item{
-      a{
-        font-family: "SF Pro Display";
+    .nav-item {
+      a {
+        font-family: "SF Pro Display", sans-serif;
         color: #ffffff;
         font-size: 16px;
         font-weight: 600;
@@ -30,16 +30,22 @@
         display: inline-block;
         padding: 5px 16px;
 
-        &:hover{
+        &:hover {
           cursor: pointer;
           color: #00FFA3;
         }
       }
     }
+
+    .nav-item.active {
+      a {
+        color: #00FFA3 !important;
+      }
+    }
   }
 
-  .header-search{
-    .ant-input-affix-wrapper{
+  .header-search {
+    .ant-input-affix-wrapper {
       background: #333639;
       border-radius: 20px;
       border: none;
@@ -47,12 +53,12 @@
       height: 44px;
       line-height: 44px;
 
-      &:focus{
+      &:focus {
         border: none;
         box-shadow: none;
       }
 
-      input{
+      input {
         background: none;
         font-family: "SF Pro Display";
         color: #ffffff;
@@ -61,8 +67,8 @@
         line-height: 24px;
       }
 
-      .ant-input-prefix{
-        svg{
+      .ant-input-prefix {
+        svg {
           font-size: 14px;
           color: #ffffff;
         }
@@ -70,10 +76,10 @@
     }
   }
 
-  .header-button{
+  .header-button {
     margin-left: 16px;
 
-    .wallet-adapter-button{
+    .wallet-adapter-button {
       height: 44px;
       line-height: 44px;
       padding: 0 20px;
@@ -84,21 +90,21 @@
       font-weight: 600;
       transition: all 0.3s ease 0s;
 
-      &:hover{
+      &:hover {
         color: #ffffff;
-        background: darken(#00FFA3,10%);
+        background: darken(#00FFA3, 10%);
       }
     }
   }
 }
 
-.banner{
-  .powered{
+.banner {
+  .powered {
     align-content: center;
     opacity: 0.64;
     margin-bottom: 45px;
 
-    span{
+    span {
       font-family: "SF Pro Display";
       font-size: 20px;
       font-weight: 500;
@@ -111,7 +117,7 @@
     }
   }
 
-  .banner-title{
+  .banner-title {
     font-family: "SF Pro Display";
     font-size: 48px;
     font-weight: 600;
@@ -120,7 +126,7 @@
     margin-bottom: 45px;
   }
 
-  .banner-description{
+  .banner-description {
     font-family: "SF Pro Display";
     font-size: 24px;
     font-weight: 400;
@@ -130,24 +136,24 @@
   }
 }
 
-.banner-feature{
+.banner-feature {
   margin-top: 120px;
 
-  .banner-feature-item{
+  .banner-feature-item {
     border: 1px solid rgba(255, 255, 255, 0.64);
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.05);
-    padding:65px 30px;
+    padding: 65px 30px;
 
-    .feature-item-box{
-      .feature-image{
+    .feature-item-box {
+      .feature-image {
         width: auto;
         height: 115px;
         max-width: 140px;
         margin-bottom: 40px;
       }
 
-      .feature-title{
+      .feature-title {
         font-family: "SF Pro Display";
         font-size: 28px;
         font-weight: 600;
@@ -156,7 +162,7 @@
         margin-bottom: 10px;
       }
 
-      .feature-subtitle{
+      .feature-subtitle {
         font-family: "SF Pro Display";
         font-size: 16px;
         font-weight: 500;
@@ -166,33 +172,33 @@
         min-height: 56px;
       }
 
-      .feature-description{
+      .feature-description {
         font-family: "SF Pro Display";
         font-size: 20px;
         font-weight: 500;
         line-height: 28px;
         color: #ffffff;
-        padding:0 15px;
+        padding: 0 15px;
       }
     }
 
-    &.lend{
+    &.lend {
       border: 1px solid rgba(220, 31, 255, 0.64);
       background: rgba(220, 31, 255, 0.05);
 
-      .feature-item-box{
-        .feature-title{
+      .feature-item-box {
+        .feature-title {
           color: #DC1FFF;
         }
       }
     }
 
-    &.x-farm{
+    &.x-farm {
       border: 1px solid rgba(0, 255, 163, 0.64);
       background: rgba(0, 255, 163, 0.05);
 
-      .feature-item-box{
-        .feature-title{
+      .feature-item-box {
+        .feature-title {
           color: #00FFA3;
         }
       }
@@ -200,8 +206,8 @@
   }
 }
 
-.tokens{
-  .token-title{
+.tokens {
+  .token-title {
     font-family: "SF Pro Display";
     font-size: 24px;
     font-weight: 600;
@@ -209,10 +215,10 @@
     color: #ffffff;
   }
 
-  .view-all{
+  .view-all {
     padding-top: 6px;
 
-    a{
+    a {
       font-family: "SF Pro Display";
       font-size: 14px;
       font-weight: 600;
@@ -220,17 +226,17 @@
       color: #27BA77;
       text-decoration: underline;
 
-      svg{
+      svg {
         margin-left: 4px;
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease 0s;
       }
 
-      &:hover{
+      &:hover {
         cursor: pointer;
 
-        svg{
+        svg {
           opacity: 1;
           visibility: visible;
         }
@@ -239,7 +245,7 @@
   }
 }
 
-.solana-token-item{
+.solana-token-item {
   background: #232D36;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.12);
   border-radius: 16px;
@@ -248,26 +254,26 @@
   padding: 25px;
   transition: all 0.3s ease 0s;
 
-  .solana-token-item-header{
-    .card-element{
+  .solana-token-item-header {
+    .card-element {
       flex-direction: column;
       align-items: center;
 
-      .token-logo{
+      .token-logo {
         margin-bottom: 10px;
         width: 64px;
         height: 64px;
 
-        img{
+        img {
           width: 64px;
           height: 64px;
         }
       }
 
-      .token-content{
+      .token-content {
         text-align: center;
 
-        .token-name{
+        .token-name {
           font-family: "SF Pro Display";
           font-size: 16px;
           font-weight: 600;
@@ -276,7 +282,7 @@
         }
       }
 
-      .token-tags{
+      .token-tags {
         font-family: "SF Pro Display";
         font-size: 14px;
         font-weight: 400;
@@ -287,12 +293,12 @@
     }
   }
 
-  .solana-token-item-footer{
+  .solana-token-item-footer {
     position: relative;
     bottom: auto;
     padding: 0;
 
-    .price{
+    .price {
       font-family: "SF Pro Display";
       font-size: 20px;
       font-weight: 600;
@@ -301,26 +307,26 @@
     }
   }
 
-  &:hover{
+  &:hover {
     //border: 1px solid rgba(0, 255, 163, 0.64);
     background: rgba(0, 255, 163, 0.2);
   }
 
-  .wishlist-button{
+  .wishlist-button {
     background: #00FFA3;
     color: #ffffff;
   }
 }
 
-.janus-footer{
+.janus-footer {
   position: absolute;
   bottom: 0;
   background: #080C10;
   border-top: 1px solid #34434F;
   padding: 23px 0px;
 
-  .social{
-    img{
+  .social {
+    img {
       color: #00FFA3;
     }
   }

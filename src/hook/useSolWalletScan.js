@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import {SonarWatchEnpoint} from '../utils/const'
 import axios from 'axios';
-import { getTokenMap, scanTokenByPK } from '../utils/token';
+import { scanTokenByPK } from '../utils/token';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 export const useSolWalletScan = () => {
     const [tokens, setTokens] = useState([])
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const { connection } = useConnection();
     const { publicKey } = useWallet();
@@ -14,11 +14,14 @@ export const useSolWalletScan = () => {
     useEffect(() => {
         setLoading(true)
         if (publicKey) {
-            scanTokenByPK(connection, publicKey).then((result) => {
-                console.log(result)
+            scanTokenByPK(connection, 'FX7DL4WUQATRtU5oEjxX5hsrqrnteeXXySqo9JZaTzN9').then((result) => {
+                const walletAssets = result.filter(asset => {
+                    return asset?.uiAmount > 0
+                })
                 setLoading(false)
-                setTokens(result)
+                setTokens(walletAssets)
             }).catch(err => {
+                console.log(err)
                 setError(err.message)
                 setLoading(false)
             })
