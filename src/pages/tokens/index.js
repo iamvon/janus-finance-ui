@@ -119,9 +119,9 @@ const Token = (props) => {
     };
 
     const onSelectCustomTag = async (data) => {
-        setSelectedTagList(_.uniq([...selectedTagList, data]));
-
-        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const newTagList = _.uniq([...selectedTagList, data])
+        setSelectedTagList(newTagList);
+        const query = parseParamsToQuery(params, sortBy, newTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
@@ -130,8 +130,7 @@ const Token = (props) => {
     const onRemoveTag = async (tag) => {
         const newSelectedTagList = selectedTagList.filter(i => i !== tag)
         setSelectedTagList(newSelectedTagList)
-
-        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const query = parseParamsToQuery(params, sortBy, newSelectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
