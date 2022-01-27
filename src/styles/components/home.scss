@@ -313,9 +313,10 @@
 }
 
 .janus-footer{
+  position: absolute;
+  bottom: 0;
   background: #080C10;
   border-top: 1px solid #34434F;
-  margin-top: 80px;
   padding: 23px 0px;
 
   .social{

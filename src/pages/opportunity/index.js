@@ -193,7 +193,7 @@ const Opportunity = ({totalPool}) => {
     }
 
     return (
-        <div className="justify-between items-start bg-gray-100 w-full h-full px-44 ">
+        <div className="justify-between items-start w-full h-full px-44 ">
             <div className="px-2">
                 <PageHeader title={"Opportunity"}/>
                 <div className="font-bold text-2xl text-white py-16">
@@ -209,7 +209,7 @@ const Opportunity = ({totalPool}) => {
                 {/*</div>*/}
                 <div className="">
                     <Table
-                        className={"opportunity-table"}
+                        className={"opportunity-table rounded-2xl"}
                         rowClassName={CN("bg-[#232D36] text-white text-[14px] font-medium")}
                         pagination={pagination}
                         columns={columnPool}
