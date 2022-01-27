@@ -38,6 +38,7 @@ const Navigation = () => {
     const router = useRouter()
     const {publicKey} = useWallet();
 
+    console.log(router.pathname)
     const isActive = (menu) => {
         const pathName = router.pathname
         return pathName === menu
@@ -47,12 +48,12 @@ const Navigation = () => {
         return appMode !== 'production' ? (
             <div className={CN("flex items-center justify-between flex-row")}>
                 <div className={`header-nav flex`}>
-                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/explore') })}>
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/explore') })}>
                         <Link href={Paths.Portfolio}>
                             Portfolio
                         </Link>
                     </div>
-                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/collections') })}>
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/collections') })}>
                         <Link href={Paths.Tokens}>
                             Assets
                         </Link>
@@ -62,11 +63,11 @@ const Navigation = () => {
                             Opportunity
                         </Link>
                     </div>
-                    {/*<div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/TokenDetail-drops') })} >*/}
-                    {/*    <Link href={Paths.Wishlist}>*/}
-                    {/*        Wishlist*/}
-                    {/*    </Link>*/}
-                    {/*</div>*/}
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/wishlist') })} >
+                        <Link href={Paths.Wishlist}>
+                            Wishlist
+                        </Link>
+                    </div>
                 </div>
                 <div className={`header-search`}>
                     <SearchBar />

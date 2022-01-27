@@ -35,7 +35,9 @@ const App = ({ Component, pageProps }) => {
                     <PageHeader />
                     <Navigation />
                     <div className="janus-bg" />
-                    <Component {...pageProps} />
+                    <div className="pb-[170px]">
+                        <Component {...pageProps} />
+                    </div>
                     <Footer />
                 </SkeletonTheme>
             </AppContext.Provider>

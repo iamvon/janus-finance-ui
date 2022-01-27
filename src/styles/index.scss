@@ -36,7 +36,7 @@ html {
 }
 
 body {
-  font-family: 'Poppins', sans-serif !important;
+  font-family: 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
@@ -46,6 +46,10 @@ body {
 #__next{
   min-height: 100vh;
   position: relative;
+}
+
+.text-sf-pro{
+  font-family: "SF Pro Display", sans-serif !important;
 }
 
 .primary-font {
