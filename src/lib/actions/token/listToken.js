@@ -63,11 +63,11 @@ export const listToken = async ({page, size, query, orderBy, isTopTrending, isTo
 
     for (const [key, value] of Object.entries(orderBy)) {
         const vKey = convertFieldName(key)
-        vSortBy[vKey] = value
-        if (vKey === 'topTrendingRank') vQuery['isTopTrending'] = true
-        else if (vKey === 'topSellRank') vQuery['isTopSell'] = true
-        else if (vKey === 'topBuyRank') vQuery['isTopBuy'] = true
+        if (vKey === 'topTrendingRank') vSortBy['isTopTrending'] = -1
+        else if (vKey === 'topSellRank') vSortBy['isTopSell'] = -1
+        else if (vKey === 'topBuyRank') vSortBy['isTopBuy'] = -1
         else if (vKey !== SEARCH_SORT_KEY) vQuery[vKey] = {$ne: null}
+        vSortBy[vKey] = value
     }
 
     // console.log(rQuery)
