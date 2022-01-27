@@ -1,11 +1,12 @@
-import React, {useContext, useEffect, useRef, useState} from "react"
+import React, {useContext, useEffect, useRef, useState, useCallback} from "react"
 import {AutoComplete, Input, Spin} from "antd";
 import {formatNumber} from "../../lib/services/util/formatNumber";
 import {useRouter} from "next/router";
 import AppContext from "../../contexts/AppContext"
 import {getImageUrl} from "../../lib/services/util/getImageUrl";
 import Paths from "../../lib/routes/Paths";
-import {debounce, throttle} from "throttle-debounce";
+// import {debounce, throttle} from "throttle-debounce";
+import { debounce } from 'lodash';
 import {SearchOutlined} from "@ant-design/icons";
 import { getTokenListApi } from "../../lib/services/api/token";
 
@@ -56,6 +57,7 @@ const SearchBar = () => {
     }
 
     const handleAutocomplete = async (val) => {
+        console.log(val)
         const _collectionSuggestion = await getTokenListApi({
             q: val
         })
@@ -75,16 +77,26 @@ const SearchBar = () => {
         // }
     }
 
-    const handleChangeInput = async (e) => {
+    // function debounce(func, timeout = 1000){
+    //     console.log("AHJHJ")
+    //     let timer;
+    //     return (...args) => {
+    //         clearTimeout(timer);
+    //         console.log("NGUUU")
+    //         timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    //     };
+    // }
+
+    const handleChangeInput = (e) => {
         const currentInput = e.target.value
         setQuery(currentInput)
         setIsLoading(true)
-        if (currentInput.length < 5) {
-            throttle(1000, handleAutocomplete(currentInput))
-        } else {
-            debounce(500, handleAutocomplete(currentInput))
-        }
+        handleAutocompleteDebounce(currentInput)
     }
+
+    const handleAutocompleteDebounce = useCallback(debounce((currentInput) => {
+        handleAutocomplete(currentInput)
+    }, 500), [])
 
     const handleClickCollection = (item) => {
         router.push({
@@ -244,7 +256,7 @@ const SearchBar = () => {
                 // addonAfter={searchButton}
                 value={query}
                 onFocus={() => setFocusInput(true)}
-                onChange={(e) => handleChangeInput(e)}
+                onChange={handleChangeInput}
                 placeholder="Search..."
                 prefix={<SearchOutlined/>}
                 onPressEnter={() => handleSubmit()}
