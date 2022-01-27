@@ -22,3 +22,4 @@ export const SORT_BY_OPTIONS = [
         field: SORT_AND_FILTER_FIELD.PRICE
     }
 ]
+
