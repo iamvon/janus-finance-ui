@@ -16,19 +16,19 @@ import {
   SwitchVerticalIcon,
 } from '@heroicons/react/outline'
 import SwapTokenInfo from './SwapTokenInfo'
-import { useViewport } from '../../hook/useViewport'
+import { useViewport } from '../../../hook/useViewport'
 import {
   getTokenAccountsByOwnerWithWrappedSol,
   nativeToUi,
   zeroKey,
 } from '@blockworks-foundation/mango-client'
-import useLocalStorageState from '../../hook/useLocalStorageState'
+import useLocalStorageState from '../../../hook/useLocalStorageState'
 import { sortBy, sum } from 'lodash'
 import { numberFormatter } from './SwapTokenInfo'
 import Tooltip from './Tooltip'
 import SwapSettingsModal from './SwapSettingsModal'
 import Modal from './Modal'
-import { abbreviateAddress } from '../../utils'
+import { abbreviateAddress } from '../../../utils'
 
 const JupiterForm = ({
   inputMintAddress,
