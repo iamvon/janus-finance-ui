@@ -38,7 +38,7 @@ const Navigation = () => {
     const router = useRouter()
     const {publicKey} = useWallet();
 
-    console.log(router.pathname)
+    // console.log(router.pathname)
     const isActive = (menu) => {
         const pathName = router.pathname
         return pathName === menu

@@ -64,7 +64,10 @@ export const listToken = async ({page, size, query, orderBy, isTopTrending, isTo
     for (const [key, value] of Object.entries(orderBy)) {
         const vKey = convertFieldName(key)
         vSortBy[vKey] = value
-        if (vKey !== SEARCH_SORT_KEY) vQuery[vKey] = {$ne: null}
+        if (vKey === 'topTrendingRank') vQuery['isTopTrending'] = true
+        else if (vKey === 'topSellRank') vQuery['isTopSell'] = true
+        else if (vKey === 'topBuyRank') vQuery['isTopBuy'] = true
+        else if (vKey !== SEARCH_SORT_KEY) vQuery[vKey] = {$ne: null}
     }
 
     // console.log(rQuery)
@@ -86,6 +89,8 @@ export const listToken = async ({page, size, query, orderBy, isTopTrending, isTo
         // rQuery["extensions.coingeckoId"] = {$exists: true}
     }
 
+    // console.log("rQuery", rQuery)
+    // console.log("rSortby", rSortBy)
 
     const _getTotal = SolanaToken
         .countDocuments(rQuery)

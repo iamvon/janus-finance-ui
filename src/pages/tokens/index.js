@@ -146,9 +146,10 @@ const Token = (props) => {
         const value = e.target.value
         const selectedSortBy = SORT_BY_OPTIONS.find(i => i.value === value)
         setSortBy(selectedSortBy)
-        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const query = parseParamsToQuery(params, selectedSortBy, selectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
-        router.replace(url, undefined, {shallow: true}).then()
+        await router.replace(url, undefined, {shallow: true})
+        // console.log('url', url);
         await fetchData(query)
     };
 
