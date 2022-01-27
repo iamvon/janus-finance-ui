@@ -7,8 +7,6 @@ import {listTokenController} from "../../lib/controllers/token/listToken"
 import SolanaTokenItem from "../../components/SolanaTokenItem"
 import {AutoComplete, Empty, notification, Pagination, Radio} from "antd"
 import CN from "classnames"
-import {faChartLine} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {listTokenTagController} from "../../lib/controllers/token/listTokenTag"
 import querystring from 'query-string'
 import Paths from "../../lib/routes/Paths"
@@ -37,7 +35,7 @@ Object.values(SORT_AND_FILTER_FIELD).forEach((key) => {
 const Token = (props) => {
     const {
         solanaTokens, tokenTags,
-        // defaultQuery,
+        defaultQuery,
         defaultTotal,
         defaultPage,
         defaultSize,
@@ -52,7 +50,7 @@ const Token = (props) => {
     const [selectedTagList, setSelectedTagList] = useState(defaultTags);
     const [tagOptions, setTagOptions] = useState(initTagOptions);
 
-    const {searchQuery} = useContext(AppContext)
+    const {searchQuery, setSearchQuery} = useContext(AppContext)
     const [itemData, setItemData] = useState(solanaTokens)
     const [params, setParams] = useState({
         page: defaultPage,
@@ -65,6 +63,12 @@ const Token = (props) => {
 
     const router = useRouter()
     const {publicKey} = useWallet()
+
+    useEffect(() => {
+        // console.log('defaultQuery', defaultQuery)
+        defaultQuery && setSearchQuery(defaultQuery)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
         const fetchWishlist = async (_params) => {
@@ -88,17 +92,12 @@ const Token = (props) => {
         })
     }
 
-    // useEffect(() => {
-    //     const query = parseParamsToQuery(params, filter, sortBy, selectedCollections, searchQuery)
-    //     const url = parseQueryToUrl(query)
-    //     router.replace(url, undefined, {shallow: true}).then()
-    //     // if (firstRender) {
-    //     //     setFirstRender(false)
-    //     // } else {
-    //         fetchData().then()
-    //     // }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [params, sortBy, filter, selectedCollections, searchQuery])
+    useEffect(() => {
+        // console.log('searchQuery1', searchQuery)
+        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        fetchData(query).then()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [params, sortBy, searchQuery])
 
     const fetchData = async (_params) => {
         setLoading(true)
@@ -214,7 +213,7 @@ const Token = (props) => {
             )
         }) : (
             <div className="col-span-3 flex items-center justify-center w-full mt-5">
-                <Empty description="No asset found with this filter"/>
+                <Empty className={'text-white'} description="No asset found with this filter"/>
             </div>
         )
     }
@@ -460,31 +459,31 @@ const parseQueryToParams = (query) => {
     return result
 }
 
-const initFilter = (defaultFilter) => {
-    const result = {...initialFilterValue}
-    for (const [key, value] of Object.entries(defaultFilter)) {
-        const min = value.min
-        const max = value.max
-        if (!isNonValue(min)) {
-            try {
-                result[key].min = parseDataFromString(key, min)
-            } catch (e) {
-            }
-        }
-        if (!isNonValue(max)) {
-            try {
-                result[key].max = parseDataFromString(key, max)
-            } catch (e) {
-            }
-        }
-    }
-    return result
-}
+// const initFilter = (defaultFilter) => {
+//     const result = {...initialFilterValue}
+//     for (const [key, value] of Object.entries(defaultFilter)) {
+//         const min = value.min
+//         const max = value.max
+//         if (!isNonValue(min)) {
+//             try {
+//                 result[key].min = parseDataFromString(key, min)
+//             } catch (e) {
+//             }
+//         }
+//         if (!isNonValue(max)) {
+//             try {
+//                 result[key].max = parseDataFromString(key, max)
+//             } catch (e) {
+//             }
+//         }
+//     }
+//     return result
+// }
 
 const parseQueryToUrl = (query) => {
     const _query = JSON.parse(JSON.stringify(query))
     const queryString = querystring.stringify(_query, {skipNull: true, skipEmptyString: true})
-    return Paths.Token + "?" + queryString
+    return Paths.Tokens + "?" + queryString
 }
 
 

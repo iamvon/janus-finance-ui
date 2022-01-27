@@ -125,7 +125,7 @@ const Dashboard = (props) => {
                         Trending tokens
                     </div>
                     <div className={'view-all'}>
-                        <a href={Paths.Token} className={'text-base text-blue-800'}>View all <FontAwesomeIcon icon={faArrowRight}/></a>
+                        <a href={Paths.Tokens} className={'text-base text-blue-800'}>View all <FontAwesomeIcon icon={faArrowRight}/></a>
                     </div>
                 </div>
                 <div className={'grid grid-cols-2 gap-6 md:grid-cols-4'}>

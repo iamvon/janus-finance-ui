@@ -53,7 +53,7 @@ const Navigation = () => {
                         </Link>
                     </div>
                     <div className={CN("nav-item col-span-1 cursor-pointer", { 'text-blue-500': isActive('/collections') })}>
-                        <Link href={Paths.Token}>
+                        <Link href={Paths.Tokens}>
                             Assets
                         </Link>
                     </div>
