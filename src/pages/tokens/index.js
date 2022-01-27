@@ -375,7 +375,7 @@ export const getServerSideProps = async (context) => {
             defaultTotal: solanaTokens.total,
             defaultPage: solanaTokens.page,
             defaultSize: solanaTokens.size,
-            defaultFilter: (JSON.parse(JSON.stringify(params.filter))),
+            // defaultFilter: (JSON.parse(JSON.stringify(params.filter))),
             defaultSort: params.sortBy,
             defaultTags: params.tags ? isArray(params.tags) ? params.tags : [params.tags] : [],
             solanaTokens: JSON.parse(JSON.stringify(solanaTokens.items)),
