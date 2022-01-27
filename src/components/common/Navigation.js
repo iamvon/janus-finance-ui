@@ -63,11 +63,11 @@ const Navigation = () => {
                             Opportunity
                         </Link>
                     </div>
-                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/wishlist') })} >
-                        <Link href={Paths.Wishlist}>
-                            Wishlist
-                        </Link>
-                    </div>
+                    {/*<div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/wishlist') })} >*/}
+                    {/*    <Link href={Paths.Wishlist}>*/}
+                    {/*        Wishlist*/}
+                    {/*    </Link>*/}
+                    {/*</div>*/}
                 </div>
                 <div className={`header-search`}>
                     <SearchBar />

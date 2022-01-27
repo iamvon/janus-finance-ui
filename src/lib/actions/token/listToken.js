@@ -12,7 +12,6 @@ const SEARCH_SORT_KEY = 'score'
 
 const _getQuery = async (query) => {
     let vQuery = query.q ? {$text: {$search: query.q}} : {}
-    vQuery = {...vQuery, "extensions.coingeckoId": {$exists: true}}
 
     for (const key of Object.values(SORT_AND_FILTER_FIELD)) {
         if (query[key].min === undefined && query[key].max === undefined) {
@@ -71,8 +70,8 @@ export const listToken = async ({page, size, query, orderBy, isTopTrending, isTo
     // console.log(rQuery)
 
     // console.log('final sort by', vSortBy)
-    const rQuery = {}
-    const rSortBy = {}
+    const rQuery = {...vQuery}
+    const rSortBy = {...vSortBy}
 
     if (isTopTrending) {
         rQuery.isTopTrending = true
@@ -83,6 +82,8 @@ export const listToken = async ({page, size, query, orderBy, isTopTrending, isTo
     } else if (isTopBuy) {
         rQuery.isTopBuy = true
         rSortBy.topBuyRank = 1
+    } else {
+        // rQuery["extensions.coingeckoId"] = {$exists: true}
     }
 
 

@@ -1,16 +1,7 @@
 import React from "react"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faGlobe, faHeart as fullHeart} from "@fortawesome/free-solid-svg-icons"
+import {faHeart as fullHeart} from "@fortawesome/free-solid-svg-icons"
 import CN from "classnames"
-import {
-    faDiscord,
-    faFacebook,
-    faInstagram,
-    faMediumM,
-    faReddit,
-    faTelegram,
-    faTwitter
-} from "@fortawesome/free-brands-svg-icons"
 import {formatPriceNumber} from "../lib/helpers/number"
 import Paths from "../lib/routes/Paths"
 import {faHeart as outlineHeart} from "@fortawesome/free-regular-svg-icons"
@@ -20,7 +11,7 @@ const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
     const tags = token.tag
     const tags3first = tags.slice(0, 3);
     let tagsString = ''
-    if(tags3first.length > 0){
+    if (tags3first.length > 0) {
         tagsString = '#' + tags3first.join(', #')
     }
 
@@ -106,9 +97,9 @@ const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
                     {/*    }*/}
                     {/*</div>*/}
                     {/*<div className={'flex'}>*/}
-                        <div className={'price'}>
-                            $ {formatPriceNumber(token.price)}
-                        </div>
+                    <div className={'price'}>
+                        {token.price > 0 ? "$" + formatPriceNumber(token.price) : "-"}
+                    </div>
                     {/*</div>*/}
                 </div>
             </div>
