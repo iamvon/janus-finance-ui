@@ -8,5 +8,6 @@ export const DEFAULT_PAGE_SIZE = {
     SMALL_GRID: 16,
     EXTRA_SMALL_GRID: 8,
     TOP_TABLE: 10,
-    SCROLLER: 15
+    SCROLLER: 15,
+    HOME_GRID: 12
 }

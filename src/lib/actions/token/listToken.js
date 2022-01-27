@@ -52,7 +52,7 @@ const _getQuery = async (query) => {
 
 }
 
-export const listToken = async ({page, size, query, orderBy}) => {
+export const listToken = async ({page, size, query, orderBy, isTopTrending, isTopSell, isTopBuy}) => {
     await connectToDatabase()
     const SolanaToken = getModel('SolanaToken')
 
@@ -71,14 +71,37 @@ export const listToken = async ({page, size, query, orderBy}) => {
     // console.log(rQuery)
 
     // console.log('final sort by', vSortBy)
+    const rQuery = {}
+    const rSortBy = {}
+
+    if (isTopTrending) {
+        rQuery.isTopTrending = true
+        rSortBy.topTrendingRank = 1
+    } else if (isTopSell) {
+        rQuery.isTopSell = true
+        rSortBy.topSellRank = 1
+    } else if (isTopBuy) {
+        rQuery.isTopBuy = true
+        rSortBy.topBuyRank = 1
+    }
+
 
     const _getTotal = SolanaToken
-        .countDocuments(vQuery)
+        .countDocuments(rQuery)
         .lean()
 
     const _getItems = SolanaToken
-        .find(vQuery)
-        .sort(vSortBy)
+        .find(rQuery)
+        .select({
+            lastChangePercentUpdated: 0,
+            isTopSell: 0,
+            topSellRank: 0,
+            isTopBuy: 0,
+            topBuyRank: 0,
+            isTopTrending: 0,
+            topTrendingRank: 0
+        })
+        .sort(rSortBy)
         .skip(skip)
         .limit(size)
         .lean()
