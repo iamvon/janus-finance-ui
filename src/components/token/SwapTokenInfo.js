@@ -347,20 +347,20 @@ const SwapTokenInfo = ({
                                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 grid-flow-row p-4 gap-4">
                                         {inputTokenInfo.market_cap_rank ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     Market Cap Rank
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     #{inputTokenInfo.market_cap_rank}
                                                 </div>
                                             </div>
                                         ) : null}
                                         {inputTokenInfo.market_data?.market_cap ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     Market Cap
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data?.market_cap?.usd
@@ -370,10 +370,10 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {inputTokenInfo.market_data.total_volume?.usd ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     24-hour Volume
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data.total_volume?.usd
@@ -383,16 +383,16 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {inputTokenInfo.market_data?.circulating_supply ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     Token Supply
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data.circulating_supply
                                                     )}
                                                 </div>
                                                 {inputTokenInfo.market_data?.max_supply ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-th-fgd-2 text-sm mt-1">
                                                         Max Supply:{' '}
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.max_supply
@@ -403,11 +403,11 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {inputTokenInfo.market_data?.ath?.usd ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     All-Time High
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.ath.usd
@@ -416,7 +416,7 @@ const SwapTokenInfo = ({
                                                     {inputTokenInfo.market_data?.ath_change_percentage
                                                         ?.usd ? (
                                                         <div
-                                                            className={`ml-1.5 mt-2 text-xs ${inputTokenInfo.market_data
+                                                            className={`ml-1.5 mt-2 text-sm mt-1 ${inputTokenInfo.market_data
                                                                 ?.ath_change_percentage?.usd >= 0
                                                                 ? 'text-th-green'
                                                                 : 'text-th-red'
@@ -430,7 +430,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {inputTokenInfo.market_data?.ath_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             inputTokenInfo.market_data.ath_date.usd
                                                         ).fromNow()}
@@ -440,11 +440,11 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {inputTokenInfo.market_data?.atl?.usd ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     All-Time Low
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.atl.usd
@@ -471,7 +471,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {inputTokenInfo.market_data?.atl_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             inputTokenInfo.market_data.atl_date.usd
                                                         ).fromNow()}
@@ -556,20 +556,20 @@ const SwapTokenInfo = ({
                                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 grid-flow-row p-4 gap-4">
                                         {outputTokenInfo.market_cap_rank ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     Market Cap Rank
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     #{outputTokenInfo.market_cap_rank}
                                                 </div>
                                             </div>
                                         ) : null}
                                         {outputTokenInfo.market_data?.market_cap ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     Market Cap
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data?.market_cap?.usd
@@ -579,10 +579,10 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {outputTokenInfo.market_data.total_volume?.usd ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     24-hour Volume
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data.total_volume?.usd
@@ -592,16 +592,16 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {outputTokenInfo.market_data?.circulating_supply ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     Token Supply
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data.circulating_supply
                                                     )}
                                                 </div>
                                                 {outputTokenInfo.market_data?.max_supply ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         Max Supply:{' '}
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.max_supply
@@ -612,11 +612,11 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {outputTokenInfo.market_data?.ath?.usd ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     All-Time High
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.ath.usd
@@ -639,7 +639,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {outputTokenInfo.market_data?.ath_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             outputTokenInfo.market_data.ath_date.usd
                                                         ).fromNow()}
@@ -649,11 +649,11 @@ const SwapTokenInfo = ({
                                         ) : null}
                                         {outputTokenInfo.market_data?.atl?.usd ? (
                                             <div className="Info">
-                                                <div className="text-th-fgd-3 text-xs">
+                                                <div className="text-sm mb-1">
                                                     All-Time Low
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.atl.usd
@@ -680,7 +680,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {outputTokenInfo.market_data?.atl_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             outputTokenInfo.market_data.atl_date.usd
                                                         ).fromNow()}
