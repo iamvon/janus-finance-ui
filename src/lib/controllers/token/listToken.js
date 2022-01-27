@@ -1,7 +1,6 @@
 import {DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE} from "/src/lib/constants/pagination"
 import {SORT_AND_FILTER_FIELD} from "/src/lib/helpers/sort-and-filter-field/token"
 import {listToken} from "/src/lib/actions/token/listToken"
-import {ta} from "react-date-range/dist/locale"
 
 export const listTokenController = async (req) => {
     const {
@@ -9,6 +8,9 @@ export const listTokenController = async (req) => {
         size,
         order_by: orderBy,
         order_direction: orderDirection,
+        is_top_trending: isTopTrending,
+        is_top_sell: isTopSell,
+        is_top_buy: isTopBuy,
     } = {...req.query}
 
     const query = req.query
@@ -39,6 +41,9 @@ export const listTokenController = async (req) => {
         page: vPage,
         size: vSize,
         query: vQuery,
-        orderBy: _orderBy
+        orderBy: _orderBy,
+        isTopTrending,
+        isTopSell,
+        isTopBuy,
     })
 }

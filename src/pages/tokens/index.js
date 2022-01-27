@@ -119,9 +119,9 @@ const Token = (props) => {
     };
 
     const onSelectCustomTag = async (data) => {
-        setSelectedTagList(_.uniq([...selectedTagList, data]));
-
-        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const newTagList = _.uniq([...selectedTagList, data])
+        setSelectedTagList(newTagList);
+        const query = parseParamsToQuery(params, sortBy, newTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
@@ -130,8 +130,7 @@ const Token = (props) => {
     const onRemoveTag = async (tag) => {
         const newSelectedTagList = selectedTagList.filter(i => i !== tag)
         setSelectedTagList(newSelectedTagList)
-
-        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const query = parseParamsToQuery(params, sortBy, newSelectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
@@ -146,9 +145,10 @@ const Token = (props) => {
         const value = e.target.value
         const selectedSortBy = SORT_BY_OPTIONS.find(i => i.value === value)
         setSortBy(selectedSortBy)
-        const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
+        const query = parseParamsToQuery(params, selectedSortBy, selectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
-        router.replace(url, undefined, {shallow: true}).then()
+        await router.replace(url, undefined, {shallow: true})
+        // console.log('url', url);
         await fetchData(query)
     };
 
@@ -375,7 +375,7 @@ export const getServerSideProps = async (context) => {
             defaultTotal: solanaTokens.total,
             defaultPage: solanaTokens.page,
             defaultSize: solanaTokens.size,
-            defaultFilter: (JSON.parse(JSON.stringify(params.filter))),
+            // defaultFilter: (JSON.parse(JSON.stringify(params.filter))),
             defaultSort: params.sortBy,
             defaultTags: params.tags ? isArray(params.tags) ? params.tags : [params.tags] : [],
             solanaTokens: JSON.parse(JSON.stringify(solanaTokens.items)),

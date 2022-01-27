@@ -1,4 +1,19 @@
 .opportunity-table {
+  .ant-pagination {
+    place-content: center;
+  }
+}
+
+.wishlist-table {
+  .ant-pagination {
+    place-content: center;
+  }
+}
+
+.ant-table {
+  border-radius: 8px;
+  background-color: transparent;
+
   .ant-table-thead {
     .ant-table-column-title {
       color: #FFFFFFA3;
@@ -23,7 +38,7 @@
     }
   }
 
-  .ant-table-cell-row-hover:hover {
+  .ant-table-cell-row-hover, .ant-table-cell-row-hover:hover {
     background: #232D36 !important;
   }
 
@@ -36,16 +51,6 @@
       background: #232D36 !important;
     }
   }
-
-
-  .ant-pagination {
-    place-content: center;
-  }
-}
-
-.ant-table {
-  border-radius: 8px;
-  background-color: transparent;
 
   .ant-table-thead {
     th:first-child {

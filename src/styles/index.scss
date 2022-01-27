@@ -36,16 +36,20 @@ html {
 }
 
 body {
-  font-family: 'Poppins', sans-serif !important;
+  font-family: 'SF Pro Display', 'DM Sans', 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
-  font-size: 0.75rem;
+  font-size: 1rem;
 }
 
 #__next{
   min-height: 100vh;
   position: relative;
+}
+
+.text-sf-pro{
+  font-family: "SF Pro Display", sans-serif !important;
 }
 
 .primary-font {
@@ -441,5 +445,9 @@ body {
     padding-left: 20rem;
     padding-right: 20rem;
   }
+}
+
+.ant-table-wrapper {
+  width: 100%
 }
 

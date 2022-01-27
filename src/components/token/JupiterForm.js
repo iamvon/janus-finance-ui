@@ -352,13 +352,24 @@ const JupiterForm = ({
   const outputTokenInfos = outputTokenInfo ? (outputTokenInfo) : null
 
   return (
-    <div className="grid grid-cols-12 lg:space-x-4">
-      <div className="col-span-12 xl:col-span-10 xl:col-start-2 ">
+    <div className="grid grid-cols-12 lg:space-x-4 pb-20">
+      <div className="col-span-12 xl:col-start-1">
         <div className="flex flex-col md:flex-row md:space-x-6">
-          <div className="w-full md:w-1/2  lg:w-1/3">
+          <div className="py-4 md:py-0 w-full md:w-1/2 lg:w-2/3">
+            {inputTokenInfo &&
+            outputTokenInfo && (
+                <SwapTokenInfo
+                    inputTokenId={inputTokenInfos?.extensions?.coingeckoId}
+                    outputTokenId={outputTokenInfos?.extensions?.coingeckoId}
+                />
+            )}
+          </div>
+          <div className="w-full md:w-1/2 lg:w-1/3">
             <div className="relative z-10">
-              <div className="bg-th-bkg-2 rounded-lg p-6">
-                <div className="flex justify-between">
+              <div className="bg-th-bkg-2 rounded-lg p-6 SwapBox">
+                <div className="font-semibold text-base mb-4">Swap</div>
+
+                <div className="flex justify-between mb-2">
                   <label
                     htmlFor="inputMint"
                     className="block text-sm font-semibold"
@@ -366,7 +377,7 @@ const JupiterForm = ({
                     Pay
                   </label>
                   <div className="space-x-3">
-                    <label htmlFor="amount" className="text-th-fgd-3 text-xs">
+                    <label htmlFor="amount" className="text-sm">
                       Balance: {inputWalletBalance()}
                     </label>
                     {connected ? (
@@ -397,7 +408,8 @@ const JupiterForm = ({
                     ) : null}
                   </div>
                 </div>
-                <div className="grid grid-cols-2 mt-2">
+
+                <div className="grid grid-cols-2 InputToken">
                   <div className="col-span-1">
                     <button
                       className="hover:bg-th-bkg-3 -ml-2 p-2"
@@ -406,25 +418,25 @@ const JupiterForm = ({
                       <div className="flex h-8 items-center">
                         {inputTokenInfo?.logoURI ? (
                           <img
-                            className="rounded-full"
+                            className="rounded-full TokenIcon"
                             src={inputTokenInfo?.logoURI}
                             width="24"
                             height="24"
                             alt={inputTokenInfo?.symbol}
                           />
                         ) : null}
-                        <div className="text-base xl:text-lg ml-2">
+                        <div className="ml-2 TokenName">
                           {inputTokenInfo?.symbol}
                         </div>
                         <ChevronDownIcon className="flex-shrink-0 h-5 w-5 ml-1 text-th-fgd-3" />
                       </div>
                     </button>
                   </div>
-                  <div className="col-span-1">
+                  <div className="col-span-1 flex items-center">
                     <input
                       name="amount"
                       id="amount"
-                      className="bg-th-bkg-1 border border-th-fgd-4 default-transition font-bold pr-4 h-12 focus:outline-none rounded-md text-base text-right tracking-wide w-full hover:border-th-primary focus:border-th-primary"
+                      className="TokenValue"
                       value={formValue.amount || ''}
                       placeholder="0.00"
                       type="number"
@@ -442,21 +454,22 @@ const JupiterForm = ({
                   </div>
                 </div>
 
-                <div className="flex justify-center my-4">
-                  <button onClick={handleSwitchMints}>
+                <div className="flex justify-center my-2">
+                  <button onClick={handleSwitchMints} className="IconSwap">
                     <SwitchVerticalIcon className="default-transition h-8 w-8 rounded-full p-1.5 bg-th-bkg-4 text-th-fgd-1 hover:text-th-primary" />
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <label htmlFor="outputMint" className="font-semibold">
+                <div className="flex items-center justify-between mb-2">
+                  <label htmlFor="outputMint" className="font-semibold text-sm">
                     Receive
                   </label>
-                  <span className="text-th-fgd-3 text-xs">
+                  <span className="text-sm">
                     Balance: {outputWalletBalance()}
                   </span>
                 </div>
-                <div className="grid grid-cols-2 mt-2">
+
+                <div className="grid grid-cols-2 InputToken">
                   <div className="col-span-1">
                     <button
                       className="flex h-12 items-center hover:bg-th-bkg-3 -ml-2 p-2"
@@ -464,24 +477,24 @@ const JupiterForm = ({
                     >
                       {outputTokenInfo?.logoURI ? (
                         <img
-                          className="rounded-full"
+                          className="rounded-full TokenIcon"
                           src={outputTokenInfo?.logoURI}
                           width="24"
                           height="24"
                           alt={outputTokenInfo?.symbol}
                         />
                       ) : null}
-                      <div className="text-base xl:text-lg ml-2">
+                      <div className="ml-2 TokenName">
                         {outputTokenInfo?.symbol}
                       </div>
                       {/* <ChevronDownIcon className="flex-shrink-0 h-5 w-5 ml-1 text-th-fgd-3" /> */}
                     </button>
                   </div>
-                  <div className="col-span-1 relative">
+                  <div className="col-span-1 relative flex items-center">
                     <input
                       name="amount"
                       id="amount"
-                      className="bg-th-bkg-3 border border-th-bkg-4 cursor-not-allowed font-bold pr-4 h-12 focus:outline-none rounded-md text-lg text-right tracking-wide w-full"
+                      className="TokenValue"
                       disabled
                       placeholder="0.00"
                       value={
@@ -806,6 +819,7 @@ const JupiterForm = ({
                     Error in Jupiter – Try changing your input
                   </div>
                 )}
+
                 <Button
                   disabled={swapDisabled}
                   onClick={async () => {
@@ -872,13 +886,13 @@ const JupiterForm = ({
                       }
                     }
                   }}
-                  className="h-12 mt-6 text-base w-full"
+                  className="w-full btn btn-success mt-4"
                 >
                   {connected
                     ? swapping
                       ? `Swapping...`
                       : `Swap`
-                    : `Connect Wallet`}
+                    : `Connect wallet`}
                 </Button>
               </div>
 
@@ -997,7 +1011,7 @@ const JupiterForm = ({
                   setSlippage={setSlippage}
                 />
               ) : null}
-              {connected && !hasSwapped ? (
+              {/* {connected && !hasSwapped ? (
                 <Modal isOpen={!hasSwapped} onClose={() => setHasSwapped(true)}>
                   <div className="flex flex-col justify-center">
                     <div className="text-center text-th-fgd-3">
@@ -1005,7 +1019,7 @@ const JupiterForm = ({
                     </div>
                   </div>
                 </Modal>
-              ) : null}
+              ) : null} */}
               {showInputTokenSelect ? (
                 <SwapTokenSelect
                   isOpen={showInputTokenSelect}
@@ -1036,15 +1050,6 @@ const JupiterForm = ({
                 />
               ) : null}
             </div>
-          </div>
-          <div className="py-4 md:py-0 w-full md:w-1/2 lg:w-2/3">
-            {inputTokenInfo &&
-              outputTokenInfo && (
-                <SwapTokenInfo
-                  inputTokenId={inputTokenInfos?.extensions?.coingeckoId}
-                  outputTokenId={outputTokenInfos?.extensions?.coingeckoId}
-                />
-              )}
           </div>
         </div>
       </div>

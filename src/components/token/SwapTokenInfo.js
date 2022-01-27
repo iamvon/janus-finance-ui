@@ -153,43 +153,49 @@ const SwapTokenInfo = ({
         : 0
 
     return (
-        <div>
+        <div className="ChartBox">
             {chartData.length && baseTokenId && quoteTokenId ? (
-                <div className="py-6">
+                <div className="p-5 border rounded-2xl bg-[#232D36] border-[#34434F]">
+
+                    {
+                        inputTokenInfo && outputTokenInfo && (
+                            <div className="mb-4">
+                                <div className="font-semibold text-sm">{`${inputTokenInfo?.symbol?.toUpperCase()}/${outputTokenInfo?.symbol?.toUpperCase()}`}</div>
+                            </div>
+                        )
+                    }
+
                     <div className="flex items-start justify-between">
                         <div>
-                            {inputTokenInfo && outputTokenInfo ? (
-                                <div className="text-th-fgd-3 text-sm">{`${inputTokenInfo?.symbol?.toUpperCase()}/${outputTokenInfo?.symbol?.toUpperCase()}`}</div>
-                            ) : null}
                             {mouseData ? (
                                 <>
-                                    <div className="font-bold text-lg text-th-fgd-1">
+                                    <div className="font-bold text-[32px]">
                                         {numberFormatter.format(mouseData['price'])}
                                         <span
-                                            className={`ml-2 text-xs ${chartChange >= 0 ? 'text-th-green' : 'text-th-red'
+                                            className={`ml-2 text-base ${chartChange >= 0 ? 'text-[#00FFA3]' : 'text-[#DC1FFF]'
                                                 }`}
                                         >
                                             {chartChange.toFixed(2)}%
                                         </span>
                                     </div>
-                                    <div className="text-xs font-normal text-th-fgd-3">
+                                    <div className="text-sm font-medium">
                                         {dayjs(mouseData['time']).format('DD MMM YY, h:mma')}
                                     </div>
                                 </>
                             ) : (
                                 <>
-                                    <div className="font-bold text-lg text-th-fgd-1">
+                                    <div className="font-bold text-[32px]">
                                         {numberFormatter.format(
                                             chartData[chartData.length - 1]['price']
                                         )}
                                         <span
-                                            className={`ml-2 text-xs ${chartChange >= 0 ? 'text-th-green' : 'text-th-red'
+                                            className={`ml-2 text-base ${chartChange >= 0 ? 'text-[#00FFA3]' : 'text-[#DC1FFF]'
                                                 }`}
                                         >
                                             {chartChange.toFixed(2)}%
                                         </span>
                                     </div>
-                                    <div className="text-xs font-normal text-th-fgd-3">
+                                    <div className="text-sm font-medium">
                                         {dayjs(chartData[chartData.length - 1]['time']).format(
                                             'DD MMM YY, h:mma'
                                         )}
@@ -197,13 +203,38 @@ const SwapTokenInfo = ({
                                 </>
                             )}
                         </div>
-                        <IconButton onClick={() => setHideChart(!hideChart)}>
-                            {hideChart ? (
-                                <LineChartIcon className="w-4 h-4" />
-                            ) : (
-                                <EyeOffIcon className="w-4 h-4" />
-                            )}
-                        </IconButton>
+                        {/*<IconButton onClick={() => setHideChart(!hideChart)}>*/}
+                        {/*    {hideChart ? (*/}
+                        {/*        <LineChartIcon className="w-4 h-4" />*/}
+                        {/*    ) : (*/}
+                        {/*        <EyeOffIcon className="w-4 h-4" />*/}
+                        {/*    )}*/}
+                        {/*</IconButton>*/}
+
+                        <div className="flex justify-end PresetRanges mt-2">
+                            <span
+                                className={`Range ${daysToShow === 1 && 'active'
+                                }`}
+                                onClick={() => setDaysToShow(1)}
+                            >
+                                24H
+                            </span>
+                            <span
+                                className={`Range ${daysToShow === 7 && 'active'
+                                }`}
+                                onClick={() => setDaysToShow(7)}
+                            >
+                                7D
+                            </span>
+                            <span
+                                className={`Range ${daysToShow === 30 && 'active'
+                                }`}
+                                onClick={() => setDaysToShow(30)}
+                            >
+                                30D
+                            </span>
+                        </div>
+
                     </div>
                     {!hideChart ? (
                         <div className="h-52 mt-4 w-full" ref={observe}>
@@ -215,22 +246,22 @@ const SwapTokenInfo = ({
                                 onMouseLeave={handleMouseLeave}
                             >
                                 <Tooltip
-                                    cursor={{
-                                        strokeOpacity: 0,
-                                    }}
+                                    // cursor={{
+                                    //     strokeOpacity: 0,
+                                    // }}
                                     content={<></>}
                                 />
                                 <defs>
                                     <linearGradient id="gradientArea" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#1dde98" stopOpacity={0.9} />
-                                        <stop offset="90%" stopColor="#1dde98" stopOpacity={0} />
+                                        <stop offset="0%" stopColor={chartChange > 0 ? "#00FFA3" : "#DC1FFF"} stopOpacity={0.9} />
+                                        <stop offset="90%" stopColor={chartChange > 0 ? "#00FFA3" : "#DC1FFF"} stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <Area
                                     isAnimationActive={true}
-                                    type="monotone"
+                                    type="linear"
                                     dataKey="price"
-                                    stroke="#1dde98"
+                                    stroke={chartChange > 0 ? "#00FFA3" : "#DC1FFF"}
                                     fill="url(#gradientArea)"
                                 />
                                 <XAxis dataKey="time" hide />
@@ -241,29 +272,6 @@ const SwapTokenInfo = ({
                                     hide
                                 />
                             </AreaChart>
-                            <div className="flex justify-end">
-                                <button
-                                    className={`default-transition font-bold px-3 py-2 text-th-fgd-1 text-xs hover:text-th-primary focus:outline-none ${daysToShow === 1 && 'text-th-primary'
-                                        }`}
-                                    onClick={() => setDaysToShow(1)}
-                                >
-                                    24H
-                                </button>
-                                <button
-                                    className={`default-transition font-bold px-3 py-2 text-th-fgd-1 text-xs hover:text-th-primary focus:outline-none ${daysToShow === 7 && 'text-th-primary'
-                                        }`}
-                                    onClick={() => setDaysToShow(7)}
-                                >
-                                    7D
-                                </button>
-                                <button
-                                    className={`default-transition font-bold px-3 py-2 text-th-fgd-1 text-xs hover:text-th-primary focus:outline-none ${daysToShow === 30 && 'text-th-primary'
-                                        }`}
-                                    onClick={() => setDaysToShow(30)}
-                                >
-                                    30D
-                                </button>
-                            </div>
                         </div>
                     ) : null}
                 </div>
@@ -275,12 +283,12 @@ const SwapTokenInfo = ({
             )}
 
             {inputTokenInfo && inputTokenId ? (
-                <div className="w-full">
+                <div className="w-full mt-6 CoinDetails">
                     <Disclosure>
                         {({ open }) => (
                             <>
                                 <Disclosure.Button
-                                    className={`border border-th-bkg-4 default-transition flex items-center justify-between mt-6 p-3 rounded-md w-full hover:bg-th-bkg-2 ${open
+                                    className={`default-transition flex items-center justify-between p-3 w-full ${open
                                         ? 'border-b-transparent rounded-b-none'
                                         : 'transform rotate-360'
                                         }`}
@@ -295,18 +303,18 @@ const SwapTokenInfo = ({
                                             />
                                         ) : null}
                                         <div className="ml-2.5 text-left">
-                                            <h2 className="font-bold text-base text-th-fgd-1">
+                                            <div className="font-semibold text-base">
                                                 {inputTokenInfo?.symbol?.toUpperCase()}
-                                            </h2>
+                                            </div>
                                             <div className="font-normal text-th-fgd-3 text-xs">
                                                 {inputTokenInfo.name}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center">
-                                        <div className="flex items-center space-x-3">
+                                        <div className="flex items-center">
                                             {inputTokenInfo.market_data?.current_price?.usd ? (
-                                                <div className="font-normal text-th-fgd-1">
+                                                <div className="text-sm font-medium">
                                                     $
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data.current_price.usd
@@ -316,7 +324,7 @@ const SwapTokenInfo = ({
                                             {inputTokenInfo.market_data
                                                 ?.price_change_percentage_24h ? (
                                                 <div
-                                                    className={`font-normal text-th-fgd-1 ${inputTokenInfo.market_data
+                                                    className={`text-sm font-medium ml-6 ${inputTokenInfo.market_data
                                                         .price_change_percentage_24h >= 0
                                                         ? 'text-th-green'
                                                         : 'text-th-red'
@@ -330,29 +338,29 @@ const SwapTokenInfo = ({
                                             ) : null}
                                         </div>
                                         <ChevronDownIcon
-                                            className={`default-transition h-6 ml-2 w-6 text-th-fgd-3 ${open ? 'transform rotate-180' : 'transform rotate-360'
+                                            className={`default-transition h-6 ml-7 w-6 text-th-fgd-3 ${open ? 'transform rotate-180' : 'transform rotate-360'
                                                 }`}
                                         />
                                     </div>
                                 </Disclosure.Button>
                                 <Disclosure.Panel>
-                                    <div className="border border-th-bkg-4 border-t-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 grid-flow-row p-3 rounded-b-md">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 grid-flow-row p-4 gap-4">
                                         {inputTokenInfo.market_cap_rank ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     Market Cap Rank
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     #{inputTokenInfo.market_cap_rank}
                                                 </div>
                                             </div>
                                         ) : null}
                                         {inputTokenInfo.market_data?.market_cap ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     Market Cap
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data?.market_cap?.usd
@@ -361,11 +369,11 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {inputTokenInfo.market_data.total_volume?.usd ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     24-hour Volume
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data.total_volume?.usd
@@ -374,17 +382,17 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {inputTokenInfo.market_data?.circulating_supply ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     Token Supply
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     {numberFormatter.format(
                                                         inputTokenInfo.market_data.circulating_supply
                                                     )}
                                                 </div>
                                                 {inputTokenInfo.market_data?.max_supply ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-th-fgd-2 text-sm mt-1">
                                                         Max Supply:{' '}
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.max_supply
@@ -394,12 +402,12 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {inputTokenInfo.market_data?.ath?.usd ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     All-Time High
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.ath.usd
@@ -408,7 +416,7 @@ const SwapTokenInfo = ({
                                                     {inputTokenInfo.market_data?.ath_change_percentage
                                                         ?.usd ? (
                                                         <div
-                                                            className={`ml-1.5 mt-2 text-xs ${inputTokenInfo.market_data
+                                                            className={`ml-1.5 mt-2 text-sm mt-1 ${inputTokenInfo.market_data
                                                                 ?.ath_change_percentage?.usd >= 0
                                                                 ? 'text-th-green'
                                                                 : 'text-th-red'
@@ -422,7 +430,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {inputTokenInfo.market_data?.ath_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             inputTokenInfo.market_data.ath_date.usd
                                                         ).fromNow()}
@@ -431,12 +439,12 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {inputTokenInfo.market_data?.atl?.usd ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     All-Time Low
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.atl.usd
@@ -463,7 +471,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {inputTokenInfo.market_data?.atl_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             inputTokenInfo.market_data.atl_date.usd
                                                         ).fromNow()}
@@ -484,12 +492,12 @@ const SwapTokenInfo = ({
             )}
 
             {outputTokenInfo && outputTokenId ? (
-                <div className="w-full">
+                <div className="w-full CoinDetails mt-4">
                     <Disclosure>
                         {({ open }) => (
                             <>
                                 <Disclosure.Button
-                                    className={`border border-th-bkg-4 default-transition flex items-center justify-between mt-3 p-3 rounded-md w-full hover:bg-th-bkg-2 ${open
+                                    className={`default-transition flex items-center justify-between p-3 w-full ${open
                                         ? 'border-b-transparent rounded-b-none'
                                         : 'transform rotate-360'
                                         }`}
@@ -504,18 +512,18 @@ const SwapTokenInfo = ({
                                             />
                                         ) : null}
                                         <div className="ml-2.5 text-left">
-                                            <h2 className="font-bold text-base text-th-fgd-1">
+                                            <div className="font-semibold text-base">
                                                 {outputTokenInfo?.symbol?.toUpperCase()}
-                                            </h2>
+                                            </div>
                                             <div className="font-normal text-th-fgd-3 text-xs">
                                                 {outputTokenInfo.name}
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center">
-                                        <div className="flex items-center space-x-3">
+                                        <div className="flex items-center">
                                             {outputTokenInfo.market_data?.current_price?.usd ? (
-                                                <div className="font-normal text-th-fgd-1">
+                                                <div className="text-sm font-medium">
                                                     $
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data.current_price.usd
@@ -525,7 +533,7 @@ const SwapTokenInfo = ({
                                             {outputTokenInfo.market_data
                                                 ?.price_change_percentage_24h ? (
                                                 <div
-                                                    className={`font-normal text-th-fgd-1 ${outputTokenInfo.market_data
+                                                    className={`text-sm font-medium ml-6 ${outputTokenInfo.market_data
                                                         .price_change_percentage_24h >= 0
                                                         ? 'text-th-green'
                                                         : 'text-th-red'
@@ -539,29 +547,29 @@ const SwapTokenInfo = ({
                                             ) : null}
                                         </div>
                                         <ChevronDownIcon
-                                            className={`default-transition h-6 ml-2 w-6 text-th-fgd-3 ${open ? 'transform rotate-180' : 'transform rotate-360'
+                                            className={`default-transition h-6 ml-7 w-6 text-th-fgd-3 ${open ? 'transform rotate-180' : 'transform rotate-360'
                                                 }`}
                                         />
                                     </div>
                                 </Disclosure.Button>
                                 <Disclosure.Panel>
-                                    <div className="border border-th-bkg-4 border-t-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 grid-flow-row p-3 rounded-b-md">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 grid-flow-row p-4 gap-4">
                                         {outputTokenInfo.market_cap_rank ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     Market Cap Rank
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     #{outputTokenInfo.market_cap_rank}
                                                 </div>
                                             </div>
                                         ) : null}
                                         {outputTokenInfo.market_data?.market_cap ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     Market Cap
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data?.market_cap?.usd
@@ -570,11 +578,11 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {outputTokenInfo.market_data.total_volume?.usd ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     24-hour Volume
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     $
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data.total_volume?.usd
@@ -583,17 +591,17 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {outputTokenInfo.market_data?.circulating_supply ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     Token Supply
                                                 </div>
-                                                <div className="font-bold text-th-fgd-1 text-lg">
+                                                <div className="font-semibold text-xl">
                                                     {numberFormatter.format(
                                                         outputTokenInfo.market_data.circulating_supply
                                                     )}
                                                 </div>
                                                 {outputTokenInfo.market_data?.max_supply ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         Max Supply:{' '}
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.max_supply
@@ -603,12 +611,12 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {outputTokenInfo.market_data?.ath?.usd ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     All-Time High
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.ath.usd
@@ -631,7 +639,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {outputTokenInfo.market_data?.ath_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             outputTokenInfo.market_data.ath_date.usd
                                                         ).fromNow()}
@@ -640,12 +648,12 @@ const SwapTokenInfo = ({
                                             </div>
                                         ) : null}
                                         {outputTokenInfo.market_data?.atl?.usd ? (
-                                            <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
-                                                <div className="text-th-fgd-3 text-xs">
+                                            <div className="Info">
+                                                <div className="text-sm mb-1">
                                                     All-Time Low
                                                 </div>
                                                 <div className="flex">
-                                                    <div className="font-bold text-th-fgd-1 text-lg">
+                                                    <div className="font-semibold text-xl">
                                                         $
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.atl.usd
@@ -672,7 +680,7 @@ const SwapTokenInfo = ({
                                                     ) : null}
                                                 </div>
                                                 {outputTokenInfo.market_data?.atl_date?.usd ? (
-                                                    <div className="text-th-fgd-2 text-xs">
+                                                    <div className="text-sm mt-1">
                                                         {dayjs(
                                                             outputTokenInfo.market_data.atl_date.usd
                                                         ).fromNow()}

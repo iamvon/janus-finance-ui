@@ -39,6 +39,8 @@ export const ENV = {
     Devnet: 103,
 }
 
+export const lamportsValueSolana = 1 / 1000000000
+
 export const SOLANA_CHAIN_ID = CLUSTER === "mainnet-beta"
     ? ENV.MainnetBeta
     : CLUSTER === "testnet"
@@ -46,3 +48,9 @@ export const SOLANA_CHAIN_ID = CLUSTER === "mainnet-beta"
         : ENV.Devnet;
 
 export const SonarWatchEnpoint = "https://api.sonar.watch"
+
+const liquidityPoolMapping = {
+    'https://www.mercurial.finance/': 'https://mercurial.finance/api/pools',
+    'https://api.raydium.io/': 'https://api.raydium.io/pairs',
+    'https://api.orca.so': 'https://api.orca.so/allPools',
+}

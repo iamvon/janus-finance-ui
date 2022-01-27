@@ -125,4 +125,4 @@ const SwapTokenSelect = ({
     )
 }
 
-export default memo(SwapTokenSelect)
+export default SwapTokenSelect
