@@ -10,6 +10,12 @@ const TokenSchema = new Schema(
         price: {
             type: Number
         },
+        marketcap: {
+            type: Number
+        },
+        volume: {
+            type: Number
+        },
         address: {
             type: String,
             unique: true,
@@ -96,8 +102,9 @@ const TokenSchema = new Schema(
             default: false
         },
     },
-    { timestamps: true }
+    {timestamps: true}
 )
+
 
 TokenSchema.index({name: 'text', address: 'text', symbol: 'text'});
 
