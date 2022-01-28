@@ -13,15 +13,18 @@ import Link from "next/link"
 import CopyIcon from "../../components/common/CopyIcon"
 import {faCopy, faInfo, faInfoCircle, faSearch} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import { SearchOutlined } from '@ant-design/icons';
+import {SearchOutlined} from '@ant-design/icons'
 import {useSolWalletScan} from '../../hook/useSolWalletScan'
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import {useConnection, useWallet} from '@solana/wallet-adapter-react'
 import {renderSolscanUrl} from "../../lib/helpers/solscan"
+import {renderPlatformIconUrl} from "../../lib/helpers/platform/icon"
+import Image from "next/image"
+import PlatformIcon from "../../components/PlatformIcon"
 
 const rowClassName = 'hover:bg-[#232D36]'
 
 const Opportunity = ({totalPool}) => {
-    
+
     const searchInput = useRef()
     const [tableData, setTableData] = useState([])
     const [inputValue, setInputValue] = useState('')
@@ -31,29 +34,32 @@ const Opportunity = ({totalPool}) => {
     const [userToken, setUserToken] = useState([])
     const [isFilterByUserTokens, setFilterByUserTokens] = useState(false)
     const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
+    const [searchedFields, setSearchedFields] = useState([])
     const {tokens, loading, error} = useSolWalletScan()
-    const { connection } = useConnection();
-    const { publicKey } = useWallet();
+    const {connection} = useConnection()
+    const {publicKey} = useWallet()
+    const platformFilterRef = useRef()
+    const assetFilterRef = useWallet()
 
     const getTokensSymbolInPortfolio = () => {
-      const tokensSymbolList = []
-      tokens.forEach(token => {
-        if (token?.symbol) {
-          tokensSymbolList.push(token?.symbol)
-        }
-      })
-      return tokensSymbolList
+        const tokensSymbolList = []
+        tokens.forEach(token => {
+            if (token?.symbol) {
+                tokensSymbolList.push(token?.symbol)
+            }
+        })
+        return tokensSymbolList
     }
 
     const findBaseOnUserToken = () => {
-      setFilterByUserTokens(true)
-      const userTokens = getTokensSymbolInPortfolio()
-      setUserToken(userTokens)
+        setFilterByUserTokens(true)
+        const userTokens = getTokensSymbolInPortfolio()
+        setUserToken(userTokens)
     }
 
     const findAll = () => {
-      setFilterByUserTokens(false)
-      setUserToken([])
+        setFilterByUserTokens(false)
+        setUserToken([])
     }
 
     const handleFetchPool = async (newPagination, filters, sorter, userToken) => {
@@ -102,71 +108,123 @@ const Opportunity = ({totalPool}) => {
     }
 
 
-    const getColumnSearchProps = dataIndex => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-          <div style={{ padding: 8 }}>
-            <Input
-              ref={searchInput}
-              placeholder={`Search ${dataIndex}`}
-              value={selectedKeys[0]}
-              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-              style={{ marginBottom: 8, display: 'block' }}
-            />
-            <Space>
-              <Button
-                type="primary"
-                onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                icon={<SearchOutlined />}
-                size="small"
-                style={{ width: 90 }}
-              >
-                Search
-              </Button>
-              <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                Reset
-              </Button>
-              <Button
-                type="link"
-                size="small"
-                onClick={() => {
-                  confirm({ closeDropdown: false });
-                //   setInputValue(selectedKeys[0])
-                //   setField(dataIndex.toLowerCase())1
-                }}
-              >
-                Filter
-              </Button>
-            </Space>
-          </div>
+    const getColumnSearchProps = (dataIndex, ref) => ({
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+            <div className={CN("p-2 rounded-lg bg-[#304456]")}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{marginBottom: 8, display: 'block'}}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined/>}
+                        size="small"
+                        style={{width: 90}}
+                    >
+                        Search
+                    </Button>
+                    <Button onClick={() => handleReset(clearFilters, confirm, dataIndex)} size="small"
+                            style={{width: 90}}>
+                        Reset
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({closeDropdown: false})
+                        }}
+                    >
+                        Filter
+                    </Button>
+                </Space>
+            </div>
         ),
-        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        filterIcon: () => <SearchOutlined ref={ref} className="hidden"/>,
         onFilterDropdownVisibleChange: visible => {
-          if (visible) {
-            setTimeout(() => searchInput.current.focus(), 100);
-          }
+            if (visible) {
+                setTimeout(() => searchInput.current.focus(), 100)
+            }
         }
-      });
-    
+    })
+
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
+        confirm()
+        const result = [...searchedFields]
+        const index = result.indexOf(dataIndex)
+        if (index === -1) {
+            result.push(dataIndex)
+        }
+        setSearchedFields(result)
         // setInputValue(selectedKeys[0])
         // setField(dataIndex.toLowerCase())
     }
 
-    const handleReset = clearFilters => {
-        clearFilters();
+    const handleReset = (clearFilters, confirm, dataIndex) => {
+        clearFilters()
+        confirm()
+        const result = [...searchedFields]
+        const index = result.indexOf(dataIndex)
+        if (index !== -1) {
+            result.splice(index, 1)
+        }
+        setSearchedFields(result)
         // setInputValue('')
+    }
+
+    const handlerOpenFilter = (event, ref) => {
+        event.stopPropagation()
+        if (ref.current) {
+            ref.current.click()
+        }
     }
 
     const columnPool = [
         {
-            title: 'Platform',
+            title: () => {
+                const filtered = searchedFields.includes('Platform')
+                return (
+                    <div className="flex items-center">
+                        <div>
+                            Platform
+                        </div>
+                        <SearchOutlined
+                            className={CN(
+                                "ml-2",
+                                {
+                                    ["text-[#00FFA3]"]: filtered
+                                }
+                            )}
+                            onClick={(event) => handlerOpenFilter(event, platformFilterRef)}
+                        />
+                    </div>
+                )
+            },
             dataIndex: 'platform',
             key: 'platform',
             width: '13%',
             search: true,
-            ...getColumnSearchProps('Platform'),
+            ...getColumnSearchProps('Platform', platformFilterRef),
+            render: (platform) => {
+                const url = renderPlatformIconUrl(platform)
+                return (
+                    <div className={CN("flex items-center")}>
+                        {
+                            url && (
+                                <PlatformIcon url={url} alt={platform}/>
+                            )
+                        }
+                        <div>
+                            {platform}
+                        </div>
+                    </div>
+                )
+            },
             sorter: (a, b) => a.platform - b.platform
         },
         {
@@ -195,80 +253,68 @@ const Opportunity = ({totalPool}) => {
             }
         },
         {
-            title: '',
+            title: 'Liquidity',
             dataIndex: 'liquidity',
             key: 'liquidity',
             width: '16%',
             render: (text) => {
                 return (
                     <div>
-                        <div>
-                            {(text !== undefined && text !== null) ? `$${text}` : "--"}
-                        </div>
-                        <div className="flex items-center opacity-64">
-                            <div className={CN("text-[12px] font-normal")}>
-                                Liquidity
-                            </div>
-                            {/*<FontAwesomeIcon icon={faInfoCircle} color={"#FFFFFF"}*/}
-                            {/*                 className={CN("ml-2 text-gray-400")}/>*/}
-                        </div>
+                        {(text !== undefined && text !== null) ? `$${text}` : "--"}
                     </div>
                 )
             }
         },
         {
-            title: '',
+            title: 'Volume (24h)',
             dataIndex: 'volume',
             key: 'volume',
             width: '16%',
             render: (text) => {
                 return (
                     <div>
-                        <div>
-                            {(text !== undefined && text !== null) ? `$${text}` : "--"}
-                        </div>
-                        <div className="flex items-center opacity-64">
-                            <div className={CN("text-[12px] font-normal")}>
-                                Volume (24h)
-                            </div>
-                        </div>
+                        {(text !== undefined && text !== null) ? `$${text}` : "--"}
                     </div>
                 )
             }
         },
         {
-            title: "",
+            title: "LP Fees (24h)",
             dataIndex: 'lp_fee',
             key: 'lp_fee',
             width: '16%',
             render: (text) => {
                 return (
                     <div>
-                        <div>
-                            {(text !== undefined && text !== null) ? `$${text}` : "--"}
-                        </div>
-                        <div className="flex items-center opacity-64">
-                            <div className={CN("text-[12px] font-normal")}>
-                                LP Fees (24h)
-                            </div>
-                        </div>
+                        {(text !== undefined && text !== null) ? `$${text}` : "--"}
                     </div>
                 )
             }
         },
         {
-            title: (
-                <div className="flex items-center">
-                    <div className="mr-2">
-                        Asset/s
+            title: () => {
+                const filtered = searchedFields.includes('Asset')
+                return (
+                    <div className="flex items-center">
+                        <div>
+                            Asset/s
+                        </div>
+                        <SearchOutlined
+                            className={CN(
+                                "ml-2",
+                                {
+                                    ["text-[#00FFA3]"]: filtered
+                                }
+                            )}
+                            onClick={(event) => handlerOpenFilter(event, assetFilterRef)}
+                        />
                     </div>
-                    {/* <FontAwesomeIcon icon={faSearch} size={"sm"}/> */}
-                </div>
-            ),
+                )
+            },
             dataIndex: 'asset',
             key: 'asset',
             width: '13%',
-            ...getColumnSearchProps('Asset'),
+            ...getColumnSearchProps('Asset', assetFilterRef),
             render: (text, record) => {
                 return (
                     <div className="text-[#00FFA3] uppercase">
@@ -298,8 +344,27 @@ const Opportunity = ({totalPool}) => {
         <div className="justify-between items-start w-full h-full wrapper ">
             <div className="px-2">
                 <PageHeader title={"Opportunity"}/>
-                <div className="font-bold text-2xl text-white py-16">
-                    Opportunities
+                <div className="flex justify-between py-16">
+                    <div className="font-bold text-2xl text-white">
+                        Opportunities
+                    </div>
+                    {
+                        publicKey && (
+                            <div className="">
+                                <Button
+                                    onClick={!isFilterByUserTokens ? findBaseOnUserToken : findAll}
+                                    className={CN("w-48 rounded-2xl font-bold",
+                                        "bg-[#00ffa329] text-[#00FFA3] border-transparent",
+                                        "focus:bg-[#00ffa329] focus:text-[#00FFA3] focus:border-transparent",
+                                        "hover:bg-[#00cc82] hover:text-white hover:border-transparent",
+                                        "hover:focus:bg-[#00cc82] hover:focus:text-white hover:focus:border-transparent"
+                                    )}
+                                >
+                                    {!isFilterByUserTokens ? "Find base on my tokens" : "Find All"}
+                                </Button>
+                            </div>
+                        )
+                    }
                 </div>
                 {/*<div className='my-4 text-base flex flex-row items-center justify-start '>*/}
                 {/*  <span>Search</span>*/}
@@ -309,16 +374,11 @@ const Opportunity = ({totalPool}) => {
                 {/*  </div>*/}
                 {/*  <span>{logInfo}</span>*/}
                 {/*</div>*/}
-                {publicKey && <div className="">
-                  {!isFilterByUserTokens ? <Button onClick={findBaseOnUserToken}>Find base on my tokens</Button> : 
-                    <Button onClick={findAll}>Find All</Button>
-                  }
-                </div>}
                 <div className="">
                     <Table
                         className={"opportunity-table rounded-2xl"}
                         rowClassName={CN("bg-[#232D36] text-white text-[14px] font-medium")}
-                        pagination={pagination}
+                        pagination={{...pagination, position: ["bottomCenter"]}}
                         columns={columnPool}
                         dataSource={tableData}
                         onChange={handleTableChange}
