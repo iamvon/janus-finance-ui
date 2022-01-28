@@ -417,7 +417,7 @@ const Token = (props) => {
                         <div className="sort-by flex justify-start flex-wrap lg:mb-8">
                             {/*<div className={'sort-by-title'}>Sort by</div>*/}
                             <div className="sort-by-radio">
-                                <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
+                                <Radio.Group className="lg:space-y-2 lg:space-y-reverse" onChange={onChangeSortBy} value={sortBy.value}>
                                     {
                                         SORT_BY_OPTIONS.map((option, index) => {
                                             return (
