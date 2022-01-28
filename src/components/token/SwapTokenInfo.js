@@ -24,7 +24,7 @@ const SwapTokenInfo = ({
     const [chartData, setChartData] = useState([])
     const [hideChart, setHideChart] = useState(false)
     const [baseTokenId, setBaseTokenId] = useState('')
-    const [quoteTokenId, setQuoteTokenId] = useState(outputTokenId)
+    const [quoteTokenId, setQuoteTokenId] = useState('')
     const [inputTokenInfo, setInputTokenInfo] = useState(null)
     const [outputTokenInfo, setOutputTokenInfo] = useState(null)
     const [mouseData, setMouseData] = useState(null)
@@ -46,8 +46,8 @@ const SwapTokenInfo = ({
         //     setBaseTokenId(outputTokenId)
         //     setQuoteTokenId(inputTokenId)
         // } else {
-        setBaseTokenId(inputTokenId)
-        setQuoteTokenId(outputTokenId)
+        setBaseTokenId(outputTokenId)
+        setQuoteTokenId(inputTokenId)
         // }
     }, [inputTokenId, outputTokenId])
 
@@ -213,27 +213,27 @@ const SwapTokenInfo = ({
 
                         <div className="w-full lg:w-auto flex mt-4 lg:mt-2">
                             <div className="flex PresetRanges">
-                            <span
-                                className={`Range ${daysToShow === 1 && 'active'
-                                }`}
-                                onClick={() => setDaysToShow(1)}
-                            >
-                                24H
-                            </span>
+                                <span
+                                    className={`Range ${daysToShow === 1 && 'active'
+                                        }`}
+                                    onClick={() => setDaysToShow(1)}
+                                >
+                                    24H
+                                </span>
                                 <span
                                     className={`Range ${daysToShow === 7 && 'active'
-                                    }`}
+                                        }`}
                                     onClick={() => setDaysToShow(7)}
                                 >
-                                7D
-                            </span>
+                                    7D
+                                </span>
                                 <span
                                     className={`Range ${daysToShow === 30 && 'active'
-                                    }`}
+                                        }`}
                                     onClick={() => setDaysToShow(30)}
                                 >
-                                30D
-                            </span>
+                                    30D
+                                </span>
                             </div>
                         </div>
 
