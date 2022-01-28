@@ -7,7 +7,7 @@ const _getQuery = async (query) => {
     let vQuery = {}
 
     const platformRegex = query["platform"] ? {
-        platform: { "$regex": query[platform][0],  "$options": "i"}
+        platform: { "$regex": query.platform[0],  "$options": "i"}
     } : {}
 
     const assetString = query["asset"] ? "(" + query["asset"].join("|") + ")" : ""
