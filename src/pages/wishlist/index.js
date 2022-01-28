@@ -215,7 +215,7 @@ const Wishlist = (props) => {
             <PageHeader title={"Wishlist"}/>
 
             <div className={'flex justify-between items-baseline'}>
-                <div className="font-bold text-2xl text-white py-16">
+                <div className="font-bold text-2xl text-white mb-4 mt-6 lg:mb-8 lg:mt-12">
                     Wishlist
                 </div>
                 {/*<div className={'flex text-base'}>*/}
@@ -239,6 +239,7 @@ const Wishlist = (props) => {
                                    total: total,
                                    pageSize: params.size
                                }}
+                               scroll={{x: true}}
                         />
                     )
                 }
