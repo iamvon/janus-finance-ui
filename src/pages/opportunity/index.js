@@ -27,7 +27,7 @@ const Opportunity = ({totalPool}) => {
     const [userToken, setUserToken] = useState([])
     const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
 
-    const handleFetchPool = async (newPagination, filters, sorter) => {
+    const handleFetchPool = async (newPagination, filters, sorter, userToken) => {
         const size = newPagination.pageSize
         const page = newPagination.current
         let orderBy = ''
@@ -38,17 +38,17 @@ const Opportunity = ({totalPool}) => {
             orderDirection = sorter.order === 'descend' ? -1 : 1
         }
 
-        if(userToken.length !== 0){
-            const newAsset = filters.asset ? filters.asset.concat(userToken) : userToken
-            filters = { ...filters, asset: newAsset }
-        } 
+        const newFilter = {
+            ...filters,
+            userToken: userToken.length !== 0 ? userToken : null
+        }
 
         const {data: res} = await axios.post('/api/pool', {
             page,
             size,
             order_by: orderBy,
             order_direction: orderDirection,
-            query: filters
+            query: newFilter
         })
         const newData = res.data.items.map((t, index) => {
             return {

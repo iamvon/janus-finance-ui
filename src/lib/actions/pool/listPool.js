@@ -5,24 +5,24 @@ import Promise from "bluebird"
 const _getQuery = async (query) => {
     console.log(query)
     let vQuery = {}
-    const fieldArr = Object.keys(query).filter(k => query[k] !== null)
 
-    if(fieldArr.length === 0) {}
-    else if(fieldArr.length === 1){
-        const regexString = '(' + query[fieldArr[0]].join('|') + ')'
-        vQuery[fieldArr[0]] = { "$regex": '^' + regexString,  "$options": "i"}
-    } 
-    else {
-        const arr = fieldArr.map(k => {
-            const newObj = {}
-            const regexString = '(' + query[k].join('|') + ')'
-            newObj[k] = { "$regex": '^' + regexString,  "$options": "i"}
-            return newObj
-        })
-        vQuery = {$and: arr}
+    const platformRegex = query["platform"] ? {
+        platform: { "$regex": query[platform][0],  "$options": "i"}
+    } : {}
+
+    const assetString = query["asset"] ? "(" + query["asset"].join("|") + ")" : ""
+
+    const userString = query.userToken ? "(" + query.userToken.join("|") + ")" : ""
+
+    const assetArr = [assetString, userString]
+    
+    const assetRegex = {
+        asset: { "$regex": assetArr.join('.*') + "|" + assetArr.reverse().join('.*'),  "$options": "i"}
     }
 
-    console.log(vQuery)
+    vQuery = {$and: [platformRegex, assetRegex]}
+
+    console.log(JSON.stringify(vQuery))
 
     return vQuery
 }
