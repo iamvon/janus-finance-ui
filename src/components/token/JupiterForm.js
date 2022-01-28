@@ -40,7 +40,7 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
     const [swapping, setSwapping] = useState(false)
     const {width} = useViewport()
     const {connection} = useConnection();
-    const [hasSwapped, setHasSwapped] = useLocalStorageState('hasSwapped', false)
+    // const [hasSwapped, setHasSwapped] = useLocalStorageState('hasSwapped', false)
     const [showInputTokenSelect, setShowInputTokenSelect] = useState(false)
     const [showOutputTokenSelect, setShowOutputTokenSelect] = useState(false)
     const [tokens, setTokens] = useState([])
@@ -466,10 +466,10 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
                                 }
                             </div>
                             <div className="token-description">
-                                {tokenDetail.extensions.description}
+                                {tokenDetail.extensions.description || tokenDetail.name}
                             </div>
                         </div>
-                        <div className="relative z-10">
+                        <div className="relative z-10 mt-6">
                             <div className="bg-th-bkg-2 rounded-lg p-6 SwapBox">
                                 <div className="font-semibold text-base mb-4">Swap</div>
 

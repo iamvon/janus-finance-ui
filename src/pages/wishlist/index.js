@@ -7,7 +7,6 @@ import {faLongArrowAltDown, faLongArrowAltUp, faTrashAlt} from "@fortawesome/fre
 import AppContext from "../../contexts/AppContext"
 import {useWallet} from "@solana/wallet-adapter-react"
 import {getExtendWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
-import {getCoinGeckoChange} from "../../lib/services/api/coingecko"
 import {WISHLIST_ACTION} from "../../lib/constants/wallet"
 import {Modal, Table, Tooltip} from "antd"
 import {SORT_BY_OPTIONS} from "../../lib/constants/sortBy/token"
@@ -54,13 +53,14 @@ const Wishlist = (props) => {
         setLoading(true)
         const {data: responseData} = await getExtendWishlistListApi(params)
         const {items: rItems, total: rTotal} = {...responseData}
+        // console.log("rItems", rItems)
         const items = await Promise.all(rItems.map(async item => {
-            const coinId = item.extensions.coingeckoId
+            // const coinId = item.extensions.coingeckoId
             return {
                 ...item,
-                't24h': await getCoinGeckoChange(coinId, 1),
-                't7d': await getCoinGeckoChange(coinId, 7),
-                't1m': await getCoinGeckoChange(coinId, 30)
+                't24h': item.changePercent ? item.changePercent.t24h : 0,
+                't7d': item.changePercent ? item.changePercent.t7d : 0,
+                't1m': item.changePercent ? item.changePercent.t1m : 0
             }
         }))
         // console.log('items', items)
@@ -215,7 +215,7 @@ const Wishlist = (props) => {
             <PageHeader title={"Wishlist"}/>
 
             <div className={'flex justify-between items-baseline'}>
-                <div className="font-bold text-2xl text-white py-16">
+                <div className="font-bold text-2xl text-white mb-4 mt-6 lg:mb-8 lg:mt-12">
                     Wishlist
                 </div>
                 {/*<div className={'flex text-base'}>*/}
@@ -240,6 +240,7 @@ const Wishlist = (props) => {
                                    pageSize: params.size,
                                    position: ["bottomCenter"]
                                }}
+                               scroll={{x: true}}
                         />
                     )
                 }

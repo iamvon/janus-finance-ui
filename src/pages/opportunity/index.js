@@ -344,7 +344,7 @@ const Opportunity = ({totalPool}) => {
         <div className="justify-between items-start w-full h-full wrapper ">
             <div className="px-2">
                 <PageHeader title={"Opportunity"}/>
-                <div className="flex justify-between py-16">
+                <div className="flex justify-between mb-4 mt-6 lg:mb-8 lg:mt-12">
                     <div className="font-bold text-2xl text-white">
                         Opportunities
                     </div>
