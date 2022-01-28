@@ -15,6 +15,9 @@ export const useSolWalletScan = () => {
         setLoading(true)
         if (publicKey) {
             scanTokenByPK(connection, publicKey.toString()).then((result) => {
+                const walletAssets = result.filter(asset => {
+                    return asset?.uiAmount > 0
+                })
                 setLoading(false)
                 setTokens(walletAssets)
             }).catch(err => {

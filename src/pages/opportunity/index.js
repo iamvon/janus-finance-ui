@@ -14,6 +14,7 @@ import {faCopy, faInfo, faInfoCircle, faSearch} from "@fortawesome/free-solid-sv
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import { SearchOutlined } from '@ant-design/icons';
 import {useSolWalletScan} from '../../hook/useSolWalletScan'
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 const rowClassName = 'hover:bg-[#232D36]'
 
 const Opportunity = ({totalPool}) => {
@@ -25,7 +26,32 @@ const Opportunity = ({totalPool}) => {
     const [curFilter, setCurFilter] = useState({asset: null, platform: null})
     const [curSorter, setCurSorter] = useState({})
     const [userToken, setUserToken] = useState([])
+    const [isFilterByUserTokens, setFilterByUserTokens] = useState(false)
     const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
+    const {tokens, loading, error} = useSolWalletScan()
+    const { connection } = useConnection();
+    const { publicKey } = useWallet();
+
+    const getTokensSymbolInPortfolio = () => {
+      const tokensSymbolList = []
+      tokens.forEach(token => {
+        if (token?.symbol) {
+          tokensSymbolList.push(token?.symbol)
+        }
+      })
+      return tokensSymbolList
+    }
+
+    const findBaseOnUserToken = () => {
+      setFilterByUserTokens(true)
+      const userTokens = getTokensSymbolInPortfolio()
+      setUserToken(userTokens)
+    }
+
+    const findAll = () => {
+      setFilterByUserTokens(false)
+      setUserToken([])
+    }
 
     const handleFetchPool = async (newPagination, filters, sorter, userToken) => {
         const size = newPagination.pageSize
@@ -276,6 +302,11 @@ const Opportunity = ({totalPool}) => {
                 {/*  </div>*/}
                 {/*  <span>{logInfo}</span>*/}
                 {/*</div>*/}
+                {publicKey && <div className="">
+                  {!isFilterByUserTokens ? <Button onClick={findBaseOnUserToken}>Find base on my tokens</Button> : 
+                    <Button onClick={findAll}>Find All</Button>
+                  }
+                </div>}
                 <div className="">
                     <Table
                         className={"opportunity-table rounded-2xl"}
