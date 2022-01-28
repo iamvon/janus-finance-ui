@@ -9,12 +9,15 @@ import {Table, Tag, Input, Select, Button, Space} from 'antd'
 import axios from 'axios'
 import CN from "classnames"
 import {brief_address} from "../../lib/helpers/address"
+import Link from "next/link"
 import CopyIcon from "../../components/common/CopyIcon"
 import {faCopy, faInfo, faInfoCircle, faSearch} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import { SearchOutlined } from '@ant-design/icons';
 import {useSolWalletScan} from '../../hook/useSolWalletScan'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import {renderSolscanUrl} from "../../lib/helpers/solscan"
+
 const rowClassName = 'hover:bg-[#232D36]'
 
 const Opportunity = ({totalPool}) => {
@@ -179,7 +182,11 @@ const Opportunity = ({totalPool}) => {
                         </div>
                         <div className="flex items-center">
                             <div className={CN("text-[#00FFA3] text-[12px] font-normal")}>
-                                {brief_address(record.liquidity_pool)}
+                                <Link href={renderSolscanUrl(record.liquidity_pool)}>
+                                    <a target={"_blank"}>
+                                        {brief_address(record.liquidity_pool)}
+                                    </a>
+                                </Link>
                             </div>
                             <CopyIcon handlerCopy={() => navigator.clipboard.writeText(record.liquidity_pool)}/>
                         </div>
