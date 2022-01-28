@@ -5,6 +5,7 @@ import CN from "classnames"
 import {formatPriceNumber} from "../lib/helpers/number"
 import Paths from "../lib/routes/Paths"
 import {faHeart as outlineHeart} from "@fortawesome/free-regular-svg-icons"
+import Link from "next/link"
 
 const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
     const extensions = token.extensions
@@ -17,25 +18,28 @@ const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
 
     return (
         <div className="solana-token-item py-6 px-3">
-            <a className="solana-token-item-header" href={Paths.TokenDetail(token.address)}
-               target="_blank" rel="noreferrer">
-                <div className="card-element">
-                    <div className="token-logo">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={token.logoURI}
-                             alt={extensions.description} loading="lazy"/>
-                    </div>
-                    <div className="token-content mt-1">
-                        <h2 className="token-name">{token.name}</h2>
-                        <div className="token-tags">
-                            {tagsString}
+            <Link href={Paths.TokenDetail(token.address)}>
+                <a className="solana-token-item-header" href={Paths.TokenDetail(token.address)}
+                   target="_blank"
+                   rel="noreferrer">
+                    <div className="card-element">
+                        <div className="token-logo">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={token.logoURI}
+                                 alt={extensions.description} loading="lazy"/>
+                        </div>
+                        <div className="token-content mt-1">
+                            <h2 className="token-name">{token.name}</h2>
+                            <div className="token-tags">
+                                {tagsString}
+                            </div>
                         </div>
                     </div>
-                </div>
-                {/*<div className="card-element">*/}
-                {/*    <h3 className="token-description">{extensions.description}</h3>*/}
-                {/*</div>*/}
-            </a>
+                    {/*<div className="card-element">*/}
+                    {/*    <h3 className="token-description">{extensions.description}</h3>*/}
+                    {/*</div>*/}
+                </a>
+            </Link>
             <div className="solana-token-item-footer title w-full">
                 <div className="flex justify-center items-center token-content mt-2">
                     {/*<div className="flex token-social">*/}
