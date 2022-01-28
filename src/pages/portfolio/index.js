@@ -72,15 +72,6 @@ const selectProps = {
     defaultValue: 'gt24h',
 };
 
-// const data01 = [
-//     { name: 'Lending', value: 400, fill: '#007BFF' },
-//     { name: 'Staking', value: 300, fill: '#FFC107' },
-//     { name: 'Balance', value: 300, fill: '#00FFA3' },
-//     { name: 'Liquidity', value: 200, fill: '#DC3545' },
-//     { name: 'Yield Farming', value: 278, fill: '#C4E20B' },
-//     { name: 'Validator Staking', value: 189, fill: '#DC1FFF' },
-// ];
-
 
 const Portfolio = (props) => {
     const {someVars} = props
@@ -128,17 +119,14 @@ const Portfolio = (props) => {
 
     const getSLPTokenTotalValue = () => {
         const farmingList = getLPTokenList(tokens)
-        console.log(farmingList)
         const totalValue = 0
-        farmingList.forEach(farmPair => {
-            const {mint, symbol, uiAmount} =farmPair
-            const farm = getPoolByMint(mint)
-            console.log(farm, symbol)
+        farmingList.forEach(farmPair => {   
+            const {mint, symbol, uiAmount} = farmPair
+            const farm = getPoolByMint(mint, pair)
             if (farm?.lp?.price) {
                 totalValue += uiAmount * farm.lp.price
             }
         })
-        console.log(totalValue)
         return (totalValue)
     }
 
@@ -158,13 +146,12 @@ const Portfolio = (props) => {
                 }
             }
         })
-        console.log('tokensWithPrice', tokensWithPrice)
         return {balance, tokensWithPrice}
     } 
 
     const getStakeTotalValue = async (solanaPrice) => {
         let amount = 0
-        const stakeAccounts = await getAccountStake('FX7DL4WUQATRtU5oEjxX5hsrqrnteeXXySqo9JZaTzN9')
+        const stakeAccounts = await getAccountStake(publicKey.toString())
         for (var key of Object.keys(stakeAccounts)) {
             const stakeState = stakeAccounts[key]
             amount += parseInt(stakeState.amount)
@@ -184,18 +171,21 @@ const Portfolio = (props) => {
         const solanaPrice = tokensPrices['solana']['usd']
         const stakeValue = await getStakeTotalValue(solanaPrice)
         const splTokenBalance = getSLPTokenTotalValue()
-        
         const {balance, tokensWithPrice} = await getBalance(tokensPrices)
         setTotalBalance(Math.round(balance * 100) / 100)
         setPortfolio(tokensWithPrice)
-        const chart = [
-            // { name: 'Lending', value: 400, fill: '#007BFF' },
-            // { name: 'Staking', value: stakeValue, fill: '#FFC107' },
-            { name: 'Balance', value: balance, fill: '#00FFA3' },
-            // { name: 'Liquidity', value: 200, fill: '#DC3545' },
-            { name: 'Yield Farming', value: splTokenBalance, fill: '#C4E20B' },
-            { name: 'Validator Staking', value: stakeValue, fill: '#DC1FFF' },
-        ];
+        const chart = []
+        if (balance) chart.push({ name: 'Balance', value: balance, fill: '#00FFA3' })
+        if (splTokenBalance) chart.push({ name: 'Yield Farming', value: splTokenBalance, fill: '#C4E20B' })
+        if (stakeValue) chart.push({ name: 'Validator Staking', value: stakeValue, fill: '#DC1FFF' })
+        // const chart = [
+        //     // { name: 'Lending', value: 400, fill: '#007BFF' },
+        //     // { name: 'Staking', value: stakeValue, fill: '#FFC107' },
+        //     { name: 'Balance', value: balance, fill: '#00FFA3' },
+        //     // { name: 'Liquidity', value: 200, fill: '#DC3545' },
+        //     { name: 'Yield Farming', value: splTokenBalance, fill: '#C4E20B' },
+        //     { name: 'Validator Staking', value: stakeValue, fill: '#DC1FFF' },
+        // ];
         setChartData(chart)
     }
 

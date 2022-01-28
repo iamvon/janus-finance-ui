@@ -14,7 +14,7 @@ export const useSolWalletScan = () => {
     useEffect(() => {
         setLoading(true)
         if (publicKey) {
-            scanTokenByPK(connection, 'FX7DL4WUQATRtU5oEjxX5hsrqrnteeXXySqo9JZaTzN9').then((result) => {
+            scanTokenByPK(connection, publicKey.toString()).then((result) => {
                 const walletAssets = result.filter(asset => {
                     return asset?.uiAmount > 0
                 })
