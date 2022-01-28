@@ -12,7 +12,6 @@ const SEARCH_SORT_KEY = 'score'
 
 const _getQuery = async (query) => {
     let vQuery = query.q ? {$text: {$search: query.q}} : {}
-    vQuery = {...vQuery, "extensions.coingeckoId": {$exists: true}}
 
     for (const key of Object.values(SORT_AND_FILTER_FIELD)) {
         if (query[key].min === undefined && query[key].max === undefined) {
@@ -52,7 +51,7 @@ const _getQuery = async (query) => {
 
 }
 
-export const listToken = async ({page, size, query, orderBy}) => {
+export const listToken = async ({page, size, query, orderBy, isTopTrending, isTopSell, isTopBuy}) => {
     await connectToDatabase()
     const SolanaToken = getModel('SolanaToken')
 
@@ -64,21 +63,51 @@ export const listToken = async ({page, size, query, orderBy}) => {
 
     for (const [key, value] of Object.entries(orderBy)) {
         const vKey = convertFieldName(key)
+        if (vKey === 'topTrendingRank') vSortBy['isTopTrending'] = -1
+        else if (vKey === 'topSellRank') vSortBy['isTopSell'] = -1
+        else if (vKey === 'topBuyRank') vSortBy['isTopBuy'] = -1
+        else if (vKey !== SEARCH_SORT_KEY) vQuery[vKey] = {$ne: null}
         vSortBy[vKey] = value
-        if (vKey !== SEARCH_SORT_KEY) vQuery[vKey] = {$ne: null}
     }
 
     // console.log(rQuery)
 
     // console.log('final sort by', vSortBy)
+    const rQuery = {...vQuery}
+    const rSortBy = {...vSortBy}
+
+    if (isTopTrending) {
+        rQuery.isTopTrending = true
+        rSortBy.topTrendingRank = 1
+    } else if (isTopSell) {
+        rQuery.isTopSell = true
+        rSortBy.topSellRank = 1
+    } else if (isTopBuy) {
+        rQuery.isTopBuy = true
+        rSortBy.topBuyRank = 1
+    } else {
+        // rQuery["extensions.coingeckoId"] = {$exists: true}
+    }
+
+    // console.log("rQuery", rQuery)
+    // console.log("rSortby", rSortBy)
 
     const _getTotal = SolanaToken
-        .countDocuments(vQuery)
+        .countDocuments(rQuery)
         .lean()
 
     const _getItems = SolanaToken
-        .find(vQuery)
-        .sort(vSortBy)
+        .find(rQuery)
+        .select({
+            lastChangePercentUpdated: 0,
+            isTopSell: 0,
+            topSellRank: 0,
+            isTopBuy: 0,
+            topBuyRank: 0,
+            isTopTrending: 0,
+            topTrendingRank: 0
+        })
+        .sort(rSortBy)
         .skip(skip)
         .limit(size)
         .lean()

@@ -1,0 +1,282 @@
+.ant-select-dropdown{
+  background: none !important;
+  color: #ffffff;
+  padding: 10px 0;
+
+  .rc-virtual-list{
+    .rc-virtual-list-holder{
+      //max-height: 400px !important;
+      .rc-virtual-list-holder-inner{
+        .ant-select-item{
+          color: #ffffff;
+
+          &.ant-select-item-option-active{
+            color: #00FFA3;
+            background: none;
+          }
+
+          &.ant-select-item-option-selected{
+            color: #00FFA3;
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tokens-page{
+  .tokens-sidebar{
+    .ant-select{
+      .ant-select-selector{
+        background: #333639;
+        border-radius: 20px;
+        border: none;
+        padding: 0px 20px;
+        height: 35px;
+        line-height: 35px;
+
+        .ant-select-selection-search{
+          input{
+            font-family: "SF Pro Display";
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 35px;
+            color: #ffffff;
+
+            &::-webkit-input-placeholder { /* Edge */
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 35px;
+              color: #ffffff;
+            }
+
+            &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 35px;
+              color: #ffffff;
+            }
+
+            &::placeholder {
+              font-family: "SF Pro Display";
+              font-style: normal;
+              font-weight: 400;
+              font-size: 14px;
+              line-height: 35px;
+              color: #ffffff;
+            }
+          }
+        }
+      }
+    }
+  }
+  .tokens-content{
+    .page-title{
+      font-family: "SF Pro Display";
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 32px;
+      color: #ffffff;
+    }
+
+    .token-count{
+      font-family: "SF Pro Display";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: #ffffff;
+      padding-top: 5px;
+    }
+
+    .token-pagination{
+      margin-top: 40px;
+    }
+  }
+}
+
+.sort-by{
+  .sort-by-title{
+    font-family: "SF Pro Display";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    color: #D8DBDE;
+  }
+
+  .sort-by-radio{
+    .ant-radio-group{
+      display: flex;
+
+      .option-item{
+        margin-right: 10px;
+
+        .ant-radio-button-wrapper{
+          height: 36px;
+          background: #2C2C2C;
+          border: none;
+          line-height: 36px;
+          border-radius: 20px;
+          padding: 0 25px;
+
+          span{
+            color: #D8DBDE;
+          }
+
+          &.ant-radio-button-wrapper-checked{
+            background: #00FFA3;
+            color: #000000;
+            box-shadow: none;
+
+            span{
+              color: #000000;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.selected-filter{
+  .select-item{
+    height: 32px;
+    background: #392E3C;
+    border: none;
+    line-height: 36px;
+    border-radius: 20px;
+    padding: 0 25px;
+    margin-right: 10px;
+
+    .selected-text{
+      font-family: "SF Pro Display";
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 32px;
+      text-align: center;
+      color: #ffffff;
+      margin-right: 10px;
+    }
+
+    .selected-remove{
+      font-size: 20px;
+      color: #DC1FFF;
+      font-weight: 400;
+    }
+  }
+}
+
+.SingleTokenPage {
+  .btn {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 11px 20px;
+    border-radius: 80px;
+    line-height: 22px;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+    &.disabled, &:disabled {
+      //pointer-events: none;
+      opacity: .65;
+    }
+
+    &-success {
+      color: #00FFA3;
+      background-color: rgba(0, 255, 163, 0.16);
+      border-color: rgba(0, 255, 163, 0.16);
+
+      &:not(:disabled):hover {
+        color: #333333;
+        background-color: #00FFA3;
+        border-color: #00FFA3;
+      }
+    }
+  }
+
+  .SwapBox {
+    background: #232D36;
+    border: 1px solid #34434F;
+
+    .InputToken {
+      background: #232D36;
+      border: 1px solid #34434F;
+      border-radius: 12px;
+      padding: 1px 12px;
+
+      .TokenName {
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .TokenValue {
+        background-color: #232D36;
+        text-align: right;
+        border: none;
+        font-size: 20px;
+        line-height: 28px;
+        outline: none;
+        width: 100%;
+        font-weight: 600;
+
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+        }
+      }
+    }
+
+    .IconSwap {
+      border: 1px solid #34434F;
+      border-radius: 80px;
+    }
+  }
+
+  .ChartBox {
+    .PresetRanges {
+      background: #3C4341;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 40px;
+      overflow: hidden;
+
+      .Range {
+        padding: 5px 16px;
+        border-radius: 40px;
+        cursor: pointer;
+        transition: all .3s;
+
+        &.active {
+          background-color: #00FFA3;
+          color: #333333;
+        }
+      }
+    }
+  }
+
+  .CoinDetails {
+    background-color: #232D36;
+    border: 1px solid #34434F;
+    border-radius: 8px;
+
+    .Info {
+      background: #232D36;
+      border: 1px solid #34434F;
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+  }
+}

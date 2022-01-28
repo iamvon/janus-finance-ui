@@ -4,7 +4,7 @@ const PageHeader = ({title}) => {
 
     return (
         <Head>
-            <title>{title ? `${title} | Janus` : "Janus"}</title>
+            <title>{title ? `${title} | Janus Finance: Token Shopping Gateway` : "Janus Finance: Token Shopping Gateway"}</title>
         </Head>
     )
 }

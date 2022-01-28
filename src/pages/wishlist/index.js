@@ -1,61 +1,40 @@
 /* eslint-disable @next/next/no-img-element */
 import React, {useContext, useEffect, useState} from "react"
 import PageHeader from "/src/components/common/PageHeader"
-import {useRouter} from 'next/router'
-import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
-import {Modal, Table, Tooltip} from "antd"
-import {isEmpty} from "../../lib/services/util/object"
-import {SORT_AND_FILTER_FIELD} from "../../lib/helpers/sort-and-filter-field/token"
-import {SORT_BY_OPTIONS} from "../../lib/constants/sortBy/token"
-import AppContext from "../../contexts/AppContext"
-import _ from "lodash"
-import {useWallet} from "@solana/wallet-adapter-react"
-import {getExtendWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
-import {WISHLIST_ACTION} from "../../lib/constants/wallet"
 import CN from "classnames"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faHeart, faLongArrowAltDown, faLongArrowAltUp, faTrashAlt} from "@fortawesome/free-solid-svg-icons"
-import {formatPriceNumber} from "../../lib/helpers/number"
-import Paths from "../../lib/routes/Paths"
+import {faLongArrowAltDown, faLongArrowAltUp, faTrashAlt} from "@fortawesome/free-solid-svg-icons"
+import AppContext from "../../contexts/AppContext"
+import {useWallet} from "@solana/wallet-adapter-react"
+import {getExtendWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
 import {getCoinGeckoChange} from "../../lib/services/api/coingecko"
+import {WISHLIST_ACTION} from "../../lib/constants/wallet"
+import {Modal, Table, Tooltip} from "antd"
+import {SORT_BY_OPTIONS} from "../../lib/constants/sortBy/token"
+import Paths from "../../lib/routes/Paths"
+import {formatPriceNumber} from "../../lib/helpers/number"
+import {isEmpty} from "../../lib/services/util/object"
+import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
+import _ from "lodash"
+import EmptyWishlist from "../../components/wishlist/EmptyWishlist"
 
-const initialFilterValue = {}
-
-Object.values(SORT_AND_FILTER_FIELD).forEach((key) => {
-    initialFilterValue[key] = {
-        min: null,
-        max: null
-    }
-})
+const tableSize = 10
 
 const Wishlist = (props) => {
     const {searchQuery} = useContext(AppContext)
     const [itemData, setItemData] = useState([])
     const [params, setParams] = useState({
         page: 1,
-        size: 10
+        size: tableSize || 10
     })
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [sortBy, _setSortBy] = useState({})
     const [total, setTotal] = useState(0)
-    const [wishlist, setWishList] = useState([])
-
-    const router = useRouter()
     const {publicKey} = useWallet()
 
-    // useEffect(() => {
-    //     const fetchWishlist = async () => {
-    //         setLoading(true)
-    //         const {data: responseData} = await getWishlistListApi({wallet_key: publicKey.toString()})
-    //         const {wishlist} = {...responseData}
-    //         // console.log('wishlist', wishlist)
-    //         setWishList(wishlist)
-    //         setLoading(false)
-    //     }
-    //
-    //     if (publicKey) fetchWishlist().then()
-    //     else setWishList([])
-    // }, [publicKey])
+    useEffect(() => {
+        setLoading(false)
+    },[])
 
     useEffect(() => {
         const query = parseParamsToQuery(params, sortBy, publicKey, searchQuery)
@@ -80,7 +59,7 @@ const Wishlist = (props) => {
                 ...item,
                 't24h': await getCoinGeckoChange(coinId, 1),
                 't7d': await getCoinGeckoChange(coinId, 7),
-                't1m': await getCoinGeckoChange(coinId, 30),
+                't1m': await getCoinGeckoChange(coinId, 30)
             }
         }))
         // console.log('items', items)
@@ -88,29 +67,6 @@ const Wishlist = (props) => {
         setTotal(rTotal)
         setLoading(false)
     }
-
-    // useEffect(() => {
-    //     const query = parseParamsToQuery(params, filter, sortBy, selectedCollections, searchQuery)
-    //     const url = parseQueryToUrl(query)
-    //     router.replace(url, undefined, {shallow: true}).then()
-    //     // if (firstRender) {
-    //     //     setFirstRender(false)
-    //     // } else {
-    //         fetchData().then()
-    //     // }
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [params, sortBy, filter, selectedCollections, searchQuery])
-
-    // const onChangeStartFilterPrice = (value) => {
-    //     console.log('changed', value);
-    // }
-
-    const onChangeSortBy = e => {
-        // console.log('radio checked', e.target.value);
-        const value = e.target.value
-        const selectedSortBy = SORT_BY_OPTIONS.find(i => i.value === value)
-        setSortBy(selectedSortBy);
-    };
 
     const onChangePage = async (page, pageSize) => {
         const tmpParams = {...params, page, size: pageSize}
@@ -141,23 +97,31 @@ const Wishlist = (props) => {
             type: 'confirm',
             okText: 'Ok, remove',
             onCancel: () => {
-            },
+            }
         })
     }
+
+    const onTableChange = (newPagination, filters, sorter) => {
+        // console.log(newPagination, filters, sorter)
+        const sortByField = SORT_BY_OPTIONS.find(i => i.field === sorter.field && i.direction === sorter.order)
+        // console.log('sortByField', sortByField)
+        !!sortByField && setSortBy(sortByField)
+    }
+
 
     const renderChangePercent = (change) => {
         const absChange = Math.abs(change).toFixed(2)
         if (change > 0) {
             return (
-                <div className={''} style={{color: '#16c784'}}>
-                    <FontAwesomeIcon icon={faLongArrowAltUp} className={'text-base mr-2'}/>
+                <div>
+                    <FontAwesomeIcon icon={faLongArrowAltUp} className="text-base mr-2 text-[#16c784]"/>
                     {absChange} %
                 </div>
             )
         } else if (change < 0) {
             return (
-                <div className={''} style={{color: '#ea3943'}}>
-                    <FontAwesomeIcon icon={faLongArrowAltDown} className={'text-base mr-2'}/>
+                <div>
+                    <FontAwesomeIcon icon={faLongArrowAltDown} className="text-base mr-2 text-[#DC1FFF]"/>
                     {absChange} %
                 </div>
             )
@@ -178,17 +142,13 @@ const Wishlist = (props) => {
                 return (
                     <a className={'flex justify-start items-center'} href={Paths.TokenDetail(item.address)}>
                         <div className="flex token-logo mr-5">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={item.logoURI}
                                  alt={item.extensions.description} loading="lazy"/>
                         </div>
                         <div className="token-content mt-1">
                             <Tooltip title={item.address}>
-                                <h2 className="token-name text-base font-bold text-green-800">{name}</h2>
+                                <h2 className="token-name text-base font-bold text-[#00FFA3]">{name}</h2>
                             </Tooltip>
-                            <div className="token-tags">
-                                {tagsString}
-                            </div>
                         </div>
                     </a>
                 )
@@ -232,51 +192,49 @@ const Wishlist = (props) => {
                 return (
                     <div className={'actions'}>
                         <div className={'cursor-pointer'} onClick={() => onRemoveClick(item)}>
-                            <FontAwesomeIcon icon={faTrashAlt} className={CN("text-base text-red-700")}/>
+                            <FontAwesomeIcon icon={faTrashAlt} className={CN("text-base text-white")}/>
                         </div>
                     </div>
                 )
             }
-        },
-    ];
+        }
+    ]
 
     return (
         <div className="wishlist-page wrapper flex flex-col justify-start pb-12">
             <PageHeader title={"Wishlist"}/>
-            <div className={'mt-8'}>
-                <div className={'flex justify-between items-baseline'}>
-                    <div className={CN("flex place-items-center mb-6")}>
-                        <FontAwesomeIcon icon={faHeart} className={"text-2xl mr-4"} style={{color: "#e91e63"}}/>
-                        <span className={CN("font-bold text-2xl")}>Wishlist</span>
-                    </div>
-                    <div className={'flex text-base'}>
-                        Displaying {itemData.length} of {total} assets
-                    </div>
+            <div className={'flex justify-between items-baseline'}>
+                <div className="font-bold text-2xl text-white py-16">
+                    Wishlist
                 </div>
-                <div>
-                    <Table columns={columns}
-                           dataSource={itemData}
-                           loading={loading}
-                           rowKey={record => record._id}
-                           pagination={{
-                               onChange: onChangePage,
-                               total: total,
-                               pageSize: params.size,
-                               showSizeChanger: false
-                           }}
-                    />
-                </div>
+                {/*<div className={'flex text-base'}>*/}
+                {/*    Displaying {itemData.length} of {total} assets*/}
+                {/*</div>*/}
+            </div>
+            <div>
+                {
+                    (!loading && itemData.length === 0) ? (
+                        <EmptyWishlist/>
+                    ) : (
+                        <Table columns={columns}
+                               className="wishlist-table"
+                               rowClassName="text-[14px] text-white font-medium"
+                               dataSource={itemData}
+                               loading={loading}
+                               rowKey={record => record._id}
+                               onChange={onTableChange}
+                               pagination={{
+                                   onChange: onChangePage,
+                                   total: total,
+                                   pageSize: params.size,
+                               }}
+                        />
+                    )
+                }
             </div>
         </div>
     )
 }
-
-
-// export const getStaticProps = async (context) => {
-//     return {
-//         props: {}
-//     }
-// }
 
 const parseParamsToQuery = (params, sortBy, walletKey, searchQuery) => {
     const _params = {
@@ -300,5 +258,12 @@ const parseParamsToQuery = (params, sortBy, walletKey, searchQuery) => {
 
     return _.pickBy(_params, _.identity)
 }
+
+
+// export const getStaticProps = async (context) => {
+//     return {
+//         props: {}
+//     }
+// }
 
 export default Wishlist
