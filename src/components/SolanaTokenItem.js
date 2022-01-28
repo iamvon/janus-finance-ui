@@ -16,7 +16,7 @@ const SolanaTokenItem = ({token, isStared = false, onStarClick}) => {
     }
 
     return (
-        <div className="solana-token-item">
+        <div className="solana-token-item py-6 px-3">
             <a className="solana-token-item-header" href={Paths.TokenDetail(token.address)}
                target="_blank" rel="noreferrer">
                 <div className="card-element">

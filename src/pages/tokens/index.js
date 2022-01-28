@@ -22,6 +22,7 @@ import TokenTag from "../../components/TokenTag"
 import {useWallet} from "@solana/wallet-adapter-react"
 import {getWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
 import {WISHLIST_ACTION} from "../../lib/constants/wallet"
+import {checkMatchMediaQuery} from "../../utils"
 
 const initialFilterValue = {}
 
@@ -63,6 +64,9 @@ const Token = (props) => {
 
     const router = useRouter()
     const {publicKey} = useWallet()
+
+    const isMobile = checkMatchMediaQuery("only screen and (max-width: 1023.98px)")
+    const [openTags, setOpenTags] = useState(!isMobile)
 
     useEffect(() => {
         // console.log('defaultQuery', defaultQuery)
@@ -221,8 +225,9 @@ const Token = (props) => {
     return (
         <div className="tokens-page wrapper flex flex-col justify-start pb-12">
             <PageHeader title={"Assets"}/>
-            <div className={'pt-12 grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-6 xl:gap-6'}>
-                <div className={'col-span-1 sticky tokens-sidebar'}>
+            <div className={'pt-6 lg:pt-16 flex flex-wrap'}>
+                <div className={'w-full lg:w-1/4 pr-0 lg:pr-[50px] sticky tokens-sidebar mb-3'}>
+                    <div className="font-semibold text-2xl mb-4 lg:hidden text-white">Assets</div>
                     <div>
                         {/*<div className={'text-base font-bold mb-2'}>Tags</div>*/}
                         <div>
@@ -236,7 +241,14 @@ const Token = (props) => {
                                     // onChange={onChangeTagString}
                                     placeholder="Find tag here"
                                     defaultOpen={true}
-                                    open={true}
+                                    open={openTags}
+                                    onFocus={() => {
+                                        if (isMobile) setOpenTags(true)
+                                    }}
+                                    onBlur={() => {
+                                        if (isMobile) setOpenTags(false)
+                                    }}
+                                    dropdownClassName="DropdownTagList"
                                 />
                             </div>
                         </div>
@@ -291,40 +303,45 @@ const Token = (props) => {
                     {/*    </button>*/}
                     {/*</div>*/}
                 </div>
-                <div className={'col-span-5 tokens-content'}>
-                    <div className={'flex justify-between mb-6'}>
-                        <div className={CN("flex place-items-center page-title")}>
-                            {/*<FontAwesomeIcon icon={faChartLine} className={"text-2xl mr-4"}/>*/}
-                            <span className={CN("font-bold text-2xl")}>Assets</span>
-                        </div>
+
+
+                <div className="w-full lg:w-3/4 tokens-content">
+                    <h1 className="font-semibold text-2xl mb-4 hidden lg:block text-white">Assets</h1>
+
+                    <div className="flex justify-between mb-6 hidden lg:block">
                         <div className={'flex text-base token-count'}>
                             Displaying {itemData.length} of {total} assets
                         </div>
                     </div>
-                    <div className='mb-5 sort-by flex justify-start'>
-                        {/*<div className={'sort-by-title'}>Sort by</div>*/}
-                        <div className={'sort-by-radio'}>
-                            <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
-                                {
-                                    SORT_BY_OPTIONS.map((option, index) => {
-                                        return (
-                                            <div key={index} className={'option-item'}>
-                                                <Radio.Button value={option.value}>{option.label}</Radio.Button>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </Radio.Group>
+
+                    <div className="flex flex-col lg:flex-col-reverse mb-6">
+                        <div className='selected-filter flex justify-start flex-wrap mb-4 lg:mb-0'>
+                            {
+                                selectedTagList.map((tag, index) => {
+                                    return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
+                                })
+                            }
+                        </div>
+
+                        <div className='sort-by flex justify-start flex-wrap lg:mb-8'>
+                            {/*<div className={'sort-by-title'}>Sort by</div>*/}
+                            <div className="sort-by-radio">
+                                <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
+                                    {
+                                        SORT_BY_OPTIONS.map((option, index) => {
+                                            return (
+                                                <div key={index} className={'option-item'}>
+                                                    <Radio.Button value={option.value} className="font-semibold lg:font-normal">{option.label}</Radio.Button>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </Radio.Group>
+                            </div>
                         </div>
                     </div>
-                    <div className='mb-8 selected-filter flex justify-start'>
-                        {
-                            selectedTagList.map((tag, index) => {
-                                return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
-                            })
-                        }
-                    </div>
-                    <div className={'grid grid-cols-2 gap-6 md:grid-cols-3'}>
+
+                    <div className={'grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6'}>
                         {
                             loading ?
                                 [...Array(params.size).keys()].map((it, index) => <SkeletonAssetItem
