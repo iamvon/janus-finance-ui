@@ -76,12 +76,19 @@
       color: white !important;
     }
   }
+
+  .ant-table-filter-trigger:hover{
+    color: #FFFFFFA3;
+  }
 }
 
 
-.opportunity-table {
-  .ant-pagination {
-    place-content: center;
+.ant-table-filter-dropdown {
+  background: transparent !important;
+  .ant-btn{
+    .anticon {
+      vertical-align: 0.075em !important;
+    }
   }
 }
 
@@ -147,11 +154,5 @@
     .ant-empty-description {
       color: white !important;
     }
-  }
-}
-
-.wishlist-table {
-  .ant-pagination {
-    place-content: center;
   }
 }
