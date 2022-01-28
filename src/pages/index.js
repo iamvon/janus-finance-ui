@@ -68,7 +68,7 @@ const Dashboard = (props) => {
 
     return (
         <div className="wrapper flex flex-col items-stretch justify-start pb-12">
-            <PageHeader title={"Dashboard"}/>
+            <PageHeader title={"Shopping & Optimizing your Digital Assets on Solana Ecosystem"}/>
             <div className="banner pt-10 lg:pt-20 mb-10 lg:mb-[120px]">
                 <div className="mx-auto">
                     <div className="flex flex-col w-full justify-center items-center text-center">
