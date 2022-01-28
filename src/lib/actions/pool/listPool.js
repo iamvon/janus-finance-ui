@@ -8,11 +8,15 @@ const _getQuery = async (query) => {
     const fieldArr = Object.keys(query).filter(k => query[k] !== null)
 
     if(fieldArr.length === 0) {}
-    else if(fieldArr.length === 1) vQuery[fieldArr[0]] = { "$regex": '^' + query[fieldArr[0]][0],  "$options": "i"}
+    else if(fieldArr.length === 1){
+        const regexString = '(' + query[fieldArr[0]].join('|') + ')'
+        vQuery[fieldArr[0]] = { "$regex": '^' + regexString,  "$options": "i"}
+    } 
     else {
         const arr = fieldArr.map(k => {
             const newObj = {}
-            newObj[k] = { "$regex": '^' + query[k][0],  "$options": "i"}
+            const regexString = '(' + query[k].join('|') + ')'
+            newObj[k] = { "$regex": '^' + regexString,  "$options": "i"}
             return newObj
         })
         vQuery = {$and: arr}

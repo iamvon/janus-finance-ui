@@ -22,6 +22,9 @@ const Opportunity = ({totalPool}) => {
     const [tableData, setTableData] = useState([])
     const [inputValue, setInputValue] = useState('')
     const [field, setField] = useState('')
+    const [curFilter, setCurFilter] = useState({asset: null, platform: null})
+    const [curSorter, setCurSorter] = useState({})
+    const [userToken, setUserToken] = useState([])
     const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
 
     const handleFetchPool = async (newPagination, filters, sorter) => {
@@ -34,6 +37,11 @@ const Opportunity = ({totalPool}) => {
             orderBy = sorter.field
             orderDirection = sorter.order === 'descend' ? -1 : 1
         }
+
+        if(userToken.length !== 0){
+            const newAsset = filters.asset ? filters.asset.concat(userToken) : userToken
+            filters = { ...filters, asset: newAsset }
+        } 
 
         const {data: res} = await axios.post('/api/pool', {
             page,
@@ -53,13 +61,15 @@ const Opportunity = ({totalPool}) => {
     }
 
     useEffect(() => {
-        handleFetchPool(pagination, {}, {})
-    }, [])
+        handleFetchPool(pagination, curFilter, curSorter, userToken)
+    }, [userToken])
 
     const handleTableChange = (newPagination, filters, sorter) => {
         console.log(newPagination, filters, sorter)
         setPagination({...pagination, current: newPagination.current, pageSize: newPagination.pageSize})
-        handleFetchPool(newPagination, filters, sorter) // {} {} {}
+        setCurFilter(filters)
+        setCurSorter(sorter)
+        handleFetchPool(newPagination, filters, sorter, userToken) // {} {} {}
     }
 
 
@@ -117,7 +127,7 @@ const Opportunity = ({totalPool}) => {
 
     const handleReset = clearFilters => {
         clearFilters();
-        setInputValue('')
+        // setInputValue('')
     }
 
     const columnPool = [
