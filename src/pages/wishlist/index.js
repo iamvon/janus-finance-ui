@@ -237,7 +237,8 @@ const Wishlist = (props) => {
                                pagination={{
                                    onChange: onChangePage,
                                    total: total,
-                                   pageSize: params.size
+                                   pageSize: params.size,
+                                   position: ["bottomCenter"]
                                }}
                         />
                     )

@@ -3,36 +3,28 @@ import {getModel} from "../../models"
 import Promise from "bluebird"
 
 const _getQuery = async (query) => {
-    let vQuery = query.q ? {asset: { "$regex": '^' + query.q,  "$options": "i"}} : {}
+    console.log(query)
+    let vQuery = {}
 
-    // for (const key of Object.values(SORT_AND_FILTER_FIELD)) {
-    //     if (query[key].min === undefined && query[key].max === undefined) {
-    //         continue
-    //     }
-    //     const vKey = convertFieldName(key)
-    //     vQuery[vKey] = {$ne: null}
-    //     if (query[key].min !== undefined) {
-    //         let value = query[key].min
-    //         if (PARSE_FLOAT_FIELDS.includes(key)) {
-    //             value = parseFloat(value)
-    //         } else if (PARSE_DATE_FIELDS.includes(key)) {
-    //             value = new Date(value)
-    //         }
-    //         vQuery[vKey].$gte = value
-    //     }
-    //     if (query[key].max !== undefined) {
-    //         let value = query[key].max
-    //         if (PARSE_FLOAT_FIELDS.includes(key)) {
-    //             value = parseFloat(value)
-    //         } else if (PARSE_DATE_FIELDS.includes(key)) {
-    //             value = new Date(value)
-    //         }
-    //         vQuery[vKey].$lte = value
-    //     }
-    // }
+    const platformRegex = query["platform"] ? {
+        platform: { "$regex": query.platform[0],  "$options": "i"}
+    } : {}
+
+    const assetString = query["asset"] ? "(" + query["asset"].join("|") + ")" : ""
+
+    const userString = query.userToken ? "(" + query.userToken.join("|") + ")" : ""
+
+    const assetArr = [assetString, userString]
+    
+    const assetRegex = {
+        asset: { "$regex": assetArr.join('.*') + "|" + assetArr.reverse().join('.*'),  "$options": "i"}
+    }
+
+    vQuery = {$and: [platformRegex, assetRegex]}
+
+    console.log(JSON.stringify(vQuery))
 
     return vQuery
-
 }
 
 export const listPool = async ({page, size, query, orderBy}) => {
