@@ -106,6 +106,7 @@ const Navigation = () => {
                                 <path d="M19.1774 20.0004C18.9667 20.0004 18.7561 19.9203 18.5958 19.7589L4.2411 5.40543C3.91963 5.08376 3.91963 4.56257 4.2411 4.2411C4.56257 3.91963 5.08376 3.91963 5.40543 4.2411L19.7589 18.5948C20.0804 18.9163 20.0804 19.4374 19.7589 19.7589C19.5976 19.9193 19.387 20.0004 19.1774 20.0004Z" fill="#ffffff"/>
                             </svg>
                         }
+                        zIndex={1051}
                     >
                         <div className="text-white">
                             {nav}
@@ -114,17 +115,6 @@ const Navigation = () => {
                         <div className={'flex justify-center'}>
                             <ReactUIWalletMultiButton/>
                         </div>
-                        {
-                            !!publicKey && (
-                                <div
-                                    className={CN("flex justify-center items-center cursor-pointer", {'text-blue-500': isActive(Paths.Wishlist)})}>
-                                    <Link href={Paths.Wishlist} passHref={true}>
-                                        <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
-                                                         style={{color: "#e91e63"}}/>
-                                    </Link>
-                                </div>
-                            )
-                        }
                     </Drawer>
                 </div>
 
@@ -144,18 +134,19 @@ const Navigation = () => {
                     <div className={'flex header-button'}>
                         <ReactUIWalletMultiButton/>
                     </div>
-                    {
-                        !!publicKey && (
-                            <div
-                                className={CN("flex justify-center items-center cursor-pointer", {'text-blue-500': isActive(Paths.Wishlist)})}>
-                                <Link href={Paths.Wishlist} passHref={true}>
-                                    <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
-                                                     style={{color: "#e91e63"}}/>
-                                </Link>
-                            </div>
-                        )
-                    }
                 </div>
+
+                {
+                    !!publicKey && (
+                        <div
+                            className={CN("flex justify-center items-center cursor-pointer ml-3", {'text-blue-500': isActive(Paths.Wishlist)})}>
+                            <Link href={Paths.Wishlist} passHref={true}>
+                                <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
+                                                 style={{color: "#e91e63"}}/>
+                            </Link>
+                        </div>
+                    )
+                }
             </>
         ) : (
             (
@@ -175,7 +166,7 @@ const Navigation = () => {
 
     return (
         <div
-            className={`janus-header wrapper justify-between items-center sticky flex z-20 fade-transition ${!visibleNavbar ? '-top-16 opacity-0' : "top-0 opacity-100"}`}>
+            className={`janus-header py-4 lg:py-6 wrapper justify-between items-center sticky flex z-20 fade-transition ${!visibleNavbar ? '-top-16 opacity-0' : "top-0 opacity-100"}`}>
             {leftItems()}
         </div>
     )
