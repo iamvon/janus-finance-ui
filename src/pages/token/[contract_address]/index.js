@@ -6,20 +6,25 @@ import {useRouter} from 'next/router'
 import JupiterForm from "/src/components/token/JupiterForm";
 import {JupiterProvider} from '@jup-ag/react-hook'
 import {useConnection, useWallet} from "@solana/wallet-adapter-react";
+import {getDetailController} from "../../../lib/controllers/token/tokenDetail"
 
 const TokenDetail = (props) => {
     const router = useRouter()
+    const {tokenDetail} = props
+    console.log('tokenDetail', tokenDetail)
 
     const inputMint = INPUT_MINT_ADDRESS
     const outputMint = router.query.contract_address
 
     return (
-        <div className="wrapper flex flex-col items-stretch justify-start space-y-12 pt-20 pb-20 text-white SingleTokenPage">
-            <PageHeader title={"TokenDetail"}/>
+        <div
+            className="wrapper flex flex-col items-stretch justify-start space-y-12 pt-10 lg:pt-20 pb-20 text-white SingleTokenPage">
+            <PageHeader title={"Janus Exchange"}/>
             <JupiterWrapper>
                 <JupiterForm
                     inputMintAddress={inputMint}
                     outputMintAddress={outputMint}
+                    tokenDetail={tokenDetail}
                 />
             </JupiterWrapper>
         </div>
@@ -41,8 +46,23 @@ const JupiterWrapper = ({children}) => {
 };
 
 export const getServerSideProps = async (context) => {
+    const {contract_address: contractAddress} = context.params
+    const _tokenDetail = getDetailController({params: {contractAddress}})
+
+    const [tokenDetail] = await Promise.all([
+        _tokenDetail
+    ])
+
+    if (!tokenDetail) {
+        return {
+            notFound: true,
+        }
+    }
+
     return {
-        props: {}
+        props: {
+            tokenDetail: JSON.parse(JSON.stringify(tokenDetail)),
+        },
     }
 }
 

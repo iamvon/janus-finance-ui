@@ -352,7 +352,6 @@ const Token = (props) => {
     )
 }
 
-
 export const getServerSideProps = async (context) => {
     const query = context.query
     const params = parseQueryToParams(query)
