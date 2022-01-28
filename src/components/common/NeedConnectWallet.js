@@ -1,29 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react"
-import {useRouter} from "next/router"
 import {WalletMultiButton as ReactUIWalletMultiButton} from '@solana/wallet-adapter-react-ui'
-import Paths from "../../lib/routes/Paths"
 
 
-const EmptyWishlist = () => {
-
-    const router = useRouter()
+const NeedConnectWallet = ({content}) => {
 
     const handlerOnClick = () => {
-        router.push(Paths.Tokens)
+        const element = document.querySelector('.wallet-adapter-button.wallet-adapter-button-trigger')
+        element.click()
     }
 
     return (
         <div className="flex justify-center text-white text-sf-pro">
             <div className="flex flex-col items-center">
                 <img alt={"wishlist_not_found"} className="mb-10" src={'/image/wishlist_not_found.svg'}/>
-                <div className="text-[24px] font-bold text-[#00FFA3] mb-4">
-                    Your Wishlist is empty!
-                </div>
                 <div className="center font-normal text-[18px] text-center leading-6 mb-6">
-                    Seems like you don’t have wishes here.
-                    <br/>
-                    Make a wish!
+                    {content}
                 </div>
                 <div>
                     <div className="hidden">
@@ -33,7 +25,7 @@ const EmptyWishlist = () => {
                         className="bg-[#00FFA328] text-[#00FFA3] text-[14px] font-bold py-[13px] px-8 rounded-[80px]"
                         onClick={handlerOnClick}
                     >
-                        Start shopping
+                        Connect wallet
                     </button>
                 </div>
             </div>
@@ -41,4 +33,4 @@ const EmptyWishlist = () => {
     )
 }
 
-export default EmptyWishlist
+export default NeedConnectWallet

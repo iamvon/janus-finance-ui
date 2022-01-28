@@ -17,6 +17,7 @@ import {isEmpty} from "../../lib/services/util/object"
 import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
 import _ from "lodash"
 import EmptyWishlist from "../../components/wishlist/EmptyWishlist"
+import NeedConnectWallet from "../../components/common/NeedConnectWallet"
 
 const tableSize = 10
 
@@ -34,7 +35,7 @@ const Wishlist = (props) => {
 
     useEffect(() => {
         setLoading(false)
-    },[])
+    }, [])
 
     useEffect(() => {
         const query = parseParamsToQuery(params, sortBy, publicKey, searchQuery)
@@ -200,9 +201,19 @@ const Wishlist = (props) => {
         }
     ]
 
+    if (!publicKey) {
+
+        return (
+            <div className={CN('pt-24')}>
+                <NeedConnectWallet content={"Connect your wallet first to manage your wishlist"}/>
+            </div>
+        )
+    }
+
     return (
         <div className="wishlist-page wrapper flex flex-col justify-start pb-12">
             <PageHeader title={"Wishlist"}/>
+
             <div className={'flex justify-between items-baseline'}>
                 <div className="font-bold text-2xl text-white py-16">
                     Wishlist
@@ -226,7 +237,7 @@ const Wishlist = (props) => {
                                pagination={{
                                    onChange: onChangePage,
                                    total: total,
-                                   pageSize: params.size,
+                                   pageSize: params.size
                                }}
                         />
                     )
