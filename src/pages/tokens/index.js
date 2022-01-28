@@ -5,7 +5,7 @@ import {useRouter} from 'next/router'
 import {DEFAULT_PAGE_SIZE} from "../../lib/constants/pagination"
 import {listTokenController} from "../../lib/controllers/token/listToken"
 import SolanaTokenItem from "../../components/SolanaTokenItem"
-import {AutoComplete, Empty, notification, Pagination, Radio} from "antd"
+import {Dropdown, Empty, Input, notification, Pagination, Radio, Checkbox} from "antd"
 import CN from "classnames"
 import {listTokenTagController} from "../../lib/controllers/token/listTokenTag"
 import querystring from 'query-string'
@@ -23,6 +23,9 @@ import {useWallet} from "@solana/wallet-adapter-react"
 import {getWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
 import {WISHLIST_ACTION} from "../../lib/constants/wallet"
 import {checkMatchMediaQuery} from "../../utils"
+import {renderTagName} from "../../lib/helpers/tag"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
 
 const initialFilterValue = {}
 
@@ -33,6 +36,9 @@ Object.values(SORT_AND_FILTER_FIELD).forEach((key) => {
     }
 })
 
+const PC_HEIGHT = 600
+const MB_HEIGHT = 350
+
 const Token = (props) => {
     const {
         solanaTokens, tokenTags,
@@ -42,14 +48,18 @@ const Token = (props) => {
         defaultSize,
         // defaultFilter,
         defaultTags,
-        defaultSort,
+        defaultSort
     } = props
     const initTagOptions = [...tokenTags].map(i => {
-        return {value: i.name}
+        return {
+            value: i.name,
+            label: renderTagName(i.name)
+        }
     })
 
-    const [selectedTagList, setSelectedTagList] = useState(defaultTags);
-    const [tagOptions, setTagOptions] = useState(initTagOptions);
+    const [selectedTagList, setSelectedTagList] = useState(defaultTags)
+    const [tagOptions, setTagOptions] = useState(initTagOptions)
+    const [displayTagOptions, setDisplayTagOptions] = useState(initTagOptions)
 
     const {searchQuery, setSearchQuery} = useContext(AppContext)
     const [itemData, setItemData] = useState(solanaTokens)
@@ -61,6 +71,9 @@ const Token = (props) => {
     const [sortBy, _setSortBy] = useState(defaultSort)
     const [total, setTotal] = useState(defaultTotal)
     const [wishlist, setWishList] = useState([])
+    const [inputFocus, setInputFocus] = useState(false)
+    const [listFocus, setListFocus] = useState(false)
+    const [listMouseEnter, setListMouseEnter] = useState(false)
 
     const router = useRouter()
     const {publicKey} = useWallet()
@@ -115,26 +128,36 @@ const Token = (props) => {
 
     const onSearchTag = async (searchText) => {
         const filteredTags = initTagOptions.filter(op => op.value.toUpperCase().indexOf(searchText.toUpperCase()) !== -1)
-        setTagOptions(filteredTags);
+        setTagOptions(filteredTags)
         const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
-    };
+    }
 
     const onSelectCustomTag = async (data) => {
         const newTagList = _.uniq([...selectedTagList, data])
-        setSelectedTagList(newTagList);
+        setSelectedTagList(newTagList)
         const query = parseParamsToQuery(params, sortBy, newTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
-    };
+    }
 
     const onRemoveTag = async (tag) => {
         const newSelectedTagList = selectedTagList.filter(i => i !== tag)
         setSelectedTagList(newSelectedTagList)
         const query = parseParamsToQuery(params, sortBy, newSelectedTagList, searchQuery)
+        const url = parseQueryToUrl(query)
+        router.replace(url, undefined, {shallow: true}).then()
+        await fetchData(query)
+    }
+
+    const handlerChangeTags = async (values) => {
+        const result = tagOptions.filter(item => values.includes(item.value))
+        const newTagList = result.map(i => i.value)
+        setSelectedTagList(newTagList)
+        const query = parseParamsToQuery(params, sortBy, newTagList, searchQuery)
         const url = parseQueryToUrl(query)
         router.replace(url, undefined, {shallow: true}).then()
         await fetchData(query)
@@ -154,7 +177,7 @@ const Token = (props) => {
         await router.replace(url, undefined, {shallow: true})
         // console.log('url', url);
         await fetchData(query)
-    };
+    }
 
     const onApplyClick = async () => {
         const query = parseParamsToQuery(params, sortBy, selectedTagList, searchQuery)
@@ -203,8 +226,8 @@ const Token = (props) => {
         if (!publicKey) {
             return notification.warn({
                 message: 'Warning',
-                description: "You have to connect your wallet to save this item in your wishlist",
-            });
+                description: "You have to connect your wallet to save this item in your wishlist"
+            })
         }
         return updateWishlist(token, isStared)
     }
@@ -222,6 +245,57 @@ const Token = (props) => {
         )
     }
 
+    const handlerSearchTag = (event) => {
+        const value = event.target.value
+        const str = renderTagName(value).toLowerCase()
+        const result = tagOptions.filter(value => {
+            const s = value.label.toLowerCase()
+            return s.includes(str)
+        })
+        setDisplayTagOptions(result)
+    }
+
+    const overlay = () => {
+        return (
+            <div
+                onMouseEnter={() => {
+                    setListMouseEnter(true)
+                }}
+                onMouseLeave={() => {
+                    setListMouseEnter(false)
+                }}
+                onClick={() => {
+                    setListFocus(true)
+                }}
+                onBlur={() => {
+                    setListFocus(false)
+                }}
+            >
+                <Checkbox.Group
+                    className="flex flex-col mt-4 space-y-4 overflow-y-auto"
+                    defaultValue={selectedTagList}
+                    onChange={handlerChangeTags}
+                    value={selectedTagList}
+                    style={{
+                        height: MB_HEIGHT,
+                        minHeight: MB_HEIGHT,
+                        maxHeight: MB_HEIGHT
+                    }}
+                >
+                    {
+                        displayTagOptions.map((op) => {
+                            return (
+                                <Checkbox value={op.value} key={op.value}>
+                                    {op.label}
+                                </Checkbox>
+                            )
+                        })
+                    }
+                </Checkbox.Group>
+            </div>
+        )
+    }
+
     return (
         <div className="tokens-page wrapper flex flex-col justify-start pb-12">
             <PageHeader title={"Assets"}/>
@@ -229,27 +303,44 @@ const Token = (props) => {
                 <div className={'w-full lg:w-1/4 pr-0 lg:pr-[50px] sticky tokens-sidebar mb-3'}>
                     <div className="font-semibold text-2xl mb-4 lg:hidden text-white">Assets</div>
                     <div>
-                        {/*<div className={'text-base font-bold mb-2'}>Tags</div>*/}
                         <div>
                             <div className={'my-1'}>
-                                <AutoComplete
-                                    // value={selectedCustomTag}
-                                    options={tagOptions}
-                                    style={{width: "100%"}}
-                                    onSelect={onSelectCustomTag}
-                                    onSearch={onSearchTag}
-                                    // onChange={onChangeTagString}
-                                    placeholder="Find tag here"
-                                    defaultOpen={true}
-                                    open={openTags}
-                                    onFocus={() => {
-                                        if (isMobile) setOpenTags(true)
-                                    }}
-                                    onBlur={() => {
-                                        if (isMobile) setOpenTags(false)
-                                    }}
-                                    dropdownClassName="DropdownTagList"
-                                />
+                                <div className={"hidden lg:block"}>
+                                    <Input
+                                        prefix={<FontAwesomeIcon icon={faSearch} className={"mr-2 text-white"}/>}
+                                        className="py-2 rounded-2xl bg-[#333639] flex"
+                                        placeholder="Find tag here"
+                                        onChange={handlerSearchTag}
+                                    />
+                                    <Checkbox.Group
+                                        className="flex flex-col mt-4 space-y-4 overflow-y-auto"
+                                        options={displayTagOptions}
+                                        defaultValue={selectedTagList}
+                                        onChange={handlerChangeTags}
+                                        value={selectedTagList}
+                                        style={{
+                                            height: PC_HEIGHT,
+                                            minHeight: PC_HEIGHT,
+                                            maxHeight: PC_HEIGHT
+                                        }}
+                                    />
+                                </div>
+                                <Dropdown
+                                    overlay={overlay()}
+                                    className={"block lg:hidden"}
+                                    overlayClassName={"tokens-page"}
+                                    placement={"bottomCenter"}
+                                    visible={inputFocus || listFocus || listMouseEnter}
+                                >
+                                    <Input
+                                        placeholder="Find tag here"
+                                        onChange={handlerSearchTag}
+                                        prefix={<FontAwesomeIcon icon={faSearch} className={"mr-2 text-white"}/>}
+                                        className="py-2 rounded-2xl bg-[#333639] flex"
+                                        onClick={() => setInputFocus(true)}
+                                        onBlur={() => setInputFocus(false)}
+                                    />
+                                </Dropdown>
                             </div>
                         </div>
                     </div>
@@ -315,7 +406,7 @@ const Token = (props) => {
                     </div>
 
                     <div className="flex flex-col lg:flex-col-reverse mb-6">
-                        <div className='selected-filter flex justify-start flex-wrap mb-4 lg:mb-0'>
+                        <div className="selected-filter flex justify-start flex-wrap mb-4 lg:mb-0">
                             {
                                 selectedTagList.map((tag, index) => {
                                     return <TokenTag key={index} text={tag} onRemove={onRemoveTag}/>
@@ -323,15 +414,16 @@ const Token = (props) => {
                             }
                         </div>
 
-                        <div className='sort-by flex justify-start flex-wrap lg:mb-8'>
+                        <div className="sort-by flex justify-start flex-wrap lg:mb-8">
                             {/*<div className={'sort-by-title'}>Sort by</div>*/}
                             <div className="sort-by-radio">
-                                <Radio.Group onChange={onChangeSortBy} value={sortBy.value}>
+                                <Radio.Group className="lg:space-y-2 lg:space-y-reverse" onChange={onChangeSortBy} value={sortBy.value}>
                                     {
                                         SORT_BY_OPTIONS.map((option, index) => {
                                             return (
-                                                <div key={index} className={'option-item lg:mt-3'}>
-                                                    <Radio.Button value={option.value} className="font-semibold lg:font-normal">{option.label}</Radio.Button>
+                                                <div key={index} className={'option-item'}>
+                                                    <Radio.Button value={option.value}
+                                                                  className="font-semibold lg:font-normal">{option.label}</Radio.Button>
                                                 </div>
                                             )
                                         })
@@ -382,7 +474,7 @@ export const getServerSideProps = async (context) => {
 
     if (!solanaTokens || !solanaTokenTags) {
         return {
-            notFound: true,
+            notFound: true
         }
     }
     return {

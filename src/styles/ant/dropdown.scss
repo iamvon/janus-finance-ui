@@ -1,0 +1,35 @@
+.tokens-page {
+
+  .ant-checkbox-group {
+    background-color: #080c10 !important;
+  }
+
+  .ant-checkbox {
+    background-color: #FFFFFFA3 !important;
+    border-radius: 2px !important;
+  }
+
+  .ant-checkbox-checked {
+    .ant-checkbox-inner {
+      background-color: #00ffa3 !important;
+      border-color: #00FFA3A3 !important;
+    }
+
+    .ant-checkbox-inner::after {
+      border-color: #232D36 !important;
+    }
+  }
+
+  .ant-checkbox-inner {
+    background-color: #FFFFFFA3 !important;
+    border-color: #FFFFFFA3 !important;
+    border-radius: 2px !important;
+  }
+
+  .ant-checkbox-wrapper {
+    color: #D8DBDE !important;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 0;
+  }
+}

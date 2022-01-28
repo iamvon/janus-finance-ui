@@ -347,7 +347,7 @@ const Portfolio = (props) => {
                                 </div>
                             </div>
                             {/* chưa xử lý được dữ liệu */}
-                            <div className={`${styles['wrap']} ${styles['wrap-right']}`}>
+                            <div className={CN("hidden", styles['wrap'], styles['wrap-right'] )}>
                                 <div className={`${styles['overview-value-subsection']} ${styles['boundary']}`}>
                                     <div className={`${styles['no-border']}`}>
                                         <div className={`${styles['overview-value-subsection-title']}`}>
