@@ -416,7 +416,7 @@ const SwapTokenInfo = ({
                                                     {inputTokenInfo.market_data?.ath_change_percentage
                                                         ?.usd ? (
                                                         <div
-                                                            className={`ml-1.5 mt-2 text-sm mt-1 ${inputTokenInfo.market_data
+                                                            className={`ml-1.5 mt-2 text-xs mt-1 ${inputTokenInfo.market_data
                                                                 ?.ath_change_percentage?.usd >= 0
                                                                 ? 'text-th-green'
                                                                 : 'text-th-red'
