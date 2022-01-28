@@ -35,7 +35,7 @@ const App = ({ Component, pageProps }) => {
                     <PageHeader />
                     <Navigation />
                     <div className="janus-bg" />
-                    <div className="pb-[170px]">
+                    <div className="pb-[90px]">
                         <Component {...pageProps} />
                     </div>
                     <Footer />

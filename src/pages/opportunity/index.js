@@ -9,10 +9,14 @@ import {Table, Tag, Input, Select, Button, Space} from 'antd'
 import axios from 'axios'
 import CN from "classnames"
 import {brief_address} from "../../lib/helpers/address"
+import Link from "next/link"
 import CopyIcon from "../../components/common/CopyIcon"
 import {faCopy, faInfo, faInfoCircle, faSearch} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import { SearchOutlined } from '@ant-design/icons';
+import {useSolWalletScan} from '../../hook/useSolWalletScan'
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import {renderSolscanUrl} from "../../lib/helpers/solscan"
 
 const rowClassName = 'hover:bg-[#232D36]'
 
@@ -25,7 +29,32 @@ const Opportunity = ({totalPool}) => {
     const [curFilter, setCurFilter] = useState({asset: null, platform: null})
     const [curSorter, setCurSorter] = useState({})
     const [userToken, setUserToken] = useState([])
+    const [isFilterByUserTokens, setFilterByUserTokens] = useState(false)
     const [pagination, setPagination] = useState({current: 1, pageSize: 10, total: totalPool})
+    const {tokens, loading, error} = useSolWalletScan()
+    const { connection } = useConnection();
+    const { publicKey } = useWallet();
+
+    const getTokensSymbolInPortfolio = () => {
+      const tokensSymbolList = []
+      tokens.forEach(token => {
+        if (token?.symbol) {
+          tokensSymbolList.push(token?.symbol)
+        }
+      })
+      return tokensSymbolList
+    }
+
+    const findBaseOnUserToken = () => {
+      setFilterByUserTokens(true)
+      const userTokens = getTokensSymbolInPortfolio()
+      setUserToken(userTokens)
+    }
+
+    const findAll = () => {
+      setFilterByUserTokens(false)
+      setUserToken([])
+    }
 
     const handleFetchPool = async (newPagination, filters, sorter, userToken) => {
         const size = newPagination.pageSize
@@ -153,7 +182,11 @@ const Opportunity = ({totalPool}) => {
                         </div>
                         <div className="flex items-center">
                             <div className={CN("text-[#00FFA3] text-[12px] font-normal")}>
-                                {brief_address(record.liquidity_pool)}
+                                <Link href={renderSolscanUrl(record.liquidity_pool)}>
+                                    <a target={"_blank"}>
+                                        {brief_address(record.liquidity_pool)}
+                                    </a>
+                                </Link>
                             </div>
                             <CopyIcon handlerCopy={() => navigator.clipboard.writeText(record.liquidity_pool)}/>
                         </div>
@@ -276,6 +309,11 @@ const Opportunity = ({totalPool}) => {
                 {/*  </div>*/}
                 {/*  <span>{logInfo}</span>*/}
                 {/*</div>*/}
+                {publicKey && <div className="">
+                  {!isFilterByUserTokens ? <Button onClick={findBaseOnUserToken}>Find base on my tokens</Button> : 
+                    <Button onClick={findAll}>Find All</Button>
+                  }
+                </div>}
                 <div className="">
                     <Table
                         className={"opportunity-table rounded-2xl"}

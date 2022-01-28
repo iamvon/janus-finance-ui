@@ -1,15 +1,3 @@
-.opportunity-table {
-  .ant-pagination {
-    place-content: center;
-  }
-}
-
-.wishlist-table {
-  .ant-pagination {
-    place-content: center;
-  }
-}
-
 .ant-table {
   border-radius: 8px;
   background-color: transparent;
@@ -46,7 +34,7 @@
     background: #232D36;
   }
 
-  .ant-table-row:hover {
+  .ant-table-row, .ant-table-row:hover {
     .ant-table-cell {
       background: #232D36 !important;
     }
@@ -87,5 +75,83 @@
     .ant-empty-description {
       color: white !important;
     }
+  }
+}
+
+
+.opportunity-table {
+  .ant-pagination {
+    place-content: center;
+  }
+}
+
+.portfolio {
+  .ant-table-thead {
+    .ant-table-cell {
+      background: #232D36 !important;
+    }
+  }
+
+  .ant-table-row {
+    .ant-table-cell {
+      border-bottom: none;
+    }
+  }
+
+  .ant-table-cell-row-hover, .ant-table-cell-row-hover:hover {
+    background: #232D36 !important;
+  }
+
+  .ant-table-column-sort {
+    background: #232D36;
+  }
+
+  .ant-table-row, .ant-table-row:hover {
+    .ant-table-cell {
+      background: #232D36 !important;
+    }
+  }
+
+  .ant-table-thead {
+    th:first-child {
+      border-top-left-radius: 8px !important;
+    }
+
+    th:last-child {
+      border-top-right-radius: 8px !important;
+    }
+  }
+
+  .ant-table-tbody {
+    tr:last-child {
+      td:first-child {
+        border-bottom-left-radius: 8px !important;
+      }
+
+      td:last-child {
+        border-bottom-right-radius: 8px !important;
+      }
+    }
+  }
+
+  .ant-table-placeholder, .ant-table-placeholder:hover {
+    .ant-table-cell:hover {
+      background: rgba(58, 75, 91, 0.8) !important;
+    }
+
+    .ant-table-cell {
+      background: rgba(58, 75, 91, 0.8) !important;
+      border-bottom: none;
+    }
+
+    .ant-empty-description {
+      color: white !important;
+    }
+  }
+}
+
+.wishlist-table {
+  .ant-pagination {
+    place-content: center;
   }
 }
