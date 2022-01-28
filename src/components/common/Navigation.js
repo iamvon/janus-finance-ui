@@ -4,17 +4,18 @@ import Link from "next/link"
 import Paths from "/src/lib/routes/Paths"
 import CN from "classnames"
 import SearchBar from "./SearchBar"
-import { useRouter } from "next/router"
-import {
-    WalletMultiButton as ReactUIWalletMultiButton,
-} from '@solana/wallet-adapter-react-ui';
+import {useRouter} from "next/router"
+import {WalletMultiButton as ReactUIWalletMultiButton,} from '@solana/wallet-adapter-react-ui';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faHeart} from "@fortawesome/free-regular-svg-icons"
+import {useWallet} from "@solana/wallet-adapter-react"
 
 const appMode = process.env.NEXT_PUBLIC_APP_MODE
 
 const iconMenu = <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 7H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M3 12H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M3 17H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M3 7H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M3 12H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M3 17H21" stroke="#676A6C" strokeWidth="1.5" strokeLinecap="round"/>
 </svg>
 
 
@@ -35,7 +36,9 @@ const overlay = () => {
 const Navigation = () => {
     const [visibleNavbar, setVisibleNavbar] = useState(true)
     const router = useRouter()
+    const {publicKey} = useWallet();
 
+    console.log(router.pathname)
     const isActive = (menu) => {
         const pathName = router.pathname
         return pathName === menu
@@ -44,33 +47,46 @@ const Navigation = () => {
     const leftItems = () => {
         return appMode !== 'production' ? (
             <div className={CN("flex items-center justify-between flex-row")}>
-                <div className={`grid grid-cols-5 gap-2 text-sm font-semibold`}>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/explore') })}>
+                <div className={`header-nav flex`}>
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/explore') })}>
                         <Link href={Paths.Portfolio}>
                             Portfolio
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/collections') })}>
-                        <Link href={Paths.Token}>
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/collections') })}>
+                        <Link href={Paths.Tokens}>
                             Assets
                         </Link>
                     </div>
-                    <div className="col-span-1 flex justify-center cursor-pointer" >
+                    <div className="nav-item col-span-1 cursor-pointer" >
                         <Link href={Paths.Opportunity}>
                             Opportunity
                         </Link>
                     </div>
-                    <div className={CN("col-span-1 flex justify-center cursor-pointer", { 'text-blue-500': isActive('/TokenDetail-drops') })} >
+                    <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/wishlist') })} >
                         <Link href={Paths.Wishlist}>
                             Wishlist
                         </Link>
                     </div>
                 </div>
-                <div className={`w-3/5`}>
+                <div className={`header-search`}>
                     <SearchBar />
                 </div>
-                <div className={`w-1/5`}>
-                    <ReactUIWalletMultiButton />
+                <div className={`w-1/5 flex justify-between mx-5 header-button`}>
+                    <div className={'flex'}>
+                        <ReactUIWalletMultiButton/>
+                    </div>
+                    {
+                        !!publicKey && (
+                            <div
+                                className={CN("flex justify-center items-center cursor-pointer", {'text-blue-500': isActive(Paths.Wishlist)})}>
+                                <Link href={Paths.Wishlist} passHref={true}>
+                                    <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
+                                                     style={{color: "#e91e63"}}/>
+                                </Link>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
         ) : (
@@ -106,11 +122,11 @@ const Navigation = () => {
 
     return (
         <div
-            className={`wrapper py-2 justify-between items-center sticky bg-white flex z-20 fade-transition ${!visibleNavbar ? '-top-16 opacity-0' : "top-0 opacity-100"}`}>
-            <div className={`flex-shrink w-24 h-12 flex flex-row items-center md:mr-8 lg:mr-20`}>
+            className={`janus-header wrapper justify-between items-center sticky flex z-20 fade-transition ${!visibleNavbar ? '-top-16 opacity-0' : "top-0 opacity-100"}`}>
+            <div className={`header-logo flex-shrink w-24 h-12 flex flex-row items-center`}>
                 <div className="text-blue-500 font-bold text-3xl hover:text-blue-500">
                     <Link href={Paths.Home}>
-                        Janus
+                        <img src={'/image/logo.png'} alt='Home'/>
                     </Link>
                 </div>
             </div>

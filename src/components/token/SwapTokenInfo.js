@@ -12,31 +12,24 @@ import { useTranslation } from 'next-i18next'
 
 dayjs.extend(relativeTime)
 
-// interface SwapTokenInfoProps {
-//   inputTokenId?: string
-//   outputTokenId?: string
-// }
-
 export const numberFormatter = Intl.NumberFormat('en', {
     minimumFractionDigits: 1,
     maximumFractionDigits: 5,
 })
 
-// const TokenItemDetail: FunctionComponent<SwapTokenInfoProps> = ({
 const SwapTokenInfo = ({
     inputTokenId,
     outputTokenId,
 }) => {
     const [chartData, setChartData] = useState([])
     const [hideChart, setHideChart] = useState(false)
-    const [baseTokenId, setBaseTokenId] = useState('mango-markets')
-    const [quoteTokenId, setQuoteTokenId] = useState('usd-coin')
+    const [baseTokenId, setBaseTokenId] = useState('')
+    const [quoteTokenId, setQuoteTokenId] = useState(outputTokenId)
     const [inputTokenInfo, setInputTokenInfo] = useState(null)
     const [outputTokenInfo, setOutputTokenInfo] = useState(null)
     const [mouseData, setMouseData] = useState(null)
     const [daysToShow, setDaysToShow] = useState(1)
     const { observe, width, height } = useDimensions()
-    const { t } = useTranslation(['common', 'swap'])
 
     const handleMouseMove = (coords) => {
         if (coords.activePayload) {
@@ -49,13 +42,13 @@ const SwapTokenInfo = ({
     }
 
     useEffect(() => {
-        if (['usd-coin', 'tether'].includes(inputTokenId)) {
-            setBaseTokenId(outputTokenId)
-            setQuoteTokenId(inputTokenId)
-        } else {
-            setBaseTokenId(inputTokenId)
-            setQuoteTokenId(outputTokenId)
-        }
+        // if (['usd-coin', 'tether'].includes(inputTokenId)) {
+        //     setBaseTokenId(outputTokenId)
+        //     setQuoteTokenId(inputTokenId)
+        // } else {
+        setBaseTokenId(inputTokenId)
+        setQuoteTokenId(outputTokenId)
+        // }
     }, [inputTokenId, outputTokenId])
 
     // Use ohlc data
@@ -152,6 +145,7 @@ const SwapTokenInfo = ({
         }
     }, [baseTokenId, quoteTokenId])
 
+    // console.log("chartData", chartData)
     const chartChange = chartData.length
         ? ((chartData[chartData.length - 1]['price'] - chartData[0]['price']) /
             chartData[0]['price']) *
@@ -228,15 +222,15 @@ const SwapTokenInfo = ({
                                 />
                                 <defs>
                                     <linearGradient id="gradientArea" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="0%" stopColor="#ffba24" stopOpacity={0.9} />
-                                        <stop offset="90%" stopColor="#ffba24" stopOpacity={0} />
+                                        <stop offset="0%" stopColor="#1dde98" stopOpacity={0.9} />
+                                        <stop offset="90%" stopColor="#1dde98" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <Area
                                     isAnimationActive={true}
                                     type="monotone"
                                     dataKey="price"
-                                    stroke="#ffba24"
+                                    stroke="#1dde98"
                                     fill="url(#gradientArea)"
                                 />
                                 <XAxis dataKey="time" hide />
@@ -276,7 +270,7 @@ const SwapTokenInfo = ({
             ) : (
                 <div className="bg-th-bkg-3 mt-4 md:mt-0 p-4 rounded-md text-center text-th-fgd-3">
                     <LineChartIcon className="h-6 mx-auto text-th-primary w-6" />
-                    {t('swap:chart-not-available')}
+                    Chart not available
                 </div>
             )}
 
@@ -287,8 +281,8 @@ const SwapTokenInfo = ({
                             <>
                                 <Disclosure.Button
                                     className={`border border-th-bkg-4 default-transition flex items-center justify-between mt-6 p-3 rounded-md w-full hover:bg-th-bkg-2 ${open
-                                            ? 'border-b-transparent rounded-b-none'
-                                            : 'transform rotate-360'
+                                        ? 'border-b-transparent rounded-b-none'
+                                        : 'transform rotate-360'
                                         }`}
                                 >
                                     <div className="flex items-center">
@@ -323,9 +317,9 @@ const SwapTokenInfo = ({
                                                 ?.price_change_percentage_24h ? (
                                                 <div
                                                     className={`font-normal text-th-fgd-1 ${inputTokenInfo.market_data
-                                                            .price_change_percentage_24h >= 0
-                                                            ? 'text-th-green'
-                                                            : 'text-th-red'
+                                                        .price_change_percentage_24h >= 0
+                                                        ? 'text-th-green'
+                                                        : 'text-th-red'
                                                         }`}
                                                 >
                                                     {inputTokenInfo.market_data.price_change_percentage_24h.toFixed(
@@ -346,7 +340,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_cap_rank ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:market-cap-rank')}
+                                                    Market Cap Rank
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     #{inputTokenInfo.market_cap_rank}
@@ -356,7 +350,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_data?.market_cap ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:market-cap')}
+                                                    Market Cap
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     $
@@ -369,7 +363,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_data.total_volume?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('daily-volume')}
+                                                    24-hour Volume
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     $
@@ -382,7 +376,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_data?.circulating_supply ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:token-supply')}
+                                                    Token Supply
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     {numberFormatter.format(
@@ -391,7 +385,7 @@ const SwapTokenInfo = ({
                                                 </div>
                                                 {inputTokenInfo.market_data?.max_supply ? (
                                                     <div className="text-th-fgd-2 text-xs">
-                                                        {t('swap:max-supply')}:{' '}
+                                                        Max Supply:{' '}
                                                         {numberFormatter.format(
                                                             inputTokenInfo.market_data.max_supply
                                                         )}
@@ -402,7 +396,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_data?.ath?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:ath')}
+                                                    All-Time High
                                                 </div>
                                                 <div className="flex">
                                                     <div className="font-bold text-th-fgd-1 text-lg">
@@ -415,9 +409,9 @@ const SwapTokenInfo = ({
                                                         ?.usd ? (
                                                         <div
                                                             className={`ml-1.5 mt-2 text-xs ${inputTokenInfo.market_data
-                                                                    ?.ath_change_percentage?.usd >= 0
-                                                                    ? 'text-th-green'
-                                                                    : 'text-th-red'
+                                                                ?.ath_change_percentage?.usd >= 0
+                                                                ? 'text-th-green'
+                                                                : 'text-th-red'
                                                                 }`}
                                                         >
                                                             {(inputTokenInfo.market_data?.ath_change_percentage?.usd).toFixed(
@@ -439,7 +433,7 @@ const SwapTokenInfo = ({
                                         {inputTokenInfo.market_data?.atl?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:atl')}
+                                                    All-Time Low
                                                 </div>
                                                 <div className="flex">
                                                     <div className="font-bold text-th-fgd-1 text-lg">
@@ -452,9 +446,9 @@ const SwapTokenInfo = ({
                                                         ?.usd ? (
                                                         <div
                                                             className={`ml-1.5 mt-2 text-xs ${inputTokenInfo.market_data
-                                                                    ?.atl_change_percentage?.usd >= 0
-                                                                    ? 'text-th-green'
-                                                                    : 'text-th-red'
+                                                                ?.atl_change_percentage?.usd >= 0
+                                                                ? 'text-th-green'
+                                                                : 'text-th-red'
                                                                 }`}
                                                         >
                                                             {(inputTokenInfo.market_data?.atl_change_percentage?.usd).toLocaleString(
@@ -485,7 +479,7 @@ const SwapTokenInfo = ({
                 </div>
             ) : (
                 <div className="bg-th-bkg-3 mt-3 p-4 rounded-md text-center text-th-fgd-3">
-                    {t('swap:input-info-unavailable')}
+                    Input token information is not available.
                 </div>
             )}
 
@@ -496,8 +490,8 @@ const SwapTokenInfo = ({
                             <>
                                 <Disclosure.Button
                                     className={`border border-th-bkg-4 default-transition flex items-center justify-between mt-3 p-3 rounded-md w-full hover:bg-th-bkg-2 ${open
-                                            ? 'border-b-transparent rounded-b-none'
-                                            : 'transform rotate-360'
+                                        ? 'border-b-transparent rounded-b-none'
+                                        : 'transform rotate-360'
                                         }`}
                                 >
                                     <div className="flex items-center">
@@ -532,9 +526,9 @@ const SwapTokenInfo = ({
                                                 ?.price_change_percentage_24h ? (
                                                 <div
                                                     className={`font-normal text-th-fgd-1 ${outputTokenInfo.market_data
-                                                            .price_change_percentage_24h >= 0
-                                                            ? 'text-th-green'
-                                                            : 'text-th-red'
+                                                        .price_change_percentage_24h >= 0
+                                                        ? 'text-th-green'
+                                                        : 'text-th-red'
                                                         }`}
                                                 >
                                                     {outputTokenInfo.market_data.price_change_percentage_24h.toFixed(
@@ -555,7 +549,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_cap_rank ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:market-cap-rank')}
+                                                    Market Cap Rank
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     #{outputTokenInfo.market_cap_rank}
@@ -565,7 +559,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_data?.market_cap ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:market-cap')}
+                                                    Market Cap
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     $
@@ -578,7 +572,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_data.total_volume?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('daily-volume')}
+                                                    24-hour Volume
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     $
@@ -591,7 +585,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_data?.circulating_supply ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:token-supply')}
+                                                    Token Supply
                                                 </div>
                                                 <div className="font-bold text-th-fgd-1 text-lg">
                                                     {numberFormatter.format(
@@ -600,7 +594,7 @@ const SwapTokenInfo = ({
                                                 </div>
                                                 {outputTokenInfo.market_data?.max_supply ? (
                                                     <div className="text-th-fgd-2 text-xs">
-                                                        {t('swap:max-supply')}:{' '}
+                                                        Max Supply:{' '}
                                                         {numberFormatter.format(
                                                             outputTokenInfo.market_data.max_supply
                                                         )}
@@ -611,7 +605,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_data?.ath?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:ath')}
+                                                    All-Time High
                                                 </div>
                                                 <div className="flex">
                                                     <div className="font-bold text-th-fgd-1 text-lg">
@@ -624,9 +618,9 @@ const SwapTokenInfo = ({
                                                         ?.usd ? (
                                                         <div
                                                             className={`ml-1.5 mt-2 text-xs ${outputTokenInfo.market_data
-                                                                    ?.ath_change_percentage?.usd >= 0
-                                                                    ? 'text-th-green'
-                                                                    : 'text-th-red'
+                                                                ?.ath_change_percentage?.usd >= 0
+                                                                ? 'text-th-green'
+                                                                : 'text-th-red'
                                                                 }`}
                                                         >
                                                             {(outputTokenInfo.market_data?.ath_change_percentage?.usd).toFixed(
@@ -648,7 +642,7 @@ const SwapTokenInfo = ({
                                         {outputTokenInfo.market_data?.atl?.usd ? (
                                             <div className="border border-th-bkg-4 m-1 p-3 rounded-md">
                                                 <div className="text-th-fgd-3 text-xs">
-                                                    {t('swap:atl')}
+                                                    All-Time Low
                                                 </div>
                                                 <div className="flex">
                                                     <div className="font-bold text-th-fgd-1 text-lg">
@@ -661,9 +655,9 @@ const SwapTokenInfo = ({
                                                         ?.usd ? (
                                                         <div
                                                             className={`ml-1.5 mt-2 text-xs ${outputTokenInfo.market_data
-                                                                    ?.atl_change_percentage?.usd >= 0
-                                                                    ? 'text-th-green'
-                                                                    : 'text-th-red'
+                                                                ?.atl_change_percentage?.usd >= 0
+                                                                ? 'text-th-green'
+                                                                : 'text-th-red'
                                                                 }`}
                                                         >
                                                             {(outputTokenInfo.market_data?.atl_change_percentage?.usd).toLocaleString(
@@ -694,7 +688,7 @@ const SwapTokenInfo = ({
                 </div>
             ) : (
                 <div className="bg-th-bkg-3 mt-3 p-4 rounded-md text-center text-th-fgd-3">
-                    {t('swap:output-info-unavailable')}
+                    Output token information is not available.
                 </div>
             )}
         </div>

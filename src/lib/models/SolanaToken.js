@@ -1,7 +1,6 @@
 const Mongoose = require("mongoose");
 const {Schema} = Mongoose
 
-
 const TokenSchema = new Schema(
     {
         chainId: {
@@ -46,5 +45,7 @@ const TokenSchema = new Schema(
     },
     { timestamps: true }
 )
+
+TokenSchema.index({name: 'text', address: 'text', symbol: 'text'});
 
 module.exports = Mongoose.models.SolanaToken || Mongoose.model("SolanaToken", TokenSchema, "Solana");

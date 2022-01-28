@@ -5,6 +5,7 @@ import Promise from "bluebird"
 export const listTokenTag = async ({query}) => {
     await connectToDatabase()
     const SolanaTokenTag = getModel('SolanaTokenTag')
+    const SolanaToken = getModel('SolanaToken')
 
     const vQuery = query.q ? {$text: {$search: query.q}} : {}
 
@@ -17,7 +18,15 @@ export const listTokenTag = async ({query}) => {
         _getItems,
     ])
 
+    const rItems = await Promise.all(items.map(async item => {
+        const tokenCount = await SolanaToken.countDocuments({tag: item.name})
+        return {
+            ...item,
+            tokens: tokenCount
+        }
+    }), {concurrency: 8})
+
     return {
-        items: items,
+        items: rItems,
     }
 }
