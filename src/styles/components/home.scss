@@ -77,8 +77,6 @@
   }
 
   .header-button {
-    margin-left: 16px;
-
     .wallet-adapter-button {
       height: 44px;
       line-height: 44px;
@@ -96,6 +94,27 @@
       }
     }
   }
+
+  //.IconMenu, .IconSearch {
+  //  display: none;
+  //}
+
+
+  .IconSearch {
+    width: 40px;
+    height: 40px;
+    background-color: #333639;
+    border-radius: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  //@media (min-width: 768px) {
+  //  .IconMenu, .IconSearch {
+  //    display: none;
+  //  }
+  //}
 }
 
 .banner {
@@ -329,5 +348,54 @@
     img {
       color: #00FFA3;
     }
+  }
+}
+
+.DrawerMobileMenu {
+  .ant-drawer-content, .ant-drawer-header {
+    background-color: #080C10;
+    color: #fff;
+  }
+
+  .ant-drawer-mask {
+    background-color: rgba(255, 255, 255, .45);
+  }
+
+  .wallet-adapter-button {
+    padding: 0 64px !important;
+    margin-top: 90px;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 25px;
+    background: rgba(0, 255, 163, 0.16);
+    color: #00FFA3;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease 0s;
+
+    &:hover {
+      color: #ffffff;
+      background: darken(#00FFA3, 10%) !important;
+    }
+  }
+
+  .wallet-adapter-button {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 20px;
+    border-radius: 25px;
+    background: rgba(0, 255, 163, 0.16);
+    color: #00FFA3;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+.ModalGlobalSearch {
+  .ant-modal-close-x {
+    display: flex;
+    justify-content: center;
+    margin-top: 8px;
   }
 }
