@@ -7,6 +7,7 @@ import Pool from '../../lib/models/pool.model'
 import {getPoolListApi} from "../../lib/services/api/pool"
 import { Table, Tag, Input, Select  } from 'antd';
 import axios from 'axios'
+import {useSolWalletScan} from '../../hook/useSolWalletScan'
 
 const Opportunity = ({totalPool}) => {
     const columnPool = [
@@ -85,6 +86,9 @@ const Opportunity = ({totalPool}) => {
       const [inputValue, setInputValue] = useState('')
       const [pagination, setPagination] = useState({ current: 1, pageSize: 10, total: totalPool })
       const [logInfo, setLogInfo] = useState("")
+      const {tokens, loading, error} = useSolWalletScan()
+
+      console.log(tokens, loading, error)
     
       const handleFetchPool = async (newPagination, sorter, curText) => {
         const size = newPagination.pageSize
@@ -93,8 +97,8 @@ const Opportunity = ({totalPool}) => {
         let orderDirection = 1
 
         if(sorter.order) {
-           orderBy = sorter.field
-           orderDirection = sorter.order === 'descend' ? -1 : 1
+            orderBy = sorter.field
+            orderDirection = sorter.order === 'descend' ? -1 : 1
         }
     
         const {data: res} = await axios.post('/api/pool', {
@@ -127,11 +131,24 @@ const Opportunity = ({totalPool}) => {
       const handleSearchPool = () => {
         handleFetchPool({...pagination, current: 1, pageSize: 10}, {}, inputValue)
       }
+
+      const filterByUserToken = () => {
+        const tokensInPortfolio = [];
+        tokens.forEach(token => {
+          if (token?.token?.symbol) {
+            tokensInPortfolio.push(token.token.symbol)
+          }
+        })
+        console.log(tokensInPortfolio)
+      }
     
       return (
         <div className='flex flex-row justify-between items-start bg-gray-100 w-full h-full '>
           <div className='flex flex-col px-2'>
             <PageHeader title={"Opportunity"}/>
+            <div className='my-4 text-base flex flex-row items-center justify-end'>
+              <button onClick={filterByUserToken}>Find base on my tokens</button>
+            </div>
             <div className='my-4 text-base flex flex-row items-center justify-start '>
               <span>Search</span>
               <div className='border border-black rounded-lg h-9 flex flex-row items-stretch justify-start mx-2 overflow-hidden bg-white'>

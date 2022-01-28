@@ -14,8 +14,7 @@ export const useSolWalletScan = () => {
     useEffect(() => {
         setLoading(true)
         if (publicKey) {
-            scanTokenByPK(connection, publicKey).then((result) => {
-                console.log(result)
+            scanTokenByPK(connection, publicKey.toString()).then((result) => {
                 setLoading(false)
                 setTokens(result)
             }).catch(err => {
