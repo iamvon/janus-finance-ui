@@ -47,6 +47,24 @@ export const SORT_BY_OPTIONS = [
         },
         direction: 'ascend',
         field: SORT_AND_FILTER_FIELD.PRICE
+    },
+    {
+        value: 6,
+        label: "Top market cap",
+        query: {
+            [SORT_AND_FILTER_FIELD.MARKET_CAP]: -1
+        },
+        direction: 'descend',
+        field: SORT_AND_FILTER_FIELD.MARKET_CAP
+    },
+    {
+        value: 7,
+        label: "Top volume",
+        query: {
+            [SORT_AND_FILTER_FIELD.VOLUME]: -1
+        },
+        direction: 'descend',
+        field: SORT_AND_FILTER_FIELD.VOLUME
     }
 ]
 

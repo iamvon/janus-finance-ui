@@ -152,6 +152,9 @@ $large-desktop-width: 1440px;
   .sort-by-radio {
     .ant-radio-group {
       display: flex;
+      @media screen and (min-width: $desktop-width) {
+        flex-wrap: wrap;
+      }
 
       .option-item {
         margin-right: 10px;
@@ -287,7 +290,7 @@ $large-desktop-width: 1440px;
           padding: 6px 2px 6px 8px;
         }
         @media screen and (min-width: $tablet-width) {
-          padding: 6px 16px 6px 16px;
+          padding: 6px 6px 6px 12px;
         }
 
         &:hover {
@@ -332,7 +335,7 @@ $large-desktop-width: 1440px;
         margin: 0px 8px;
       }
 
-      .star-btn-icon  {
+      .star-btn-icon {
         font-size: 24px;
         color: #00ffa3;
       }

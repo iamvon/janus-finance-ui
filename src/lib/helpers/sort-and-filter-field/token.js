@@ -4,6 +4,8 @@ export const SORT_AND_FILTER_FIELD = {
     TOP_TRENDING_RANK: "topTrendingRank",
     TOP_SELL_RANK: "topSellRank",
     TOP_BUY_RANK: "topBuyRank",
+    MARKET_CAP: "marketcap",
+    VOLUME: "volume",
 }
 
 export const PARSE_FLOAT_FIELDS = [SORT_AND_FILTER_FIELD.PRICE]
