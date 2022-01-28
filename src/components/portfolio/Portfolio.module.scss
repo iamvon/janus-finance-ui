@@ -1,0 +1,111 @@
+.portfolio {
+  font-family: "SF Pro Display", sans-serif !important;
+
+  .container {
+    .section {
+      margin-top: 40px;
+      .section-header {
+        color: white;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 32px;
+      }
+      .section-content {
+        font-size: 1rem;
+        margin-top: 24px;
+      }
+    }
+    .dashboard {
+      .balance {
+        border: 1px solid #34434F;
+        box-sizing: border-box;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px 40px;
+        color: white;
+        .title {
+          font-weight: 400;
+          font-size: 16px;
+          color: rgba(255, 255, 255, 0.64);
+        }
+        .account-balance {
+          font-weight: 700;
+          font-size: 36px;
+          line-height: 44px;
+        }
+      }
+    }
+    .overview {
+      color: #fff;
+      .section-content {
+        display: flex;
+        .wrap {
+          width: 50%;
+          .boundary {
+            background: #232D36;
+            border-radius: 16px;
+            padding: 32px;
+          }
+          .overview-chart-subsection {
+            height: 100%;
+          }
+          .overview-value-subsection {
+            .overview-value-subsection-title {
+              color: rgba(255, 255, 255, 0.64);
+              font-size: 16px;
+              font-weight: normal;
+              line-height: 24px;
+            }
+            .overview-value-subsection-value {
+              font-style: normal;
+              font-weight: 600;
+              line-height: 36px;
+              color: #fff;
+            }
+            .border {
+              margin-top: 20px;
+              border: 1px solid #34434F;
+              box-sizing: border-box;
+              border-radius: 8px;
+              padding: 16px;
+              .overview-value-subsection-value {
+                font-size: 24px;
+              }
+            }
+            .no-border {
+              margin-bottom: 30px;
+              .overview-value-subsection-value {
+                font-size: 28px;
+              }
+            }
+          }
+        }
+        .wrap-left {
+          padding-right: 10px;
+        }
+        .wrap-right {
+          padding-left: 10px;
+        }
+      }
+    }
+  }
+
+  .ant-select{
+      .ant-select-selector {
+        background-color: #1A242E !important;
+        border-color: transparent !important;
+        color: white !important;
+      }
+  }
+}
+.token-cell {
+  display: flex;
+  align-items: center;
+  .token-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+}

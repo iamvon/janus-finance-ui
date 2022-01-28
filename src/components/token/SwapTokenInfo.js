@@ -165,11 +165,11 @@ const SwapTokenInfo = ({
                         )
                     }
 
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-start justify-between flex-wrap">
                         <div>
                             {mouseData ? (
                                 <>
-                                    <div className="font-bold text-[32px]">
+                                    <div className="font-semibold text-[28px] lg:font-bold lg:text-[32px]">
                                         {numberFormatter.format(mouseData['price'])}
                                         <span
                                             className={`ml-2 text-base ${chartChange >= 0 ? 'text-[#00FFA3]' : 'text-[#DC1FFF]'
@@ -184,7 +184,7 @@ const SwapTokenInfo = ({
                                 </>
                             ) : (
                                 <>
-                                    <div className="font-bold text-[32px]">
+                                    <div className="font-semibold text-[28px] lg:font-bold lg:text-[32px]">
                                         {numberFormatter.format(
                                             chartData[chartData.length - 1]['price']
                                         )}
@@ -211,7 +211,8 @@ const SwapTokenInfo = ({
                         {/*    )}*/}
                         {/*</IconButton>*/}
 
-                        <div className="flex justify-end PresetRanges mt-2">
+                        <div className="w-full lg:w-auto flex mt-4 lg:mt-2">
+                            <div className="flex PresetRanges">
                             <span
                                 className={`Range ${daysToShow === 1 && 'active'
                                 }`}
@@ -219,20 +220,21 @@ const SwapTokenInfo = ({
                             >
                                 24H
                             </span>
-                            <span
-                                className={`Range ${daysToShow === 7 && 'active'
-                                }`}
-                                onClick={() => setDaysToShow(7)}
-                            >
+                                <span
+                                    className={`Range ${daysToShow === 7 && 'active'
+                                    }`}
+                                    onClick={() => setDaysToShow(7)}
+                                >
                                 7D
                             </span>
-                            <span
-                                className={`Range ${daysToShow === 30 && 'active'
-                                }`}
-                                onClick={() => setDaysToShow(30)}
-                            >
+                                <span
+                                    className={`Range ${daysToShow === 30 && 'active'
+                                    }`}
+                                    onClick={() => setDaysToShow(30)}
+                                >
                                 30D
                             </span>
+                            </div>
                         </div>
 
                     </div>

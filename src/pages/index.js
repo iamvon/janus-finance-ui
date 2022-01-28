@@ -67,49 +67,52 @@ const Dashboard = (props) => {
     }
 
     return (
-        <div className="wrapper flex flex-col items-stretch justify-start space-y-36 pb-12">
+        <div className="wrapper flex flex-col items-stretch justify-start pb-12">
             <PageHeader title={"Dashboard"}/>
-            <div className="banner pt-24">
-                <div className="container px-3 mx-auto">
+            <div className="banner pt-10 lg:pt-20 mb-10 lg:mb-[120px]">
+                <div className="mx-auto">
                     <div className="flex flex-col w-full justify-center items-center text-center">
-                        <div className="powered flex justify-center content-center items-center">
-                            <span>Powered by</span>
-                            <img className="banner-logo" src={'/icons/serum.svg'}/>
-                            <span>&</span>
-                            <img className="banner-logo" src={'/icons/solana.svg'}/>
+                        <div className="powered flex justify-center content-center items-center mb-8 lg:mb-12">
+                            <span className="text-sm font-medium mr-2 lg:text-xl lg:mr-3">Powered by</span>
+                            <img className="banner-logo w-[78px] mr-2 lg:mr-3 lg:w-[131px]" src={'/icons/serum.svg'}/>
+                            <span className="text-sm font-medium lg:text-xl mr-2 lg:mr-3">&</span>
+                            <img className="banner-logo w-[107px] lg:w-[188px]" src={'/icons/solana.svg'}/>
                         </div>
-                        <h1 className="banner-title">Token Shopping Gateway</h1>
-                        <p className="banner-description">Find the best DeFi opportunities and optimizing your digital
+                        <h1 className="banner-title font-semibold text-[28px] lg:text-5xl mb-4 lg:mb-12">Token Shopping Gateway</h1>
+                        <p className="banner-description text-base lg:text-2xl">Find the best DeFi opportunities and optimizing your digital
                             assets on Solana ecosystem.</p>
                     </div>
-                    <div className={'banner-feature grid grid-cols-2 gap-6 md:grid-cols-3'}>
+
+                    <div className={'banner-feature grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8 mt-10 lg:mt-[120px]'}>
                         <div className="banner-feature-item lend">
-                            <div className="feature-item-box flex flex-col content-center items-center">
-                                <img className="feature-image" src={'/image/banner2.svg'}/>
-                                <h3 className="feature-title text-center">Token Shopping</h3>
-                                <h5 className="feature-subtitle text-center">Lending & borrowing</h5>
-                                <p className="feature-description text-center">Discovery for the tokens in your favorite
+                            <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
+                                <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner2.svg'}/>
+                                <h3 className="feature-title mb-4 text-[28px]">Token Shopping</h3>
+                                <h5 className="feature-subtitle text-sm lg:text-base">Lending & borrowing</h5>
+                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Discovery for the tokens in your favorite
                                     categories</p>
                                 {/*<p className="feature-description text-center">Borrow against collateral</p>*/}
                             </div>
                         </div>
+
                         <div className="banner-feature-item x-farm">
-                            <div className="feature-item-box flex flex-col content-center items-center">
-                                <img className="feature-image" src={'/image/banner3.svg'}/>
-                                <h3 className="feature-title text-center">Swap</h3>
-                                <h5 className="feature-subtitle text-center">First-in-market cross-margin leveraged
+                            <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
+                                <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner3.svg'}/>
+                                <h3 className="feature-title mb-4 text-[28px]">Swap</h3>
+                                <h5 className="feature-subtitle text-sm lg:text-base">First-in-market cross-margin leveraged
                                     yield farming</h5>
-                                <p className="feature-description text-center">Buy your favorite tokens by swapping at
+                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Buy your favorite tokens by swapping at
                                     the best price</p>
                             </div>
                         </div>
+
                         <div className="banner-feature-item assist">
-                            <div className="feature-item-box flex flex-col content-center items-center">
-                                <img className="feature-image" src={'/image/banner4.svg'}/>
-                                <h3 className="feature-title text-center">DeFi Opportunities</h3>
-                                <h5 className="feature-subtitle text-center">Auto-deleveraging to reduce liquidation
+                            <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
+                                <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner4.svg'}/>
+                                <h3 className="feature-title mb-4 text-[28px]">DeFi Opportunities</h3>
+                                <h5 className="feature-subtitle text-sm lg:text-base">Auto-deleveraging to reduce liquidation
                                     risks</h5>
-                                <p className="feature-description text-center">Find the best DeFi opportunities based on
+                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Find the best DeFi opportunities based on
                                     the token you own</p>
                             </div>
                         </div>
@@ -122,9 +125,9 @@ const Dashboard = (props) => {
             {/*<div className="relative -mt-12 lg:-mt-24 text-right">*/}
             {/*    <img src={controlPanelSvg} alt=""/>*/}
             {/*</div>*/}
-            <div className={'tokens'}>
+            <div className="tokens">
                 <div className={'flex justify-between'}>
-                    <div className={CN("token-title flex place-items-center mb-6")}>
+                    <div className="token-title flex place-items-center mb-6 text-xl lg:text-2xl">
                         {/*<FontAwesomeIcon icon={faChartLine} className={"text-xl mr-4"}/>*/}
                         Trending tokens
                     </div>
@@ -133,7 +136,7 @@ const Dashboard = (props) => {
                     {/*        icon={faArrowRight}/></a>*/}
                     {/*</div>*/}
                 </div>
-                <div className={'grid grid-cols-2 gap-6 md:grid-cols-4'}>
+                <div className={'grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-8'}>
                     {
                         trendingTokens.map((token) => {
                             const isInWishlist = !!wishlist.includes(token.address)
@@ -146,9 +149,9 @@ const Dashboard = (props) => {
                 </div>
             </div>
 
-            <div className={'tokens'}>
+            <div className="tokens mt-8 lg:mt-12">
                 <div className={'flex justify-between'}>
-                    <div className={CN("token-title flex place-items-center mb-6")}>
+                    <div className={"token-title flex place-items-center mb-6 text-xl lg:text-2xl"}>
                         {/*<FontAwesomeIcon icon={faChartLine} className={"text-xl mr-4"}/>*/}
                         Top sell tokens
                     </div>
@@ -157,7 +160,7 @@ const Dashboard = (props) => {
                     {/*        icon={faArrowRight}/></a>*/}
                     {/*</div>*/}
                 </div>
-                <div className={'grid grid-cols-2 gap-6 md:grid-cols-4'}>
+                <div className={'grid grid-cols-2 gap-4 lg:gap-8 md:grid-cols-4'}>
                     {
                         topSellTokens.map((token) => {
                             const isInWishlist = !!wishlist.includes(token.address)
@@ -170,9 +173,9 @@ const Dashboard = (props) => {
                 </div>
             </div>
 
-            <div className={'tokens'}>
+            <div className="tokens mt-8 lg:mt-12">
                 <div className={'flex justify-between'}>
-                    <div className={CN("token-title flex place-items-center mb-6")}>
+                    <div className="token-title flex place-items-center mb-6 text-xl lg:text-2xl">
                         {/*<FontAwesomeIcon icon={faChartLine} className={"text-xl mr-4"}/>*/}
                         Top buy tokens
                     </div>
@@ -181,7 +184,7 @@ const Dashboard = (props) => {
                     {/*        icon={faArrowRight}/></a>*/}
                     {/*</div>*/}
                 </div>
-                <div className={'grid grid-cols-2 gap-6 md:grid-cols-4'}>
+                <div className={'grid grid-cols-2 gap-4 lg:gap-8 md:grid-cols-4'}>
                     {
                         topBuyTokens.map((token) => {
                             const isInWishlist = !!wishlist.includes(token.address)
