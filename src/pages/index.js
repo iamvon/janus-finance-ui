@@ -88,7 +88,6 @@ const Dashboard = (props) => {
                             <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
                                 <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner2.svg'}/>
                                 <h3 className="feature-title mb-4 text-[28px]">Token Shopping</h3>
-                                <h5 className="feature-subtitle text-sm lg:text-base">Lending & borrowing</h5>
                                 <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Discovery for the tokens in your favorite
                                     categories</p>
                                 {/*<p className="feature-description text-center">Borrow against collateral</p>*/}
@@ -99,8 +98,6 @@ const Dashboard = (props) => {
                             <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
                                 <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner3.svg'}/>
                                 <h3 className="feature-title mb-4 text-[28px]">Swap</h3>
-                                <h5 className="feature-subtitle text-sm lg:text-base">First-in-market cross-margin leveraged
-                                    yield farming</h5>
                                 <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Buy your favorite tokens by swapping at
                                     the best price</p>
                             </div>
@@ -110,8 +107,6 @@ const Dashboard = (props) => {
                             <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
                                 <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner4.svg'}/>
                                 <h3 className="feature-title mb-4 text-[28px]">DeFi Opportunities</h3>
-                                <h5 className="feature-subtitle text-sm lg:text-base">Auto-deleveraging to reduce liquidation
-                                    risks</h5>
                                 <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Find the best DeFi opportunities based on
                                     the token you own</p>
                             </div>
