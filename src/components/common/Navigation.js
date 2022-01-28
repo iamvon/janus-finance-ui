@@ -142,20 +142,21 @@ const Navigation = () => {
                     <div className={'flex header-button'}>
                         <ReactUIWalletMultiButton/>
                     </div>
-                    {
-                        !!publicKey && (
-                            <div
-                                className={CN("flex justify-center items-center cursor-pointer ml-5 mr-3", {'text-blue-500': isActive(Paths.Wishlist)})}>
-                                <Tooltip title={'Your wishlist token'}>
-                                    <Link href={Paths.Wishlist} passHref={true}>
-                                        <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
-                                                         style={{color: "#e91e63"}}/>
-                                    </Link>
-                                </Tooltip>
-                            </div>
-                        )
-                    }
                 </div>
+
+                {
+                    !!publicKey && (
+                        <div
+                            className={CN("flex justify-center items-center cursor-pointer ml-3 lg:ml-4", {'text-blue-500': isActive(Paths.Wishlist)})}>
+                            <Tooltip title={'Your wishlist token'}>
+                                <Link href={Paths.Wishlist} passHref={true}>
+                                    <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
+                                                     style={{color: "#e91e63"}}/>
+                                </Link>
+                            </Tooltip>
+                        </div>
+                    )
+                }
             </>
         )
     }
