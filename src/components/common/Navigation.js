@@ -131,7 +131,7 @@ const Navigation = () => {
 
                 {logo}
 
-                <div className="NavigationItems hidden lg:block">
+                <div className="NavigationItems hidden lg:block ml-12">
                     <div className="flex">
                         {nav}
                     </div>
