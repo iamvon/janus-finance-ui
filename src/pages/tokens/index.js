@@ -330,7 +330,7 @@ const Token = (props) => {
                                     {
                                         SORT_BY_OPTIONS.map((option, index) => {
                                             return (
-                                                <div key={index} className={'option-item'}>
+                                                <div key={index} className={'option-item lg:mt-3'}>
                                                     <Radio.Button value={option.value} className="font-semibold lg:font-normal">{option.label}</Radio.Button>
                                                 </div>
                                             )

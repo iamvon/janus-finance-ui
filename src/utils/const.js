@@ -5,7 +5,7 @@ export const CLUSTER = process.env.NEXT_PUBLIC_APP_CLUSTER == "mainnet-beta"
     ? "mainnet-beta"
     : process.env.NEXT_PUBLIC_APP_CLUSTER === "testnet"
         ? "testnet"
-        : "devnet";
+        : "mainnet-beta";
 
 export const WALLET_ADAPTER_NETWORK = CLUSTER === "mainnet-beta"
     ? WalletAdapterNetwork.Mainnet
