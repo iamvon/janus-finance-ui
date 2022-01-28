@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react"
-import {Drawer, Dropdown} from 'antd'
+import React, {useState} from "react"
+import {Drawer, Tooltip} from 'antd'
 import Link from "next/link"
 import Paths from "/src/lib/routes/Paths"
 import CN from "classnames"
@@ -61,19 +61,22 @@ const Navigation = () => {
 
     const nav = (
         <>
-            <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/portfolio') })}>
+            <div className={CN("nav-item col-span-1 cursor-pointer", {'active': isActive('/portfolio')})}>
                 <Link href={Paths.Portfolio}>
-                    <a href={Paths.Portfolio}  className={`text-base font-semibold p-4 block hover:text-[#00FFA3] ${isActive("/portfolio") ? "text-[#00FFA3]" : "text-white"}`}>Portfolio</a>
+                    <a href={Paths.Portfolio}
+                       className={`text-base font-semibold p-4 block hover:text-[#00FFA3] ${isActive("/portfolio") ? "text-[#00FFA3]" : "text-white"}`}>Portfolio</a>
                 </Link>
             </div>
-            <div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/collections') })}>
+            <div className={CN("nav-item col-span-1 cursor-pointer", {'active': isActive('/collections')})}>
                 <Link href={Paths.Tokens}>
-                    <a href={Paths.Tokens} className={`text-base font-semibold p-4 block hover:text-[#00FFA3] ${isActive("/collections") ? "text-[#00FFA3]" : "text-white"}`}>Assets</a>
+                    <a href={Paths.Tokens}
+                       className={`text-base font-semibold p-4 block hover:text-[#00FFA3] ${isActive("/collections") ? "text-[#00FFA3]" : "text-white"}`}>Assets</a>
                 </Link>
             </div>
-            <div className="nav-item col-span-1 cursor-pointer" >
+            <div className="nav-item col-span-1 cursor-pointer">
                 <Link href={Paths.Opportunity}>
-                    <a href={Paths.Opportunity} className={`text-base font-semibold p-4 block hover:text-[#00FFA3] ${isActive("/opportunity") ? "text-[#00FFA3]" : "text-white"}`}>Opportunity</a>
+                    <a href={Paths.Opportunity}
+                       className={`text-base font-semibold p-4 block hover:text-[#00FFA3] ${isActive("/opportunity") ? "text-[#00FFA3]" : "text-white"}`}>Opportunity</a>
                 </Link>
             </div>
             {/*<div className={CN("nav-item col-span-1 cursor-pointer", { 'active': isActive('/wishlist') })} >*/}
@@ -85,7 +88,7 @@ const Navigation = () => {
     )
 
     const leftItems = () => {
-        return appMode !== 'production' ? (
+        return (
             <>
                 <div className="MobileMenu mr-4 lg:hidden">
                     <div className="IconToggleMenu" onClick={() => toggleMenuRes()}>
@@ -101,9 +104,14 @@ const Navigation = () => {
                         className="DrawerMobileMenu"
                         width={300}
                         closeIcon={
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.82276 20.0004C4.612 20.0004 4.40124 19.9203 4.2411 19.7589C3.91963 19.4374 3.91963 18.9163 4.2411 18.5948L18.5948 4.2411C18.9162 3.91963 19.4374 3.91963 19.7589 4.2411C20.0804 4.56257 20.0804 5.08376 19.7589 5.40543L5.40543 19.7589C5.24409 19.9193 5.03333 20.0004 4.82276 20.0004Z" fill="#ffffff"/>
-                                <path d="M19.1774 20.0004C18.9667 20.0004 18.7561 19.9203 18.5958 19.7589L4.2411 5.40543C3.91963 5.08376 3.91963 4.56257 4.2411 4.2411C4.56257 3.91963 5.08376 3.91963 5.40543 4.2411L19.7589 18.5948C20.0804 18.9163 20.0804 19.4374 19.7589 19.7589C19.5976 19.9193 19.387 20.0004 19.1774 20.0004Z" fill="#ffffff"/>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4.82276 20.0004C4.612 20.0004 4.40124 19.9203 4.2411 19.7589C3.91963 19.4374 3.91963 18.9163 4.2411 18.5948L18.5948 4.2411C18.9162 3.91963 19.4374 3.91963 19.7589 4.2411C20.0804 4.56257 20.0804 5.08376 19.7589 5.40543L5.40543 19.7589C5.24409 19.9193 5.03333 20.0004 4.82276 20.0004Z"
+                                    fill="#ffffff"/>
+                                <path
+                                    d="M19.1774 20.0004C18.9667 20.0004 18.7561 19.9203 18.5958 19.7589L4.2411 5.40543C3.91963 5.08376 3.91963 4.56257 4.2411 4.2411C4.56257 3.91963 5.08376 3.91963 5.40543 4.2411L19.7589 18.5948C20.0804 18.9163 20.0804 19.4374 19.7589 19.7589C19.5976 19.9193 19.387 20.0004 19.1774 20.0004Z"
+                                    fill="#ffffff"/>
                             </svg>
                         }
                         zIndex={1051}
@@ -127,40 +135,28 @@ const Navigation = () => {
                 </div>
 
                 <div className={`header-search ml-auto`}>
-                    <SearchBar />
+                    <SearchBar/>
                 </div>
 
-                <div className="ml-3 lg:ml-4 hidden lg:block">
+                <div className="ml-3 lg:ml-4 hidden lg:flex lg:justify-between">
                     <div className={'flex header-button'}>
                         <ReactUIWalletMultiButton/>
                     </div>
+                    {
+                        !!publicKey && (
+                            <div
+                                className={CN("flex justify-center items-center cursor-pointer ml-5 mr-3", {'text-blue-500': isActive(Paths.Wishlist)})}>
+                                <Tooltip title={'Your wishlist token'}>
+                                    <Link href={Paths.Wishlist} passHref={true}>
+                                        <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
+                                                         style={{color: "#e91e63"}}/>
+                                    </Link>
+                                </Tooltip>
+                            </div>
+                        )
+                    }
                 </div>
-
-                {
-                    !!publicKey && (
-                        <div
-                            className={CN("flex justify-center items-center cursor-pointer ml-3", {'text-blue-500': isActive(Paths.Wishlist)})}>
-                            <Link href={Paths.Wishlist} passHref={true}>
-                                <FontAwesomeIcon icon={faHeart} className={CN("text-lg")}
-                                                 style={{color: "#e91e63"}}/>
-                            </Link>
-                        </div>
-                    )
-                }
             </>
-        ) : (
-            (
-                <>
-                    {logo}
-                    <div className={CN("flex items-center justify-start text-sm font-semibold md:space-x-16 space-x-4")}>
-                        <div className="text-primary-font-color cursor-pointer">
-                            <Link href={Paths.Wishlist}>
-                                Drops
-                            </Link>
-                        </div>
-                    </div>
-                </>
-            )
         )
     }
 
