@@ -14,7 +14,7 @@ const TokenDetail = (props) => {
     const outputMint = router.query.contract_address
 
     return (
-        <div className="wrapper flex flex-col items-stretch justify-start space-y-12 pt-20 pb-20 text-white SingleTokenPage">
+        <div className="wrapper flex flex-col items-stretch justify-start space-y-12 pt-10 lg:pt-20 pb-20 text-white SingleTokenPage">
             <PageHeader title={"TokenDetail"}/>
             <JupiterWrapper>
                 <JupiterForm
