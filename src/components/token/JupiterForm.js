@@ -512,7 +512,7 @@ const JupiterForm = ({
                     {selectedRoute?.outAmount &&
                       formValue.amount &&
                       tokenPrices?.outputTokenPrice ? (
-                      <div className="absolute mt-1 right-0 text-th-fgd-3 text-xs">
+                      <div className="absolute top-8 right-0 text-th-fgd-3 text-xs">
                         ≈ $
                         {(
                           (selectedRoute?.outAmount /
@@ -526,9 +526,9 @@ const JupiterForm = ({
 
                 {routes?.length && selectedRoute ? (
                   <div className="mt-8 text-th-fgd-3 text-xs">
-                    <div className="border border-th-bkg-4 mb-4 pb-4 px-3 pt-4 relative rounded-md">
+                    <div className="border border-[#34434F] border-th-bkg-4 mb-4 pb-4 px-3 pt-4 relative rounded-md">
                       {selectedRoute === routes[0] ? (
-                        <div className="absolute bg-th-primary font-bold px-1 rounded-sm text-th-bkg-1 text-xs -top-2">
+                        <div className="absolute bg-[#00FFA3] text-[#333] font-bold px-2 py-1 rounded-sm text-th-bkg-1 text-xs -top-3">
                           Best Swap
                         </div>
                       ) : null}
@@ -574,7 +574,7 @@ const JupiterForm = ({
                           </div>
                         </div>
                         <Button
-                          className="bg-transparent border border-th-fgd-4 font-normal pb-1 pt-1 px-2 rounded-md text-th-fgd-3 text-center text-xs"
+                          className="bg-transparent border border-[#34434F] border-th-fgd-4 font-normal pb-1 pt-1 px-2 rounded-md text-th-fgd-3 text-center text-xs"
                           disabled={routes?.length === 1}
                           onClick={() => setShowRoutesModal(true)}
                         >
