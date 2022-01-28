@@ -11,7 +11,6 @@ import {getDetailController} from "../../../lib/controllers/token/tokenDetail"
 const TokenDetail = (props) => {
     const router = useRouter()
     const {tokenDetail} = props
-    console.log('tokenDetail', tokenDetail)
 
     const inputMint = INPUT_MINT_ADDRESS
     const outputMint = router.query.contract_address

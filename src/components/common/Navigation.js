@@ -44,7 +44,7 @@ const Navigation = () => {
     // console.log(router.pathname)
     const isActive = (menu) => {
         const pathName = router.pathname
-        console.log(pathName)
+        // console.log(pathName)
         return pathName === menu
     }
 
