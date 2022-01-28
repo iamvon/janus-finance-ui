@@ -24,6 +24,8 @@ import {getWishlistListApi, updateWishlistListApi} from "../../lib/services/api/
 import {WISHLIST_ACTION} from "../../lib/constants/wallet"
 import {checkMatchMediaQuery} from "../../utils"
 import {renderTagName} from "../../lib/helpers/tag"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faSearch} from "@fortawesome/free-solid-svg-icons"
 
 const initialFilterValue = {}
 
@@ -305,6 +307,8 @@ const Token = (props) => {
                             <div className={'my-1'}>
                                 <div className={"hidden lg:block"}>
                                     <Input
+                                        prefix={<FontAwesomeIcon icon={faSearch} className={"mr-2 text-white"}/>}
+                                        className="py-2 rounded-2xl bg-[#333639] flex"
                                         placeholder="Find tag here"
                                         onChange={handlerSearchTag}
                                     />
@@ -331,6 +335,8 @@ const Token = (props) => {
                                     <Input
                                         placeholder="Find tag here"
                                         onChange={handlerSearchTag}
+                                        prefix={<FontAwesomeIcon icon={faSearch} className={"mr-2 text-white"}/>}
+                                        className="py-2 rounded-2xl bg-[#333639] flex"
                                         onClick={() => setInputFocus(true)}
                                         onBlur={() => setInputFocus(false)}
                                     />

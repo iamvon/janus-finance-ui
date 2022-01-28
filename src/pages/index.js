@@ -60,8 +60,8 @@ const Dashboard = (props) => {
         if (!publicKey) {
             return notification.warn({
                 message: 'Warning',
-                description: "You have to connect your wallet to save this item in your wishlist",
-            });
+                description: "You have to connect your wallet to save this item in your wishlist"
+            })
         }
         return updateWishlist(token, isStared)
     }
@@ -78,36 +78,51 @@ const Dashboard = (props) => {
                             <span className="text-sm font-medium lg:text-xl mr-2 lg:mr-3">&</span>
                             <img className="banner-logo w-[107px] lg:w-[188px]" src={'/icons/solana.svg'}/>
                         </div>
-                        <h1 className="banner-title font-semibold text-[28px] lg:text-5xl mb-4 lg:mb-12">Token Shopping Gateway</h1>
-                        <p className="banner-description text-base lg:text-2xl">Find the best DeFi opportunities and optimizing your digital
+                        <h1 className="banner-title font-semibold text-[28px] lg:text-5xl mb-4 lg:mb-12">Token Shopping
+                            Gateway</h1>
+                        <p className="banner-description text-base lg:text-2xl">Find the best DeFi opportunities and
+                            optimizing your digital
                             assets on Solana ecosystem.</p>
                     </div>
 
-                    <div className={'banner-feature grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8 mt-10 lg:mt-[120px]'}>
+                    <div
+                        className={'banner-feature grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8 mt-10 lg:mt-[120px]'}>
                         <div className="banner-feature-item lend">
-                            <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
-                                <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner2.svg'}/>
+                            <div
+                                className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
+                                <div className="flex h-[120px] items-center lg:mb-10 lg:w-[94px] mb-6 w-[62px]">
+                                    <img className="feature-image" src={'/image/banner2.svg'}/>
+                                </div>
                                 <h3 className="feature-title mb-4 text-[28px]">Token Shopping</h3>
-                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Discovery for the tokens in your favorite
+                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Discovery for the
+                                    tokens in your favorite
                                     categories</p>
                                 {/*<p className="feature-description text-center">Borrow against collateral</p>*/}
                             </div>
                         </div>
 
                         <div className="banner-feature-item x-farm">
-                            <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
-                                <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner3.svg'}/>
+                            <div
+                                className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
+                                <div className="flex h-[120px] items-center lg:mb-10 lg:w-[94px] mb-6 w-[62px]">
+                                    <img className="feature-image" src={'/image/banner3.svg'}/>
+                                </div>
                                 <h3 className="feature-title mb-4 text-[28px]">Swap</h3>
-                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Buy your favorite tokens by swapping at
+                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Buy your favorite
+                                    tokens by swapping at
                                     the best price</p>
                             </div>
                         </div>
 
                         <div className="banner-feature-item assist">
-                            <div className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
-                                <img className="feature-image mb-6 lg:mb-10 w-[62px] lg:w-[94px]" src={'/image/banner4.svg'}/>
+                            <div
+                                className="feature-item-box flex flex-col content-center items-center px-4 py-6 text-center">
+                                <div className="flex h-[120px] items-center lg:mb-10 lg:w-[94px] mb-6 w-[62px]">
+                                    <img className="feature-image" src={'/image/banner4.svg'}/>
+                                </div>
                                 <h3 className="feature-title mb-4 text-[28px]">DeFi Opportunities</h3>
-                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Find the best DeFi opportunities based on
+                                <p className="feature-description mt-12 lg:mt-16 text-base lg:text-xl">Find the best
+                                    DeFi opportunities based on
                                     the token you own</p>
                             </div>
                         </div>
@@ -234,7 +249,7 @@ export const getServerSideProps = async (context) => {
 
     if (!trendingTokens || !topSellTokens || !topBuyTokens) {
         return {
-            notFound: true,
+            notFound: true
         }
     }
     return {

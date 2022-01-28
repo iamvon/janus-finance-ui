@@ -1,0 +1,14 @@
+.tokens-page{
+  .ant-input-affix-wrapper{
+    border-color: #333639 !important;
+
+    .ant-input{
+      background:  #333639 !important;
+    }
+  }
+
+  .ant-input-affix-wrapper.ant-input-affix-wrapper-focused {
+    border-color: #00ffa3A3 !important;
+    box-shadow: none !important;
+  }
+}
