@@ -3,9 +3,6 @@ import React, {useEffect, useState} from "react"
 import PageHeader from "/src/components/common/PageHeader"
 import SolanaTokenItem from "../components/SolanaTokenItem"
 import CN from "classnames"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faArrowRight} from "@fortawesome/free-solid-svg-icons"
-import Paths from "../lib/routes/Paths"
 import {DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE} from "../lib/constants/pagination"
 import {listTokenController} from "../lib/controllers/token/listToken"
 import {useWallet} from "@solana/wallet-adapter-react"
@@ -13,6 +10,7 @@ import {getWishlistListApi, updateWishlistListApi} from "../lib/services/api/wal
 import _ from "lodash"
 import {WISHLIST_ACTION} from "../lib/constants/wallet"
 import {notification} from "antd"
+import {SORT_AND_FILTER_FIELD} from "../lib/helpers/sort-and-filter-field/token"
 
 const Dashboard = (props) => {
     const {trendingTokens, topSellTokens, topBuyTokens} = props
@@ -208,9 +206,27 @@ export const getServerSideProps = async (context) => {
         page: DEFAULT_PAGE_NUMBER,
         size: DEFAULT_PAGE_SIZE.HOME_GRID
     }
-    const _trendingTokens = listTokenController({query: {...reqQuery, is_top_trending: true}})
-    const _topSellTokens = listTokenController({query: {...reqQuery, is_top_sell: true}})
-    const _topBuyTokens = listTokenController({query: {...reqQuery, is_top_buy: true}})
+    const _trendingTokens = listTokenController({
+        query: {
+            ...reqQuery,
+            order_by: SORT_AND_FILTER_FIELD.TOP_TRENDING_RANK,
+            order_direction: 1
+        }
+    })
+    const _topSellTokens = listTokenController({
+        query: {
+            ...reqQuery,
+            order_by: SORT_AND_FILTER_FIELD.TOP_SELL_RANK,
+            order_direction: 1
+        }
+    })
+    const _topBuyTokens = listTokenController({
+        query: {
+            ...reqQuery,
+            order_by: SORT_AND_FILTER_FIELD.TOP_BUY_RANK,
+            order_direction: 1
+        }
+    })
 
     const [trendingTokens, topSellTokens, topBuyTokens] = await Promise.all([
         _trendingTokens,
