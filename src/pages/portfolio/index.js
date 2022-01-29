@@ -159,8 +159,7 @@ const Portfolio = (props) => {
 
     const getStakeTotalValue = async (solanaPrice) => {
         let amount = 0
-        const stakeAccounts = await getAccountStake('FX7DL4WUQATRtU5oEjxX5hsrqrnteeXXySqo9JZaTzN9')
-        // const stakeAccounts = await getAccountStake(publicKey.toString())
+        const stakeAccounts = await getAccountStake(publicKey.toString())
         for (var key of Object.keys(stakeAccounts)) {
             const stakeState = stakeAccounts[key]
             amount += parseInt(stakeState.amount)
