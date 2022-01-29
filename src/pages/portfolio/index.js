@@ -15,6 +15,8 @@ import {Table} from 'antd'
 import {lamportsValueSolana} from '../../utils/const'
 import CN from "classnames"
 import NeedConnectWallet from "../../components/common/NeedConnectWallet"
+import {getTokenMap} from '../../utils/token'
+import {SOL_WRAPPED_ADDRESS} from '../../utils/const'
 
 
 const COLUM = [
@@ -133,9 +135,13 @@ const Portfolio = (props) => {
     }
 
     const getBalance = async (tokensPrices) => {
+        const tokenMap = await getTokenMap()
+        const solNavtiveToken = tokenMap.get(SOL_WRAPPED_ADDRESS)
         const nativeBalance = await fetchNativeBalance(publicKey)
-
         const tokensWithPrice = []
+        if (nativeBalance > 0) {
+            tokensWithPrice.push({price: nativeBalance, uiAmount: nativeBalance ,...solNavtiveToken})
+        }
         let balance = nativeBalance * tokensPrices['solana']['usd']
         tokens.forEach(token => {
             const id = token.isNative ? 'solana' : token?.extensions?.coingeckoId ? token?.extensions?.coingeckoId : token?.symbol?.toLowerCase()
