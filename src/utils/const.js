@@ -1,6 +1,8 @@
 
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
+export const SOL_WRAPPED_ADDRESS = 'So11111111111111111111111111111111111111112'
+
 export const CLUSTER = process.env.NEXT_PUBLIC_APP_CLUSTER == "mainnet-beta"
     ? "mainnet-beta"
     : process.env.NEXT_PUBLIC_APP_CLUSTER === "testnet"

@@ -15,6 +15,8 @@ import {Table} from 'antd'
 import {lamportsValueSolana} from '../../utils/const'
 import CN from "classnames"
 import NeedConnectWallet from "../../components/common/NeedConnectWallet"
+import {getTokenMap} from '../../utils/token'
+import {SOL_WRAPPED_ADDRESS} from '../../utils/const'
 
 
 const COLUM = [
@@ -35,7 +37,7 @@ const COLUM = [
         render(record) {
             return (
                 <span>
-                    ${record.uiAmount}
+                    {record.uiAmount}
                 </span>
             )
         }
@@ -133,9 +135,13 @@ const Portfolio = (props) => {
     }
 
     const getBalance = async (tokensPrices) => {
+        const tokenMap = await getTokenMap()
+        const solNavtiveToken = tokenMap.get(SOL_WRAPPED_ADDRESS)
         const nativeBalance = await fetchNativeBalance(publicKey)
-
         const tokensWithPrice = []
+        if (nativeBalance > 0) {
+            tokensWithPrice.push({price: tokensPrices['solana']['usd'], uiAmount: nativeBalance ,...solNavtiveToken})
+        }
         let balance = nativeBalance * tokensPrices['solana']['usd']
         tokens.forEach(token => {
             const id = token.isNative ? 'solana' : token?.extensions?.coingeckoId ? token?.extensions?.coingeckoId : token?.symbol?.toLowerCase()
@@ -153,8 +159,7 @@ const Portfolio = (props) => {
 
     const getStakeTotalValue = async (solanaPrice) => {
         let amount = 0
-        const stakeAccounts = await getAccountStake('FX7DL4WUQATRtU5oEjxX5hsrqrnteeXXySqo9JZaTzN9')
-        // const stakeAccounts = await getAccountStake(publicKey.toString())
+        const stakeAccounts = await getAccountStake(publicKey.toString())
         for (var key of Object.keys(stakeAccounts)) {
             const stakeState = stakeAccounts[key]
             amount += parseInt(stakeState.amount)
@@ -170,7 +175,7 @@ const Portfolio = (props) => {
                 if (id) tokenIds.push(id)
             }
         })
-
+        
         const tokensPrices = await fetchTokenPriceByPortfolio(tokenIds)
         const solanaPrice = tokensPrices['solana']['usd']
         const stakeValue = await getStakeTotalValue(solanaPrice)
