@@ -37,7 +37,7 @@ const COLUM = [
         render(record) {
             return (
                 <span>
-                    ${record.uiAmount}
+                    {record.uiAmount}
                 </span>
             )
         }
@@ -140,7 +140,7 @@ const Portfolio = (props) => {
         const nativeBalance = await fetchNativeBalance(publicKey)
         const tokensWithPrice = []
         if (nativeBalance > 0) {
-            tokensWithPrice.push({price: nativeBalance, uiAmount: nativeBalance ,...solNavtiveToken})
+            tokensWithPrice.push({price: tokensPrices['solana']['usd'], uiAmount: nativeBalance ,...solNavtiveToken})
         }
         let balance = nativeBalance * tokensPrices['solana']['usd']
         tokens.forEach(token => {
@@ -175,7 +175,7 @@ const Portfolio = (props) => {
                 if (id) tokenIds.push(id)
             }
         })
-
+        
         const tokensPrices = await fetchTokenPriceByPortfolio(tokenIds)
         const solanaPrice = tokensPrices['solana']['usd']
         const stakeValue = await getStakeTotalValue(solanaPrice)
