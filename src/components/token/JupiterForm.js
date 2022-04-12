@@ -24,8 +24,11 @@ import {faGlobe, faHeart as fullHeart} from "@fortawesome/free-solid-svg-icons"
 import {getWishlistListApi, updateWishlistListApi} from "../../lib/services/api/wallet"
 import {WISHLIST_ACTION} from "../../lib/constants/wallet"
 import {notification} from "antd"
+// import {SOLANA_RPC_ENDPOINT, WALLET_ADAPTER_NETWORK, CLUSTER} from '../../utils/const'
 
 const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
+    const CLUSTER = "mainnet-beta"
+    // console.log("CLUSTER: ", CLUSTER)
     const wallet = useWallet();
     const connected = wallet.connected
     const {t} = useTranslation(['common', 'swap'])
@@ -48,7 +51,7 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
     const [coinGeckoList, setCoinGeckoList] = useState(null)
 
     const [formValue, setFormValue] = useState({
-        amount: null,
+        amount: 0,
         inputMint: new PublicKey(inputMintAddress),
         outputMint: new PublicKey(outputMintAddress),
         slippage,
@@ -109,6 +112,10 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
 
     // @ts-ignore
     const [inputTokenInfo, outputTokenInfo] = useMemo(() => {
+        // console.log("tokens: ", tokens)
+        // console.log("dcmmm: ", tokens.find(
+        //     (item) => item?.address === formValue.outputMint?.toBase58() || ''
+        // ),)
         return [
             tokens.find(
                 (item) => item?.address === formValue.inputMint?.toBase58() || ''
@@ -117,27 +124,12 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
                 (item) => item?.address === formValue.outputMint?.toBase58() || ''
             ),
         ]
+
     }, [
         formValue.inputMint?.toBase58(),
         formValue.outputMint?.toBase58(),
         tokens,
     ])
-
-    // tokens.map((token) =>  console.log(`token: ${JSON.stringify(token)}`)  )
-    // console.log(formValue.inputMint.toBase58(), formValue.outputMint.toBase58())
-    // console.log(inputTokenInfo, outputTokenInfo)
-
-    // useEffect(() => {
-    //   if (width >= 1680) {
-    //     setShowWalletDraw(true)
-    //   }
-    // }, [])
-
-    // useEffect(() => {
-    //   if (width >= 1680) {
-    //     setShowWalletDraw(true)
-    //   }
-    // }, [])
 
     useEffect(() => {
         const fetchCoinGeckoList = async () => {
@@ -201,19 +193,23 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
             amount: amountInDecimal,
             slippage: formValue.slippage,
         })
-
     useEffect(() => {
-        fetch(TOKEN_LIST_URL['mainnet-beta'])
+        fetch(TOKEN_LIST_URL[CLUSTER])
             .then((response) => response.json())
             .then((result) => {
                 const tokens = allTokenMints.map((mint) =>
                     result.find((item) => item?.address === mint)
                 )
                 setTokens(tokens)
+
+                // console.log("allTokenMints: ", allTokenMints)
+                // console.log("list token: ", result)
+                // console.log("tokens: ", tokens)
             })
     }, [allTokenMints])
 
     useEffect(() => {
+        // console.log(routes)
         if (routes) {
             setSelectedRoute(routes[0])
         }
@@ -226,7 +222,7 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
             wallet.publicKey
         )
 
-        const tokenList = await (await fetch(TOKEN_LIST_URL['mainnet-beta'])).json()
+        const tokenList = await (await fetch(TOKEN_LIST_URL[CLUSTER])).json()
 
         ownedTokenAccounts.forEach((account) => {
 
@@ -656,38 +652,38 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
                                 )
                             })}
                           </span>
-                                                    <div className="mr-2 mt-0.5 text-th-fgd-3 text-xs font-normal">
-                                                        {inputTokenInfo?.symbol} →{' '}
-                                                        {selectedRoute?.marketInfos.map((r, index) => {
-                                                            const showArrow =
-                                                                index !== selectedRoute?.marketInfos.length - 1
-                                                                    ? true
-                                                                    : false
-                                                            return (
-                                                                <span key={index}>
-                                  <span>
-                                    {
-                                        tokens.find(
-                                            (item) =>
-                                                item?.address ===
-                                                r?.outputMint?.toString()
-                                        )?.symbol
-                                    }
-                                  </span>
-                                                                    {showArrow ? ' → ' : ''}
-                                </span>
-                                                            )
-                                                        })}
-                                                    </div>
-                                                </div>
-                                                <Button
-                                                    className="bg-transparent border border-[#34434F] border-th-fgd-4 font-normal pb-1 pt-1 px-2 rounded-md text-th-fgd-3 text-center text-xs"
-                                                    disabled={routes?.length === 1}
-                                                    onClick={() => setShowRoutesModal(true)}
-                                                >
-                                                    {routes?.length} routes found
-                                                </Button>
-                                            </div>
+                            <div className="mr-2 mt-0.5 text-th-fgd-3 text-xs font-normal">
+                                {inputTokenInfo?.symbol} →{' '}
+                                {selectedRoute?.marketInfos.map((r, index) => {
+                                    const showArrow =
+                                        index !== selectedRoute?.marketInfos.length - 1
+                                            ? true
+                                            : false
+                                    return (
+                                        <span key={index}>
+                                            <span>
+                                                {
+                                                    tokens.find(
+                                                        (item) =>
+                                                            item?.address ===
+                                                            r?.outputMint?.toString()
+                                                    )?.symbol
+                                                }
+                                            </span>
+                                            {showArrow ? ' → ' : ''}
+                                        </span>
+                                        )
+                                    })}
+                                </div>
+                                    </div>
+                                    <Button
+                                        className="bg-transparent border border-[#34434F] border-th-fgd-4 font-normal pb-1 pt-1 px-2 rounded-md text-th-fgd-3 text-center text-xs"
+                                        disabled={routes?.length === 1}
+                                        onClick={() => setShowRoutesModal(true)}
+                                    >
+                                        {routes?.length} routes found
+                                    </Button>
+                                </div>
                                         </div>
                                         <div className="px-3 space-y-2">
                                             <div className="flex items-center justify-between mb-4">
@@ -931,12 +927,16 @@ const JupiterForm = ({inputMintAddress, outputMintAddress, tokenDetail}) => {
                                     <div className="flex items-center justify-center mt-2 text-th-red">
                                         <ExclamationCircleIcon className="h-5 mr-1.5 w-5"/>
                                         Error in Jupiter – Try changing your input
+                                        <div>{error}</div>
                                     </div>
                                 )}
 
                                 <Button
                                     disabled={swapDisabled}
                                     onClick={async () => {
+                                        console.log("tokenPrices", tokenPrices)
+                                        console.log("formValue", formValue)
+                                        console.log("selectedRoute", selectedRoute)
                                         if (!connected && zeroKey !== wallet?.publicKey) {
                                             wallet.connect()
                                         } else if (!loading && selectedRoute && connected) {

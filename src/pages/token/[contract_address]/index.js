@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import {SOLANA_RPC_ENDPOINT, WALLET_ADAPTER_NETWORK, CLUSTER} from '../../../utils/const'
 import React from "react"
 import PageHeader from "/src/components/common/PageHeader"
 import {INPUT_MINT_ADDRESS} from "../../../constants";
@@ -14,7 +15,8 @@ const TokenDetail = (props) => {
 
     const inputMint = INPUT_MINT_ADDRESS
     const outputMint = router.query.contract_address
-
+    console.log("?: ", outputMint)
+    console.log("?: ", tokenDetail)
     return (
         <div
             className="wrapper flex flex-col items-stretch justify-start space-y-12 pt-10 lg:pt-20 pb-20 text-white SingleTokenPage">
@@ -35,7 +37,7 @@ const JupiterWrapper = ({children}) => {
     const wallet = useWallet();
     return (
         <JupiterProvider
-            cluster="mainnet-beta"
+            cluster={"mainnet-beta"}
             connection={connection}
             userPublicKey={wallet.publicKey || undefined}
         >

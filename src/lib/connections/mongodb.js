@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const uri = process.env.MONGODB_URI || 'MONGODB_URI=mongodb://janus-finance:aGVrRpaJ2QQX@localhost:27017/janus-finance-database'
+const uri = process.env.MONGODB_URI || 'MONGODB_URI=mongodb://localhost:27017/janus-finance-database'
 
 export const connectToDatabase = async () => {
     try {

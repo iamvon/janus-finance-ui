@@ -3,13 +3,13 @@ import { ENV as ENVChainId } from "@solana/spl-token-registry";
 require('dotenv').config()
 
 // Endpoints, connection
-export const ENV = process.env.NEXT_PUBLIC_APP_CLUSTER || "mainnet-beta";
+export const ENV = 'testnet';
 
-export const CHAIN_ID = ENV === 'mainnet-beta'
+export const CHAIN_ID = ENV == 'mainnet-beta'
     ? ENVChainId.MainnetBeta
-    : ENV === 'devnet'
+    : ENV == 'devnet'
         ? ENVChainId.Devnet
-        : ENV === 'testnet'
+        : ENV == 'testnet'
             ? ENVChainId.Testnet
             : ENVChainId.MainnetBeta
 

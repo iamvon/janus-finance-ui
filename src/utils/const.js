@@ -1,13 +1,8 @@
-
+require('dotenv').config()
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-
 export const SOL_WRAPPED_ADDRESS = 'So11111111111111111111111111111111111111112'
 
-export const CLUSTER = process.env.NEXT_PUBLIC_APP_CLUSTER == "mainnet-beta"
-    ? "mainnet-beta"
-    : process.env.NEXT_PUBLIC_APP_CLUSTER === "testnet"
-        ? "testnet"
-        : "mainnet-beta";
+export const CLUSTER = process.env.NEXT_PUBLIC_APP_CLUSTER
 
 export const WALLET_ADAPTER_NETWORK = CLUSTER === "mainnet-beta"
     ? WalletAdapterNetwork.Mainnet

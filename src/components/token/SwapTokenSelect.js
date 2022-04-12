@@ -72,7 +72,7 @@ const SwapTokenSelect = ({
 }) => {
     const [search, setSearch] = useState('')
 
-    console.log(`SwapTokenSelect: ${sortedTokenMints}`)
+    // console.log(`SwapTokenSelect: ${sortedTokenMints}`)
 
     useEffect(() => {
         function onEscape(e) {

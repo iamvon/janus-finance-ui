@@ -41,6 +41,8 @@ const Opportunity = ({totalPool}) => {
     const platformFilterRef = useRef()
     const assetFilterRef = useWallet()
 
+    
+
     const getTokensSymbolInPortfolio = () => {
         const tokensSymbolList = []
         tokens.forEach(token => {
